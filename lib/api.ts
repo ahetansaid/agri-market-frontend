@@ -181,3 +181,76 @@ export async function getSpotlightCategory(): Promise<SpotlightCategory | null> 
   );
   return data;
 }
+
+// ============================================================
+// ÉVÉNEMENTS & SALONS
+// ============================================================
+
+export interface EventItem {
+  id: number;
+  titre: string;
+  slug: string;
+  description_fr: string;
+  image_fr: string | null;
+  image_en: string | null;
+  image_it: string | null;
+  date_debut: string;
+  date_fin: string;
+  est_actif: boolean;
+  nb_interesses: number;
+  prochain_evenement: boolean;
+}
+
+export async function getEvents(limit?: number): Promise<EventItem[]> {
+  const data = await fetchJson<{ results?: EventItem[] } | EventItem[]>(
+    "/api/evenements/"
+  );
+  const list = Array.isArray(data) ? data : data.results || [];
+  // Les événements à venir d'abord, puis les plus récents
+  const sorted = [...list].sort((a, b) => {
+    if (a.prochain_evenement !== b.prochain_evenement) {
+      return a.prochain_evenement ? -1 : 1;
+    }
+    return +new Date(b.date_debut) - +new Date(a.date_debut);
+  });
+  return limit ? sorted.slice(0, limit) : sorted;
+}
+
+export interface EventQuestion {
+  id: number;
+  libelle: string;
+  type_question: string;
+  options: unknown;
+  obligatoire: boolean;
+  aide_texte: string | null;
+}
+
+export interface EventSection {
+  id: number;
+  nom: string;
+  description: string | null;
+  ordre: number;
+  questions: EventQuestion[];
+}
+
+export interface EventDetail extends EventItem {
+  description_en: string;
+  description_it: string;
+  date_fin: string;
+  questionnaire: {
+    id: number;
+    nom: string;
+    actif: boolean;
+    sections: EventSection[];
+  } | null;
+}
+
+export async function getEventDetail(slug: string): Promise<EventDetail | null> {
+  try {
+    return await fetchJson<EventDetail>(
+      `/api/evenements/${encodeURIComponent(slug)}/`
+    );
+  } catch {
+    return null;
+  }
+}

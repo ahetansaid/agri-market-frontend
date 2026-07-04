@@ -5,12 +5,14 @@ import { AnnouncementCard } from "@/components/home/announcement-card";
 import { ProducerOfMonthSection } from "@/components/home/producer-of-month";
 import { SpotlightCategorySection } from "@/components/home/spotlight-category";
 import { AfricaMapSection } from "@/components/home/africa-map";
+import { EventsRail } from "@/components/home/events-rail";
 import {
   getStats,
   getAnnouncements,
   getProducerOfMonth,
   getSpotlightCategory,
   getCountriesActivity,
+  getEvents,
 } from "@/lib/api";
 import { Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -18,8 +20,8 @@ import Link from "next/link";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [stats, annonces, producerData, spotlight, mapData] = await Promise.all(
-    [
+  const [stats, annonces, producerData, spotlight, mapData, events] =
+    await Promise.all([
       getStats().catch(() => ({
         producteurs: 0,
         pays_africains: 54,
@@ -32,8 +34,8 @@ export default async function HomePage() {
       getProducerOfMonth().catch(() => ({ producer: null, featured: null })),
       getSpotlightCategory().catch(() => null),
       getCountriesActivity().catch(() => ({ counts: {} as Record<string, number> })),
-    ]
-  );
+      getEvents(3).catch(() => []),
+    ]);
 
   const activeCountriesCount = Object.keys(mapData.counts).length;
 
@@ -102,7 +104,10 @@ export default async function HomePage() {
           activeCountriesCount={activeCountriesCount}
         />
 
-        {/* 6. CTA final */}
+        {/* 6. Événements & salons */}
+        <EventsRail events={events} />
+
+        {/* 7. CTA final */}
         <section className="relative overflow-hidden bg-gradient-to-br from-sand-900 via-sand-800 to-[#2a1a14] py-24 text-white">
           <div className="pointer-events-none absolute -left-24 top-10 h-96 w-96 rounded-full bg-brand-600 opacity-30 blur-[100px]" />
           <div className="pointer-events-none absolute -right-24 bottom-10 h-96 w-96 rounded-full bg-brand-400 opacity-25 blur-[100px]" />

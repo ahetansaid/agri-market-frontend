@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AnnouncementCard } from "@/components/home/announcement-card";
 import { getAnnouncementDetail, getAnnouncements } from "@/lib/api";
+import { sanitizeHtml } from "@/lib/sanitize";
 import {
   Tag,
   ShoppingCart,
@@ -181,7 +182,7 @@ export default async function DetailPage({
                   <div
                     className="prose prose-sand max-w-none prose-a:text-brand-700"
                     dangerouslySetInnerHTML={{
-                      __html: annonce.description,
+                      __html: sanitizeHtml(annonce.description),
                     }}
                   />
                 </SectionCard>
