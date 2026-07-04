@@ -135,3 +135,49 @@ export async function getAnnouncementDetail(
 ): Promise<AnnouncementDetail> {
   return fetchJson<AnnouncementDetail>(`/api/announcements/${id}/`);
 }
+
+// ============================================================
+// PRODUCER OF THE MONTH
+// ============================================================
+
+export interface ProducerOfMonth {
+  producer: {
+    id: number;
+    username: string;
+    display_name: string;
+    country_code: string | null;
+    country_name: string | null;
+    picture: string | null;
+    rating_avg: number | null;
+    ratings_count: number;
+    user_type: string;
+    years_active: number;
+    transactions_count: number;
+    trust_badges_count: number;
+    city: string | null;
+  } | null;
+  featured: Announcement | null;
+}
+
+export async function getProducerOfMonth(): Promise<ProducerOfMonth> {
+  return fetchJson<ProducerOfMonth>("/api/producer-of-month/");
+}
+
+// ============================================================
+// SPOTLIGHT CATEGORY
+// ============================================================
+
+export interface SpotlightCategory {
+  id: number;
+  name: string;
+  annonces_count: number;
+  cover_image: string | null;
+  subcategories: SubCategory[];
+}
+
+export async function getSpotlightCategory(): Promise<SpotlightCategory | null> {
+  const data = await fetchJson<SpotlightCategory | null>(
+    "/api/spotlight-category/"
+  );
+  return data;
+}
