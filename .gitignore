@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# MCP config (contient la cle API 21st.dev — ne PAS committer)
+.mcp.json
+
 # vercel
 .vercel
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Tag, ShoppingCart, Leaf, Package, ArrowRight, Star } from "lucide-react";
+import { Tag, ShoppingCart, Leaf, Package, ArrowRight, Star, BadgeCheck } from "lucide-react";
 import type { Announcement } from "@/lib/api";
 
 const typeIcons = {
@@ -91,6 +91,17 @@ export function AnnouncementCard({ annonce }: { annonce: Announcement }) {
 
         {/* Body */}
         <div className="p-3">
+          {annonce.category_name && (
+            <div className="mb-1 flex items-center justify-between gap-2">
+              <span className="truncate text-[10px] font-semibold uppercase tracking-wide text-brand-600">
+                {annonce.category_name}
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-0.5 text-[10px] font-medium text-harvest-700">
+                <BadgeCheck className="h-3 w-3" strokeWidth={2.5} />
+                Vérifié
+              </span>
+            </div>
+          )}
           <h3 className="font-display line-clamp-2 min-h-[2.5em] text-sm font-semibold leading-snug tracking-tight text-foreground">
             {annonce.title}
           </h3>
@@ -98,10 +109,7 @@ export function AnnouncementCard({ annonce }: { annonce: Announcement }) {
           <div className="mt-2 flex items-center justify-between gap-2 border-t border-border/60 pt-2.5">
             {annonce.seller.ratings_count > 0 ? (
               <div className="flex items-center gap-1 text-xs">
-                <Star
-                  className="h-3 w-3 fill-gold text-gold"
-                  strokeWidth={0}
-                />
+                <Star className="h-3 w-3 fill-gold text-gold" strokeWidth={0} />
                 <span className="font-display font-bold text-foreground">
                   {annonce.seller.rating_avg}
                 </span>
@@ -110,7 +118,7 @@ export function AnnouncementCard({ annonce }: { annonce: Announcement }) {
                 </span>
               </div>
             ) : (
-              <span className="text-[10px] text-muted-foreground">
+              <span className="inline-flex items-center gap-1 rounded-full bg-harvest-100 px-2 py-0.5 text-[10px] font-bold text-harvest-700">
                 Nouveau
               </span>
             )}

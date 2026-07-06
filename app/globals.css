@@ -2,8 +2,9 @@
 @import "flag-icons/css/flag-icons.min.css";
 
 /* ============================================================
-   AGRI MARKET AFRICA — Design System "African Terra"
-   Orange terre + Vert récolte + Sable + Gold éditorial
+   AGRI MARKET AFRICA — Design System "Sahel Sunrise"
+   Orange soleil + Vert récolte vibrant + Sable chaud + Gold
+   Marketplace agricole panafricaine — chaleureux, énergique, premium
    ============================================================ */
 
 @theme inline {
@@ -12,27 +13,31 @@
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-mono: var(--font-jetbrains), monospace;
 
-  /* ---------- Brand — Orange Terre ---------- */
-  --color-brand-50: #fff7ed;
-  --color-brand-100: #ffedd5;
-  --color-brand-200: #fed7aa;
-  --color-brand-300: #fdba74;
-  --color-brand-400: #fb923c;
-  --color-brand-500: #f97316;
-  --color-brand-600: #ea580c;
-  --color-brand-700: #c2410c;
-  --color-brand-800: #9a3412;
-  --color-brand-900: #7c2d12;
+  /* ---------- Brand — Orange corail (charte logo) ---------- */
+  --color-brand-50: #fff5ef;
+  --color-brand-100: #ffe7d7;
+  --color-brand-200: #ffcaa9;
+  --color-brand-300: #ffa876;
+  --color-brand-400: #fb8b4d;
+  --color-brand-500: #f4783f;   /* orange logo */
+  --color-brand-600: #e8622a;
+  --color-brand-700: #c24e20;
+  --color-brand-800: #9a3f1e;
+  --color-brand-900: #7c351c;
 
-  /* ---------- Green Récolte ---------- */
-  --color-harvest-50: #f0fdf4;
-  --color-harvest-100: #dcfce7;
-  --color-harvest-500: #22c55e;
-  --color-harvest-600: #16a34a;
-  --color-harvest-700: #15803d;
-  --color-harvest-800: #166534;
+  /* ---------- Green Récolte (vert nature du logo) ---------- */
+  --color-harvest-50: #f2fbf4;
+  --color-harvest-100: #dcf5e2;
+  --color-harvest-200: #bce9c8;
+  --color-harvest-300: #8ed9a2;
+  --color-harvest-400: #5cbf78;
+  --color-harvest-500: #3ea95d;   /* vert logo */
+  --color-harvest-600: #2f8f4b;
+  --color-harvest-700: #27723d;
+  --color-harvest-800: #235c34;
+  --color-harvest-900: #1e4b2d;
 
-  /* ---------- Sand (neutral chaud) ---------- */
+  /* ---------- Sand (neutres chauds) ---------- */
   --color-sand-50: #fafaf8;
   --color-sand-100: #f5f4f0;
   --color-sand-200: #e7e5df;
@@ -44,17 +49,18 @@
   --color-sand-800: #292524;
   --color-sand-900: #1c1917;
 
-  /* ---------- Éditoriaux ---------- */
+  /* ---------- Accents éditoriaux ---------- */
   --color-gold: #eab308;
+  --color-lime: #a3e635;
   --color-terracotta: #dc2626;
   --color-savanna: #84cc16;
-  --color-sky: #0ea5e9;
+  --color-clay: #d97706;
 
   /* ---------- Semantic ---------- */
-  --color-success: #10b981;
+  --color-success: #16a34a;
   --color-warning: #f59e0b;
   --color-error: #ef4444;
-  --color-info: #3b82f6;
+  --color-info: #0ea5e9;
 
   /* ---------- Shadcn compat (mapped) ---------- */
   --color-background: var(--background);
@@ -86,48 +92,48 @@
    Light theme (default)
    ============================================================ */
 :root {
-  --background: #fafaf8;        /* sand-50 */
-  --foreground: #292524;        /* sand-800 */
+  --background: #fdfcfa;
+  --foreground: #292524;
   --card: #ffffff;
   --card-foreground: #292524;
   --popover: #ffffff;
   --popover-foreground: #292524;
-  --primary: #ea580c;           /* brand-600 */
+  --primary: #e8622a;           /* brand-600 orange corail */
   --primary-foreground: #ffffff;
-  --secondary: #f5f4f0;         /* sand-100 */
+  --secondary: #f5f4f0;
   --secondary-foreground: #292524;
   --muted: #f5f4f0;
-  --muted-foreground: #78716c;  /* sand-500 */
-  --accent: #fff7ed;            /* brand-50 */
-  --accent-foreground: #7c2d12; /* brand-900 */
+  --muted-foreground: #78716c;
+  --accent: #f2fbf4;            /* harvest-50 green */
+  --accent-foreground: #1e4b2d;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e7e5df;            /* sand-200 */
+  --border: #e7e5df;
   --input: #e7e5df;
-  --ring: #ea580c;
+  --ring: #e8622a;
 }
 
 /* ============================================================
    Dark theme
    ============================================================ */
 .dark {
-  --background: #1c1917;        /* sand-900 */
-  --foreground: #f5f4f0;        /* sand-100 */
-  --card: #292524;              /* sand-800 */
+  --background: #1c1917;
+  --foreground: #f5f4f0;
+  --card: #292524;
   --card-foreground: #f5f4f0;
   --popover: #292524;
   --popover-foreground: #f5f4f0;
-  --primary: #fb923c;           /* brand-400 (plus vif en dark) */
+  --primary: #fb923c;
   --primary-foreground: #1c1917;
   --secondary: #292524;
   --secondary-foreground: #f5f4f0;
   --muted: #292524;
   --muted-foreground: #a8a29e;
-  --accent: #292524;
-  --accent-foreground: #fdba74; /* brand-300 */
+  --accent: #14532d;
+  --accent-foreground: #86efac;
   --destructive: #f87171;
   --destructive-foreground: #ffffff;
-  --border: #44403c;            /* sand-700 */
+  --border: #44403c;
   --input: #44403c;
   --ring: #fb923c;
 }
@@ -146,34 +152,79 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
-/* Scrollbar personnalisée */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--color-sand-300);
-  border-radius: 999px;
-}
-.dark ::-webkit-scrollbar-thumb {
-  background: var(--color-sand-700);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brand-400);
+::-webkit-scrollbar-thumb { background: var(--color-sand-300); border-radius: 999px; }
+.dark ::-webkit-scrollbar-thumb { background: var(--color-sand-700); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-brand-400); }
+
+/* Selection */
+::selection { background: var(--color-brand-200); color: var(--color-brand-900); }
+.dark ::selection { background: var(--color-brand-800); color: var(--color-brand-100); }
+
+/* Fraunces variable optical size pour les gros titres */
+.font-display { font-variation-settings: "opsz" 120, "SOFT" 0; }
+
+/* ============================================================
+   Utilitaires réutilisables
+   ============================================================ */
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
-/* Selection color */
-::selection {
-  background: var(--color-brand-200);
-  color: var(--color-brand-900);
+/* Dégradé signature orange -> vert (l'ADN de la marque) */
+.text-gradient-brand {
+  background-image: linear-gradient(120deg, var(--color-brand-500), var(--color-harvest-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-.dark ::selection {
-  background: var(--color-brand-800);
-  color: var(--color-brand-100);
+.bg-gradient-brand {
+  background-image: linear-gradient(120deg, var(--color-brand-500), var(--color-harvest-600));
 }
 
-/* Fraunces variable axes utility */
-.font-display {
-  font-variation-settings: "opsz" 96;
+/* Marquee infini (bandeau produits du hero) */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-y {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+.animate-marquee-y {
+  animation: marquee-y var(--col-duration, 40s) linear infinite;
+}
+.animate-marquee-y-rev {
+  animation: marquee-y var(--col-duration, 50s) linear infinite reverse;
+}
+.marquee-pause:hover .animate-marquee-y,
+.marquee-pause:hover .animate-marquee-y-rev {
+  animation-play-state: paused;
+}
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 45s) linear infinite;
+}
+.animate-marquee-rev {
+  animation: marquee var(--marquee-duration, 55s) linear infinite reverse;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.marquee-pause:hover .animate-marquee,
+.marquee-pause:hover .animate-marquee-rev {
+  animation-play-state: paused;
+}
+
+/* Grain/texture subtile pour les fonds sombres */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
 }
