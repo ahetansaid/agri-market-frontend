@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Users, ArrowRight, MapPin, CalendarX } from "lucide-react";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const MOIS = [
   "janvier", "février", "mars", "avril", "mai", "juin",

@@ -19,7 +19,7 @@ import {
   getEvents,
 } from "@/lib/api";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   // Un seul appel d'annonces (les autres rails sont dérivés) pour soulager

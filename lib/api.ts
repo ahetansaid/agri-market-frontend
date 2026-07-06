@@ -82,6 +82,8 @@ async function fetchJson<T>(path: string): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     next: { revalidate: 60 }, // ISR cache 60s
     headers: { "Content-Type": "application/json" },
+    // Évite tout blocage (build Vercel / SSR) si l'API est lente ou injoignable.
+    signal: AbortSignal.timeout(10000),
   });
   if (!res.ok) {
     throw new Error(`API ${path} returned ${res.status}`);

@@ -7,7 +7,7 @@ import { getAnnouncements, getCategories } from "@/lib/api";
 import { PackageOpen, Filter } from "lucide-react";
 import Link from "next/link";
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 interface Search {
   q?: string;
