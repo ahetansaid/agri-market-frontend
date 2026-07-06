@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import { Eye, EyeOff, Loader2, ArrowRight, ShieldCheck } from "lucide-react";
 import { login, AuthError } from "@/lib/auth";
 import { useAuth } from "@/lib/auth-context";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
   const next = search.get("next") || "/dashboard/producer";
@@ -258,5 +258,13 @@ function TrustStat({ num, label }: { num: string; label: string }) {
         {label}
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-sand-50" />}>
+      <LoginForm />
+    </Suspense>
   );
 }
