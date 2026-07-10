@@ -25,7 +25,7 @@ export interface Announcement {
   id: number;
   reference: string;
   title: string;
-  type: "vente" | "achat" | "autre";
+  type: "vente" | "achat" | "autre" | "partenariat";
   type_display: string;
   is_organic: boolean;
   quantity: number | null;

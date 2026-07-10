@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import type { SVGProps } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Search, User, Plus, X, ArrowRight, Phone, Mail } from "lucide-react";
+import { Search, Plus, X, ArrowRight, Phone, Mail } from "lucide-react";
+import { AuthLinks } from "@/components/auth/auth-links";
 
 const LINKS = [
   { href: "/", label: "Accueil", num: "01" },
@@ -138,13 +139,7 @@ export function Header() {
             >
               <Search className="h-5 w-5" strokeWidth={2} />
             </button>
-            <Link
-              href="/login"
-              aria-label="Mon compte"
-              className="hidden place-items-center rounded-full p-2.5 text-sand-600 transition hover:bg-secondary hover:text-brand-600 sm:grid"
-            >
-              <User className="h-5 w-5" strokeWidth={2} />
-            </Link>
+            <AuthLinks variant="header" />
             <Link
               href="/annonces/nouvelle"
               className="hidden items-center gap-2 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 md:inline-flex"

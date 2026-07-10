@@ -98,11 +98,11 @@ export function Hero({ stats }: HeroProps) {
 
           {/* Titre */}
           <h1 className="font-display text-6xl font-medium leading-[0.95] tracking-tight drop-shadow-xl sm:text-7xl md:text-8xl lg:text-[6.75rem]">
-            Le marché vivant de
+            L&apos;agriculture africaine
             <br />
             <em className="font-normal italic">
               <span className="bg-gradient-to-r from-brand-300 via-brand-200 to-harvest-300 bg-clip-text text-transparent">
-                l&apos;Afrique agricole.
+                à portée de main.
               </span>
             </em>
           </h1>

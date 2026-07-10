@@ -25,7 +25,11 @@ import {
 
 export const revalidate = 60;
 
-const typeIconMap = { vente: Tag, achat: ShoppingCart, autre: Package };
+const typeIconMap: Record<string, typeof Tag> = {
+  vente: Tag,
+  achat: ShoppingCart,
+  autre: Package,
+};
 
 export default async function DetailPage({
   params,

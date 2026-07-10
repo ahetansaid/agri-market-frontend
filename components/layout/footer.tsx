@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { SVGProps } from "react";
+import { AuthLinks } from "@/components/auth/auth-links";
 import {
   ShieldCheck,
   Clock,
@@ -44,30 +45,24 @@ const TRUST = [
 
 const COLUMNS = [
   {
-    title: "Marketplace",
+    title: "Services et programmes",
     links: [
-      { label: "Toutes les annonces", href: "/annonces" },
-      { label: "Filières", href: "/filieres" },
-      { label: "Publier une annonce", href: "/annonces/nouvelle" },
-      { label: "Devenir vendeur", href: "/register?type=seller" },
+      { label: "Découvrir", href: "/decouvrir" },
+      { label: "Mes préférences", href: "/preferences" },
+      { label: "Comment s'inscrire", href: "/guide-inscription" },
+      { label: "Service client", href: "/service-client" },
+      { label: "Avis et suggestions", href: "/avis" },
     ],
   },
   {
-    title: "Communauté",
+    title: "Votre compte",
     links: [
-      { label: "Notre mission", href: "/apropos" },
-      { label: "Événements & salons", href: "/evenements" },
-      { label: "Producteurs", href: "/producteurs" },
-      { label: "FAQ", href: "/faq" },
-    ],
-  },
-  {
-    title: "Ressources",
-    links: [
-      { label: "Contact", href: "/contact" },
-      { label: "Support", href: "/support" },
-      { label: "Blog", href: "/blog" },
-      { label: "API & intégrations", href: "/api-docs" },
+      { label: "Créer un compte professionnel", href: "/register?type=pro" },
+      { label: "Mes abonnements", href: "/abonnements" },
+      { label: "Signaler un désagrément", href: "/signaler" },
+      { label: "Alerte arnaque & sécurité", href: "/securite" },
+      { label: "Accueil", href: "/" },
+      { label: "À propos de Agri Market Africa", href: "/apropos" },
     ],
   },
 ];
@@ -180,6 +175,15 @@ export function Footer() {
               </ul>
             </div>
           ))}
+
+          {/* Colonne Accès (connexion / inscription / déconnexion) */}
+          <div>
+            <h3 className="relative mb-4 pb-3 font-display text-sm font-semibold tracking-wide text-white">
+              Accès
+              <span className="absolute bottom-0 left-0 h-0.5 w-7 rounded bg-gradient-to-r from-brand-500 to-harvest-500" />
+            </h3>
+            <AuthLinks variant="footer" />
+          </div>
         </div>
 
         {/* Réseaux + partenaires */}

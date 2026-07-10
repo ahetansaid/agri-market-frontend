@@ -3,19 +3,23 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Tag, ShoppingCart, Leaf, Package, ArrowRight, Star, BadgeCheck } from "lucide-react";
+import { Tag, ShoppingCart, Leaf, Package, ArrowRight, Star, BadgeCheck, Handshake } from "lucide-react";
 import type { Announcement } from "@/lib/api";
 
-const typeIcons = {
+const typeIcons: Record<string, typeof Tag> = {
   vente: Tag,
   achat: ShoppingCart,
   autre: Package,
+  partenariat: Handshake,
 };
 
-const typeStyles = {
-  vente: "bg-gradient-to-br from-brand-400 to-brand-600 text-white",
-  achat: "bg-gradient-to-br from-sky-500 to-sky-700 text-white",
-  autre: "bg-white/95 text-sand-900",
+// Couleurs des types : achat = orange, vente = vert, autre = violet,
+// partenariat = bleu.
+const typeStyles: Record<string, string> = {
+  achat: "bg-gradient-to-br from-brand-500 to-brand-600 text-white",
+  vente: "bg-gradient-to-br from-harvest-500 to-harvest-700 text-white",
+  autre: "bg-gradient-to-br from-violet-500 to-violet-700 text-white",
+  partenariat: "bg-gradient-to-br from-sky-500 to-sky-700 text-white",
 };
 
 export function AnnouncementCard({ annonce }: { annonce: Announcement }) {
@@ -58,12 +62,6 @@ export function AnnouncementCard({ annonce }: { annonce: Announcement }) {
               <TypeIcon className="h-2.5 w-2.5" strokeWidth={3} />
               {annonce.type_display}
             </span>
-            {annonce.is_organic && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-br from-harvest-500 to-harvest-700 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">
-                <Leaf className="h-2.5 w-2.5" strokeWidth={3} />
-                Bio
-              </span>
-            )}
           </div>
 
           {/* Country flag */}

@@ -64,7 +64,6 @@ export default async function HomePage() {
 
         {/* Carrousel — Dernières annonces */}
         <ProductRail
-          eyebrow="Fraîchement publiées"
           title="Dernières"
           accent="annonces"
           viewAllHref="/annonces?sort=recent"

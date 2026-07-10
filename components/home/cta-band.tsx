@@ -27,10 +27,10 @@ export function CtaBand({ stats }: Props) {
           Rejoignez le mouvement
         </span>
         <h2 className="font-display text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
-          Cultivez.{" "}
+          Cultiver,{" "}
           <em className="font-normal italic">
             <span className="bg-gradient-to-r from-brand-300 to-harvest-300 bg-clip-text text-transparent">
-              Vendez. Prospérez.
+              produire, collaborer.
             </span>
           </em>
         </h2>

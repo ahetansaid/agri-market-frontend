@@ -24,8 +24,8 @@ export function TrendingChart({
               En ce moment
             </span>
             <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Le{" "}
-              <em className="text-gradient-brand font-normal italic">top des recherches</em>
+              Les plus{" "}
+              <em className="text-gradient-brand font-normal italic">recherchés</em>
             </h2>
           </div>
           <Link
