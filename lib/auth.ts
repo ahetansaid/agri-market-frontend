@@ -221,6 +221,54 @@ export function logout() {
   }
 }
 
+/** Publie une annonce (multipart, authentifié). */
+export async function createAnnouncement(
+  form: FormData
+): Promise<{ id: number; reference: string; title: string }> {
+  const url = `${API_URL}/api/me/announcements/create/`;
+  const doFetch = (token: string | null) =>
+    fetch(url, {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: form,
+    });
+
+  let access = getAccessToken();
+  let res = await doFetch(access);
+
+  if (res.status === 401 && access) {
+    const newAccess = await refreshAccess();
+    if (newAccess) {
+      res = await doFetch(newAccess);
+    } else {
+      clearTokens();
+      throw new AuthError("Session expirée. Reconnectez-vous.");
+    }
+  }
+
+  if (!res.ok) {
+    let msg = `Erreur ${res.status}`;
+    try {
+      const data = await res.json();
+      if (data.errors) {
+        const first = Object.entries(data.errors)[0];
+        if (first) {
+          const [field, errs] = first;
+          const list = Array.isArray(errs) ? errs.join(" ") : String(errs);
+          msg = `${field} : ${list}`;
+        }
+      } else if (data.detail) {
+        msg = data.detail;
+      }
+    } catch {
+      /* ignore */
+    }
+    throw new AuthError(msg);
+  }
+
+  return res.json();
+}
+
 export async function fetchMe(): Promise<Me | null> {
   if (!getAccessToken()) return null;
   try {
