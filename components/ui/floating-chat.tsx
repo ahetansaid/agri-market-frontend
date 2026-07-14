@@ -1,23 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageCircle, X, Send, Mail, Headphones } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Headphones,
+  LogIn,
+  Loader2,
+} from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import {
+  getSupportMessages,
+  sendSupportMessage,
+  type SupportMsg,
+} from "@/lib/auth";
 
 // Nom de l'onglet à définir (placeholder : "Assistance").
 const LABEL = "Assistance";
-const CONTACT_EMAIL = "contact@idamarketplace.com";
 
 export function FloatingChat() {
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<SupportMsg[]>([]);
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const send = (e: React.FormEvent) => {
+  const load = useCallback(async () => {
+    try {
+      setMessages(await getSupportMessages());
+    } catch {
+      /* silencieux (polling) */
+    }
+  }, []);
+
+  // Chargement + polling toutes les 4s tant que le panneau est ouvert & connecté
+  useEffect(() => {
+    if (!open || !user) return;
+    setLoading(true);
+    load().finally(() => setLoading(false));
+    const iv = setInterval(load, 4000);
+    return () => clearInterval(iv);
+  }, [open, user, load]);
+
+  // Auto-scroll vers le dernier message
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, open]);
+
+  const send = async (e: React.FormEvent) => {
     e.preventDefault();
-    const body = encodeURIComponent(message);
-    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-      "Contact — Agri Market Africa"
-    )}&body=${body}`;
+    const body = text.trim();
+    if (!body || sending) return;
+    setText("");
+    setSending(true);
+    try {
+      setMessages(await sendSupportMessage(body));
+    } catch {
+      setText(body);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -29,10 +78,10 @@ export function FloatingChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300, damping: 26 }}
-            className="fixed bottom-24 left-6 z-50 w-[340px] max-w-[calc(100vw-3rem)] overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
+            className="fixed bottom-24 left-6 z-50 flex h-[440px] w-[350px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
           >
             {/* En-tête */}
-            <div className="relative bg-gradient-to-br from-brand-500 to-harvest-600 p-5 text-white">
+            <div className="relative shrink-0 bg-gradient-to-br from-brand-500 to-harvest-600 p-4 text-white">
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -42,52 +91,97 @@ export function FloatingChat() {
                 <X className="h-4 w-4" strokeWidth={2.5} />
               </button>
               <div className="flex items-center gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/15">
-                  <Headphones className="h-6 w-6" strokeWidth={2} />
+                <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white/15">
+                  <Headphones className="h-5 w-5" strokeWidth={2} />
                 </span>
                 <div>
-                  <div className="font-display text-lg font-semibold">{LABEL}</div>
+                  <div className="font-semibold">{LABEL}</div>
                   <div className="flex items-center gap-1.5 text-xs text-white/80">
                     <span className="h-1.5 w-1.5 rounded-full bg-lime" />
-                    En ligne · réponse sous 24h
+                    Service client · réponse sous 24h
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Corps */}
-            <div className="p-5">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Bonjour 👋 Une question sur une annonce, votre compte, ou la
-                plateforme ? Écrivez-nous, notre équipe vous répond.
-              </p>
-
-              <form onSubmit={send} className="mt-4">
-                <textarea
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  rows={3}
-                  placeholder="Votre message…"
-                  className="w-full resize-none rounded-2xl border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition focus:border-brand-400 focus:bg-card"
-                />
-                <button
-                  type="submit"
-                  disabled={!message.trim()}
-                  className="mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:shadow-brand-600/40 disabled:cursor-not-allowed disabled:opacity-50"
+            {!user ? (
+              <div className="flex flex-1 flex-col items-center justify-center gap-3 p-6 text-center">
+                <div className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+                  <LogIn className="h-7 w-7" strokeWidth={1.75} />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Connectez-vous pour discuter avec notre service client et
+                  garder l&apos;historique de vos échanges.
+                </p>
+                <Link
+                  href="/login"
+                  className="mt-1 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5"
                 >
-                  <Send className="h-4 w-4" strokeWidth={2.5} />
-                  Envoyer
-                </button>
-              </form>
+                  <LogIn className="h-4 w-4" />
+                  Se connecter
+                </Link>
+              </div>
+            ) : (
+              <>
+                <div
+                  ref={scrollRef}
+                  className="flex-1 space-y-2.5 overflow-y-auto bg-sand-50 p-4"
+                >
+                  {loading && messages.length === 0 ? (
+                    <div className="grid h-full place-items-center text-muted-foreground">
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    </div>
+                  ) : messages.length === 0 ? (
+                    <div className="grid h-full place-items-center px-4 text-center text-sm text-muted-foreground">
+                      Bonjour {user.first_name || user.username} 👋 Comment
+                      pouvons-nous vous aider ?
+                    </div>
+                  ) : (
+                    messages.map((m) => (
+                      <div
+                        key={m.id}
+                        className={`flex ${m.from_staff ? "justify-start" : "justify-end"}`}
+                      >
+                        <div
+                          className={`max-w-[80%] whitespace-pre-wrap rounded-2xl px-3.5 py-2 text-sm ${
+                            m.from_staff
+                              ? "rounded-tl-sm bg-white text-foreground ring-1 ring-border"
+                              : "rounded-tr-sm bg-gradient-to-br from-brand-500 to-brand-600 text-white"
+                          }`}
+                        >
+                          {m.body}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
 
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted-foreground transition hover:text-brand-700"
-              >
-                <Mail className="h-3.5 w-3.5" />
-                {CONTACT_EMAIL}
-              </a>
-            </div>
+                <form
+                  onSubmit={send}
+                  className="flex shrink-0 items-center gap-2 border-t border-border bg-card p-2.5"
+                >
+                  <input
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Votre message…"
+                    className="min-w-0 flex-1 rounded-full bg-secondary/60 px-4 py-2.5 text-sm text-foreground placeholder-muted-foreground outline-none focus:bg-secondary"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!text.trim() || sending}
+                    aria-label="Envoyer"
+                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-600 text-white transition hover:from-brand-400 disabled:opacity-50"
+                  >
+                    {sending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Send className="h-4 w-4" strokeWidth={2.5} />
+                    )}
+                  </button>
+                </form>
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

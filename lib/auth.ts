@@ -332,3 +332,29 @@ export interface MyRatingsPayload {
 export async function fetchMyRatings(): Promise<MyRatingsPayload> {
   return authFetch<MyRatingsPayload>("/api/me/ratings/");
 }
+
+// ============================================================
+// MESSAGERIE SERVICE CLIENT
+// ============================================================
+
+export interface SupportMsg {
+  id: number;
+  body: string;
+  from_staff: boolean;
+  created_at: string;
+}
+
+export async function getSupportMessages(): Promise<SupportMsg[]> {
+  const data = await authFetch<{ messages: SupportMsg[] }>(
+    "/api/support/messages/"
+  );
+  return data.messages;
+}
+
+export async function sendSupportMessage(body: string): Promise<SupportMsg[]> {
+  const data = await authFetch<{ messages: SupportMsg[] }>(
+    "/api/support/messages/",
+    { method: "POST", body: JSON.stringify({ body }) }
+  );
+  return data.messages;
+}
