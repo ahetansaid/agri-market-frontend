@@ -8,34 +8,34 @@
    ============================================================ */
 
 @theme inline {
-  /* ---------- Fonts ---------- */
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-display: var(--font-fraunces), Georgia, serif;
+  /* ---------- Fonts (Charte IDA : Poppins) ---------- */
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+  --font-display: var(--font-poppins), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), monospace;
 
-  /* ---------- Brand — Orange corail (charte logo) ---------- */
-  --color-brand-50: #fff5ef;
-  --color-brand-100: #ffe7d7;
-  --color-brand-200: #ffcaa9;
-  --color-brand-300: #ffa876;
-  --color-brand-400: #fb8b4d;
-  --color-brand-500: #f4783f;   /* orange logo */
-  --color-brand-600: #e8622a;
-  --color-brand-700: #c24e20;
-  --color-brand-800: #9a3f1e;
-  --color-brand-900: #7c351c;
+  /* ---------- Brand — Orange charte IDA (#F38C1F) ---------- */
+  --color-brand-50: #fff8ee;
+  --color-brand-100: #feecd0;
+  --color-brand-200: #fcd6a0;
+  --color-brand-300: #f9bb66;
+  --color-brand-400: #f6a13c;
+  --color-brand-500: #f38c1f;   /* charte */
+  --color-brand-600: #db7712;
+  --color-brand-700: #b45c11;
+  --color-brand-800: #8f4915;
+  --color-brand-900: #743d15;
 
-  /* ---------- Green Récolte (vert nature du logo) ---------- */
-  --color-harvest-50: #f2fbf4;
-  --color-harvest-100: #dcf5e2;
-  --color-harvest-200: #bce9c8;
-  --color-harvest-300: #8ed9a2;
-  --color-harvest-400: #5cbf78;
-  --color-harvest-500: #3ea95d;   /* vert logo */
-  --color-harvest-600: #2f8f4b;
-  --color-harvest-700: #27723d;
-  --color-harvest-800: #235c34;
-  --color-harvest-900: #1e4b2d;
+  /* ---------- Green — Vert charte IDA (#2D8A4A) ---------- */
+  --color-harvest-50: #eff9f1;
+  --color-harvest-100: #d5f0dc;
+  --color-harvest-200: #ade0bb;
+  --color-harvest-300: #7bc994;
+  --color-harvest-400: #49ac68;
+  --color-harvest-500: #2d8a4a;   /* charte */
+  --color-harvest-600: #23703b;
+  --color-harvest-700: #1e5a31;
+  --color-harvest-800: #1b482a;
+  --color-harvest-900: #163a23;
 
   /* ---------- Sand (neutres chauds) ---------- */
   --color-sand-50: #fafaf8;
@@ -46,15 +46,18 @@
   --color-sand-500: #78716c;
   --color-sand-600: #57534e;
   --color-sand-700: #44403c;
-  --color-sand-800: #292524;
-  --color-sand-900: #1c1917;
+  --color-sand-800: #17201a;
+  --color-sand-900: #0e1711;   /* charte (presque noir vert) */
 
-  /* ---------- Accents éditoriaux ---------- */
+  /* ---------- Accents charte IDA ---------- */
   --color-gold: #eab308;
+  --color-coral: #f6572d;    /* accentuation charte */
+  --color-cream: #fceabb;    /* secondaire charte */
+  --color-yellow: #fff000;   /* charte */
   --color-lime: #a3e635;
-  --color-terracotta: #dc2626;
-  --color-savanna: #84cc16;
-  --color-clay: #d97706;
+  --color-terracotta: #f6572d;
+  --color-savanna: #2d8a4a;
+  --color-clay: #db7712;
 
   /* ---------- Semantic ---------- */
   --color-success: #16a34a;
@@ -98,19 +101,19 @@
   --card-foreground: #292524;
   --popover: #ffffff;
   --popover-foreground: #292524;
-  --primary: #e8622a;           /* brand-600 orange corail */
+  --primary: #db7712;           /* brand-600 orange charte */
   --primary-foreground: #ffffff;
   --secondary: #f5f4f0;
-  --secondary-foreground: #292524;
+  --secondary-foreground: #17201a;
   --muted: #f5f4f0;
-  --muted-foreground: #78716c;
-  --accent: #f2fbf4;            /* harvest-50 green */
-  --accent-foreground: #1e4b2d;
+  --muted-foreground: #6b6b63;
+  --accent: #eff9f1;            /* harvest-50 green */
+  --accent-foreground: #163a23;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: #e7e5df;
   --input: #e7e5df;
-  --ring: #e8622a;
+  --ring: #db7712;
 }
 
 /* ============================================================
