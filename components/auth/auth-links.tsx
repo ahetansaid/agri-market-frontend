@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { logout } from "@/lib/auth";
-import { LogIn, UserPlus, LogOut, LayoutDashboard } from "lucide-react";
+import {
+  LogIn,
+  UserPlus,
+  LogOut,
+  LayoutDashboard,
+  MessageCircle,
+} from "lucide-react";
 
 /**
  * Liens d'authentification contextuels (S'inscrire / Se connecter quand
@@ -20,6 +26,11 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
       <ul className="space-y-2.5">
         {user ? (
           <>
+            <li>
+              <Link href="/messages" className={cls}>
+                Mes messages
+              </Link>
+            </li>
             <li>
               <Link href="/dashboard" className={cls}>
                 Mon espace
@@ -53,6 +64,13 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
   if (user) {
     return (
       <div className="flex items-center gap-1">
+        <Link
+          href="/messages"
+          aria-label="Mes messages"
+          className="grid place-items-center rounded-full p-2.5 text-sand-600 transition hover:bg-secondary hover:text-brand-700"
+        >
+          <MessageCircle className="h-5 w-5" strokeWidth={2} />
+        </Link>
         <Link
           href="/dashboard"
           className="hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-secondary hover:text-brand-700 lg:inline-flex"

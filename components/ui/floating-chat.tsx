@@ -15,6 +15,7 @@ import { useAuth } from "@/lib/auth-context";
 import {
   getSupportMessages,
   sendSupportMessage,
+  getSupportUnread,
   type SupportMsg,
 } from "@/lib/auth";
 
@@ -28,7 +29,25 @@ export function FloatingChat() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
+  const [unread, setUnread] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Badge non-lus : poll léger quand le panneau est fermé
+  useEffect(() => {
+    if (!user) return;
+    if (open) {
+      setUnread(0);
+      return;
+    }
+    let active = true;
+    const check = () => getSupportUnread().then((n) => active && setUnread(n));
+    check();
+    const iv = setInterval(check, 15000);
+    return () => {
+      active = false;
+      clearInterval(iv);
+    };
+  }, [user, open]);
 
   const load = useCallback(async () => {
     try {
@@ -203,6 +222,11 @@ export function FloatingChat() {
           )}
         </span>
         <span className="hidden text-sm font-semibold sm:inline">{LABEL}</span>
+        {!open && unread > 0 && (
+          <span className="absolute -right-1 -top-1 grid h-6 min-w-[1.5rem] place-items-center rounded-full bg-coral px-1.5 text-xs font-bold text-white ring-2 ring-card">
+            {unread > 9 ? "9+" : unread}
+          </span>
+        )}
       </motion.button>
     </>
   );

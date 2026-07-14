@@ -358,3 +358,70 @@ export async function sendSupportMessage(body: string): Promise<SupportMsg[]> {
   );
   return data.messages;
 }
+
+export async function getSupportUnread(): Promise<number> {
+  try {
+    const d = await authFetch<{ unread: number }>("/api/support/unread/");
+    return d.unread ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+// ============================================================
+// MESSAGERIE ACHETEUR <-> VENDEUR
+// ============================================================
+
+export interface ConvMsg {
+  id: number;
+  body: string;
+  mine: boolean;
+  created_at: string;
+}
+
+export interface ConvPayload {
+  conversation_id: number;
+  with: { id: number; name: string };
+  announcement: { id: number; title: string };
+  messages: ConvMsg[];
+}
+
+export interface ConvSummary {
+  id: number;
+  with: { id: number; name: string };
+  announcement: { id: number; title: string };
+  last: string;
+  unread: number;
+}
+
+/** Ouvre (ou crée) la conversation avec le vendeur d'une annonce. */
+export async function contactSeller(
+  announcementId: number,
+  body?: string
+): Promise<ConvPayload> {
+  return authFetch<ConvPayload>(
+    `/api/announcements/${announcementId}/messages/`,
+    body ? { method: "POST", body: JSON.stringify({ body }) } : {}
+  );
+}
+
+export async function getConversation(id: number): Promise<ConvPayload> {
+  return authFetch<ConvPayload>(`/api/conversations/${id}/`);
+}
+
+export async function sendConversationMessage(
+  id: number,
+  body: string
+): Promise<ConvPayload> {
+  return authFetch<ConvPayload>(`/api/conversations/${id}/`, {
+    method: "POST",
+    body: JSON.stringify({ body }),
+  });
+}
+
+export async function getMyConversations(): Promise<ConvSummary[]> {
+  const d = await authFetch<{ conversations: ConvSummary[] }>(
+    "/api/me/conversations/"
+  );
+  return d.conversations;
+}

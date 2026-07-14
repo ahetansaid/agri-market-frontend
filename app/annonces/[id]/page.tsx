@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import { AnnouncementCard } from "@/components/home/announcement-card";
 import { getAnnouncementDetail, getAnnouncements } from "@/lib/api";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { ContactSellerButton } from "@/components/messaging/contact-seller-button";
 import {
   Tag,
   ShoppingCart,
@@ -242,15 +243,15 @@ export default async function DetailPage({
 
               {/* CTA */}
               <div className="flex flex-col gap-3 rounded-2xl bg-card p-5 shadow-sm ring-1 ring-border">
-                <button
-                  type="button"
-                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition-all hover:-translate-y-0.5 hover:shadow-brand-600/50"
-                >
-                  <MessageCircle className="h-4 w-4" strokeWidth={2.5} />
-                  {annonce.type === "achat"
-                    ? "Proposer mon produit"
-                    : "Contacter le vendeur"}
-                </button>
+                <ContactSellerButton
+                  announcementId={annonce.id}
+                  label={
+                    annonce.type === "achat"
+                      ? "Proposer mon produit"
+                      : "Contacter le vendeur"
+                  }
+                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition-all hover:-translate-y-0.5 hover:shadow-brand-600/50 disabled:opacity-60"
+                />
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
