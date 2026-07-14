@@ -1,18 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Eye, EyeOff, Loader2, ArrowRight, User, Building2 } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  ArrowRight,
+  User,
+  Building2,
+  MailCheck,
+} from "lucide-react";
 import { register, AuthError } from "@/lib/auth";
-import { useAuth } from "@/lib/auth-context";
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const { refresh } = useAuth();
-
+  const [sent, setSent] = useState<string | null>(null);
   const [userType, setUserType] = useState<"individu" | "entreprise">(
     "individu"
   );
@@ -39,9 +43,8 @@ export default function RegisterPage() {
     setError(null);
     setLoading(true);
     try {
-      await register({ ...form, user_type: userType });
-      await refresh();
-      router.push("/dashboard/producer");
+      const res = await register({ ...form, user_type: userType });
+      setSent(res.email);
     } catch (err) {
       setError(
         err instanceof AuthError
@@ -118,6 +121,32 @@ export default function RegisterPage() {
           transition={{ duration: 0.5 }}
           className="w-full max-w-lg"
         >
+          {sent ? (
+            <div className="rounded-3xl border border-harvest-200 bg-harvest-50 p-8 text-center">
+              <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-harvest-500 text-white">
+                <MailCheck className="h-8 w-8" strokeWidth={2} />
+              </div>
+              <h1 className="font-display text-2xl font-semibold text-harvest-800">
+                Vérifiez votre email
+              </h1>
+              <p className="mx-auto mt-2 max-w-sm text-sm text-harvest-700">
+                Un lien de vérification a été envoyé à{" "}
+                <strong>{sent}</strong>. Cliquez dessus pour activer votre
+                compte, puis connectez-vous.
+              </p>
+              <Link
+                href="/login"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-sand-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600"
+              >
+                Aller à la connexion
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <p className="mt-4 text-xs text-muted-foreground">
+                Vous n&apos;avez rien reçu ? Vérifiez vos spams.
+              </p>
+            </div>
+          ) : (
+          <>
           <div className="mb-8 text-center">
             <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
               Rejoignez{" "}
@@ -306,6 +335,8 @@ export default function RegisterPage() {
               Se connecter
             </Link>
           </p>
+          </>
+          )}
         </motion.div>
       </section>
     </main>

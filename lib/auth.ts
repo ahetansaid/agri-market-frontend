@@ -185,7 +185,7 @@ export async function login(
 
 export async function register(
   payload: RegisterPayload
-): Promise<AuthResult> {
+): Promise<{ detail: string; email: string }> {
   const res = await fetch(`${API_URL}/api/auth/register/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -209,9 +209,23 @@ export async function register(
     }
     throw new AuthError(msg);
   }
-  const data = (await res.json()) as AuthResult;
-  setTokens(data.access, data.refresh);
-  return data;
+  // Plus d'auto-login : le compte doit d'abord être activé par email.
+  return res.json();
+}
+
+/** Active un compte via le lien reçu par email (uid + token). */
+export async function activateAccount(
+  uid: string,
+  token: string
+): Promise<{ detail: string }> {
+  const res = await fetch(`${API_URL}/api/auth/activate/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ uid, token }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new AuthError(data.detail || "Activation impossible.");
+  return data as { detail: string };
 }
 
 export function logout() {
