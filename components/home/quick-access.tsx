@@ -19,7 +19,7 @@ const ITEMS = [
   { icon: LayoutGrid, label: "Toutes les annonces", href: "/annonces" },
   { icon: Sprout, label: "Filières", href: "/filieres" },
   { icon: PlusCircle, label: "Publier une annonce", href: "/annonces/nouvelle" },
-  { icon: Users, label: "Producteurs", href: "/producteurs" },
+  { icon: Users, label: "Producteurs", href: "/annonces" },
   { icon: Map, label: "Carte des pays", href: "/pays" },
   { icon: CalendarDays, label: "Événements", href: "/evenements" },
   { icon: Store, label: "Devenir vendeur", href: "/register?type=seller" },

@@ -47,20 +47,20 @@ const COLUMNS = [
   {
     title: "Services et programmes",
     links: [
-      { label: "Découvrir", href: "/decouvrir" },
-      { label: "Mes préférences", href: "/preferences" },
-      { label: "Comment s'inscrire", href: "/guide-inscription" },
+      { label: "Découvrir la marketplace", href: "/annonces" },
+      { label: "Filières agricoles", href: "/filieres" },
+      { label: "Comment s'inscrire", href: "/register" },
       { label: "Service client", href: "/service-client" },
-      { label: "Avis et suggestions", href: "/avis" },
+      { label: "Avis et suggestions", href: "/service-client" },
     ],
   },
   {
     title: "Votre compte",
     links: [
       { label: "Créer un compte professionnel", href: "/register?type=pro" },
-      { label: "Mes abonnements", href: "/abonnements" },
-      { label: "Signaler un désagrément", href: "/signaler" },
-      { label: "Alerte arnaque & sécurité", href: "/securite" },
+      { label: "Mon profil", href: "/dashboard/producer/profile" },
+      { label: "Signaler un désagrément", href: "/service-client" },
+      { label: "Alerte arnaque & sécurité", href: "/legal/privacy" },
       { label: "Accueil", href: "/" },
       { label: "À propos de Agri Market Africa", href: "/apropos" },
     ],

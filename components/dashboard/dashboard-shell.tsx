@@ -9,7 +9,6 @@ import {
   LayoutDashboard,
   Package,
   MessageSquare,
-  ShoppingBag,
   UserCircle,
   Settings,
   LogOut,
@@ -30,16 +29,15 @@ interface NavItem {
 const PRODUCER_NAV: NavItem[] = [
   { href: "/dashboard/producer", label: "Vue d'ensemble", icon: LayoutDashboard },
   { href: "/dashboard/producer/announcements", label: "Mes annonces", icon: Package },
-  { href: "/dashboard/producer/messages", label: "Messagerie", icon: MessageSquare },
+  { href: "/messages", label: "Messagerie", icon: MessageSquare },
   { href: "/dashboard/producer/ratings", label: "Mes avis", icon: Star },
   { href: "/dashboard/producer/profile", label: "Mon profil", icon: UserCircle },
 ];
 
 const BUYER_NAV: NavItem[] = [
   { href: "/dashboard/buyer", label: "Vue d'ensemble", icon: LayoutDashboard },
-  { href: "/dashboard/buyer/searches", label: "Mes recherches", icon: Search },
-  { href: "/dashboard/buyer/watchlist", label: "Favoris", icon: ShoppingBag },
-  { href: "/dashboard/buyer/messages", label: "Messagerie", icon: MessageSquare },
+  { href: "/annonces", label: "Explorer", icon: Search },
+  { href: "/messages", label: "Messagerie", icon: MessageSquare },
   { href: "/dashboard/buyer/profile", label: "Mon profil", icon: UserCircle },
 ];
 
@@ -219,9 +217,7 @@ export function DashboardShell({
             <div className="hidden sm:flex items-center gap-2">
               <Link
                 href={
-                  role === "producer"
-                    ? "/dashboard/producer/announcements/new"
-                    : "/annonces"
+                  role === "producer" ? "/annonces/nouvelle" : "/annonces"
                 }
                 className="inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-brand-400 via-brand-500 to-brand-700 px-4 py-2.5 text-sm font-semibold shadow-lg shadow-brand-700/25 transition hover:-translate-y-0.5"
               >
@@ -238,7 +234,11 @@ export function DashboardShell({
                 )}
               </Link>
               <Link
-                href="/dashboard/producer/profile"
+                href={
+                  role === "producer"
+                    ? "/dashboard/producer/profile"
+                    : "/dashboard/buyer/profile"
+                }
                 aria-label="Paramètres"
                 className="grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/5 backdrop-blur transition hover:bg-white/10"
               >

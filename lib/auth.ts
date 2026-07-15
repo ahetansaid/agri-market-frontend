@@ -292,9 +292,32 @@ export async function fetchMe(): Promise<Me | null> {
   }
 }
 
+/** Met a jour le profil (champs autorises cote backend). */
+export async function patchMe(
+  data: Partial<
+    Pick<Me, "first_name" | "last_name" | "telephone" | "ville">
+  >
+): Promise<Me> {
+  return authFetch<Me>("/api/me/", {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
 // ============================================================
 // DASHBOARD DATA FETCHERS (authentifies)
 // ============================================================
+
+export interface MyAnnItem {
+  id: number;
+  title: string;
+  type_display: string;
+  image_url: string | null;
+  quantity: number | null;
+  unit: string | null;
+  reference?: string;
+  publication_date?: string;
+}
 
 export interface MyAnnouncementsPayload {
   draft: unknown[];

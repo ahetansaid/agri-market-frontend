@@ -99,7 +99,7 @@ export default function ProducerDashboard() {
               </p>
             </div>
             <Link
-              href="/dashboard/producer/announcements/new"
+              href="/annonces/nouvelle"
               className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:shadow-md transition"
             >
               <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
@@ -117,7 +117,7 @@ export default function ProducerDashboard() {
                 title="Aucune annonce publiée pour l'instant"
                 desc="Publiez votre première annonce en moins de 3 minutes."
                 cta={{
-                  href: "/dashboard/producer/announcements/new",
+                  href: "/annonces/nouvelle",
                   label: "Publier une annonce",
                 }}
               />
@@ -206,19 +206,19 @@ export default function ProducerDashboard() {
           icon={Package}
           title="Publier une annonce"
           desc="Ajoutez un produit à votre catalogue en 3 min."
-          href="/dashboard/producer/announcements/new"
+          href="/annonces/nouvelle"
         />
         <QuickAction
           icon={MessageCircle}
           title="Messagerie"
           desc="Répondez aux acheteurs intéressés."
-          href="/dashboard/producer/messages"
+          href="/messages"
         />
         <QuickAction
           icon={CheckCircle2}
           title="Certifications"
           desc="Ajoutez vos certifications bio, coopérative..."
-          href="/dashboard/producer/profile#certifications"
+          href="/dashboard/producer/profile"
         />
       </section>
     </DashboardShell>
@@ -350,7 +350,7 @@ function RecentList({ anns }: { anns: MyAnnouncementsPayload }) {
         return (
           <li key={a.id}>
             <Link
-              href={`/dashboard/producer/announcements/${a.id}`}
+              href={`/annonces/${a.id}`}
               className="group flex items-center gap-4 p-4 transition hover:bg-sand-50/70"
             >
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-sand-200">

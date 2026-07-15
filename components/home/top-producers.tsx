@@ -29,7 +29,7 @@ export function TopProducers({ items }: { items: Announcement[] }) {
             </h2>
           </div>
           <Link
-            href="/producteurs"
+            href="/annonces"
             className="hidden text-sm font-semibold text-brand-700 hover:underline sm:inline"
           >
             Tous les producteurs →
