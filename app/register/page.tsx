@@ -60,6 +60,21 @@ export default function RegisterPage() {
     <main className="grid min-h-screen grid-cols-1 md:grid-cols-[400px_1fr]">
       {/* Visual */}
       <aside className="relative hidden overflow-hidden bg-sand-900 p-8 text-white md:flex md:flex-col md:justify-between">
+        {/* Fond image */}
+        <Image
+          src="/images/cta-africa-farms.jpg"
+          alt=""
+          fill
+          priority
+          sizes="400px"
+          className="pointer-events-none object-cover"
+          aria-hidden="true"
+        />
+        {/* Voile sombre pour garder le texte lisible */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-sand-900 via-sand-900/85 to-sand-900/55"
+          aria-hidden="true"
+        />
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.05]"
           aria-hidden="true"

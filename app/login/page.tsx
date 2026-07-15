@@ -44,6 +44,23 @@ function LoginForm() {
     <main className="grid min-h-screen grid-cols-1 md:grid-cols-2">
       {/* Visual side */}
       <aside className="relative hidden overflow-hidden bg-sand-900 p-10 text-white md:flex md:flex-col md:justify-between">
+        {/* Fond vidéo (déposer le fichier dans public/videos/login.mp4) */}
+        <video
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/images/cta-africa-farms.jpg"
+          aria-hidden="true"
+        >
+          <source src="/videos/login.mp4" type="video/mp4" />
+        </video>
+        {/* Voile sombre pour garder le texte lisible */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-sand-900 via-sand-900/85 to-sand-900/55"
+          aria-hidden="true"
+        />
         <div className="pointer-events-none absolute inset-0 opacity-[0.05]"
           aria-hidden="true"
           style={{
