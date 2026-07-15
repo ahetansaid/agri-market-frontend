@@ -228,6 +228,41 @@ export async function activateAccount(
   return data as { detail: string };
 }
 
+/** Demande un email de réinitialisation de mot de passe. */
+export async function requestPasswordReset(
+  email: string
+): Promise<{ detail: string }> {
+  const res = await fetch(`${API_URL}/api/auth/password-reset/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new AuthError(data.detail || "Demande impossible.");
+  return data as { detail: string };
+}
+
+/** Définit un nouveau mot de passe à partir du lien reçu par email. */
+export async function confirmPasswordReset(
+  uid: string,
+  token: string,
+  password: string
+): Promise<{ detail: string }> {
+  const res = await fetch(`${API_URL}/api/auth/password-reset/confirm/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ uid, token, password }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const fieldErr = data.errors?.password?.[0];
+    throw new AuthError(
+      fieldErr || data.detail || "Lien invalide ou expiré."
+    );
+  }
+  return data as { detail: string };
+}
+
 export function logout() {
   clearTokens();
   if (typeof window !== "undefined") {
