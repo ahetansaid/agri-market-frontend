@@ -141,7 +141,17 @@ export async function authFetch<T = unknown>(
     let msg = `HTTP ${res.status}`;
     try {
       const data = await res.json();
-      msg = data.detail || data.errors || msg;
+      if (data.detail) {
+        msg = data.detail;
+      } else if (data.errors && typeof data.errors === "object") {
+        // Aplati la premiere erreur de champ ({telephone: ["..."]}) en texte.
+        const first = Object.entries(data.errors)[0];
+        if (first) {
+          const [field, errs] = first;
+          const list = Array.isArray(errs) ? errs.join(" ") : String(errs);
+          msg = `${field} : ${list}`;
+        }
+      }
     } catch {
       /* ignore */
     }
@@ -420,6 +430,18 @@ export async function sendSupportMessage(body: string): Promise<SupportMsg[]> {
 export async function getSupportUnread(): Promise<number> {
   try {
     const d = await authFetch<{ unread: number }>("/api/support/unread/");
+    return d.unread ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+/** Nombre total de messages acheteur/vendeur non lus (badge header). */
+export async function getConversationsUnread(): Promise<number> {
+  try {
+    const d = await authFetch<{ unread: number }>(
+      "/api/me/conversations/unread/"
+    );
     return d.unread ?? 0;
   } catch {
     return 0;

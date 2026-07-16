@@ -82,7 +82,7 @@ export function Hero({ stats }: HeroProps) {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full max-w-2xl"
+          className="w-full max-w-6xl"
         >
           {/* Badge live */}
           <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-sand-900/55 px-6 py-3 backdrop-blur">
@@ -97,9 +97,10 @@ export function Hero({ stats }: HeroProps) {
           </div>
 
           {/* Titre */}
-          <h1 className="font-display text-6xl font-medium leading-[0.95] tracking-tight drop-shadow-xl sm:text-7xl md:text-8xl lg:text-[6.75rem]">
-            L&apos;agriculture africaine
-            <br />
+          {/* Taille fluide (vw) + nowrap : la phrase reste sur UNE seule ligne
+              quelle que soit la largeur d'écran. */}
+          <h1 className="whitespace-nowrap font-display text-[clamp(1rem,3.5vw,2.95rem)] font-medium leading-tight tracking-tight drop-shadow-xl">
+            L&apos;agriculture africaine{" "}
             <em className="font-normal italic">
               <span className="bg-gradient-to-r from-brand-300 via-brand-200 to-harvest-300 bg-clip-text text-transparent">
                 à portée de main.

@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import { logout } from "@/lib/auth";
+import { logout, getConversationsUnread } from "@/lib/auth";
 import {
   LogIn,
   UserPlus,
@@ -18,6 +19,23 @@ import {
  */
 export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer" }) {
   const { user } = useAuth();
+  const [unread, setUnread] = useState(0);
+
+  // Badge messages non-lus : sondage leger (header uniquement).
+  useEffect(() => {
+    if (!user || variant !== "header") return;
+    let alive = true;
+    const tick = () =>
+      getConversationsUnread().then((n) => {
+        if (alive) setUnread(n);
+      });
+    tick();
+    const iv = setInterval(tick, 25000);
+    return () => {
+      alive = false;
+      clearInterval(iv);
+    };
+  }, [user, variant]);
 
   if (variant === "footer") {
     const cls =
@@ -67,9 +85,14 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
         <Link
           href="/messages"
           aria-label="Mes messages"
-          className="grid place-items-center rounded-full p-2.5 text-sand-600 transition hover:bg-secondary hover:text-brand-700"
+          className="relative grid place-items-center rounded-full p-2.5 text-sand-600 transition hover:bg-secondary hover:text-brand-700"
         >
           <MessageCircle className="h-5 w-5" strokeWidth={2} />
+          {unread > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full bg-coral px-1 text-[10px] font-bold leading-none text-white shadow-sm">
+              {unread > 9 ? "9+" : unread}
+            </span>
+          )}
         </Link>
         <Link
           href="/dashboard"

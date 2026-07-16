@@ -13,7 +13,7 @@ import {
   Check,
 } from "lucide-react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
-import { fetchMe, patchMe, type Me } from "@/lib/auth";
+import { fetchMe, patchMe, AuthError, type Me } from "@/lib/auth";
 import { useAuth } from "@/lib/auth-context";
 
 export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
@@ -57,8 +57,12 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
       setSaved(true);
       await refresh();
       setTimeout(() => setSaved(false), 2500);
-    } catch {
-      setError("Impossible d'enregistrer les modifications.");
+    } catch (err) {
+      setError(
+        err instanceof AuthError
+          ? err.message
+          : "Impossible d'enregistrer les modifications."
+      );
     } finally {
       setSaving(false);
     }
@@ -137,7 +141,13 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
           <div className="grid gap-4 sm:grid-cols-2">
             <Field icon={User} label="Prénom" value={form.first_name} onChange={(v) => set("first_name", v)} />
             <Field icon={User} label="Nom" value={form.last_name} onChange={(v) => set("last_name", v)} />
-            <Field icon={Phone} label="Téléphone" value={form.telephone} onChange={(v) => set("telephone", v)} />
+            <Field
+              icon={Phone}
+              label="Téléphone (format international)"
+              value={form.telephone}
+              onChange={(v) => set("telephone", v)}
+              placeholder="+229 97 00 00 00"
+            />
             <Field icon={MapPin} label="Ville" value={form.ville} onChange={(v) => set("ville", v)} />
           </div>
 
@@ -168,11 +178,13 @@ function Field({
   label,
   value,
   onChange,
+  placeholder,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string;
   onChange: (v: string) => void;
+  placeholder?: string;
 }) {
   return (
     <label className="block">
@@ -182,6 +194,7 @@ function Field({
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
           className="w-full rounded-xl border border-border bg-background px-4 py-3 pl-10 text-sm outline-none transition focus:border-brand-500 focus:ring-3 focus:ring-brand-500/15"
         />
       </span>
