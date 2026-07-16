@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { logout } from "@/lib/auth";
+import { API_URL } from "@/lib/api";
 
 interface NavItem {
   href: string;
@@ -139,6 +140,20 @@ export function DashboardShell({
         </nav>
 
         <div className="border-t border-border/60 p-4">
+          {user.is_staff && (
+            <a
+              href={`${API_URL}/admin/`}
+              target="_blank"
+              rel="noreferrer"
+              className="mb-1 flex w-full items-center gap-3 rounded-xl bg-gradient-to-r from-brand-50 to-transparent px-3 py-2.5 text-sm font-semibold text-brand-700 transition hover:from-brand-100"
+            >
+              <ShieldCheck className="h-4 w-4" strokeWidth={2} />
+              Administration
+              <span className="ml-auto rounded-full bg-brand-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                Staff
+              </span>
+            </a>
+          )}
           <button
             type="button"
             onClick={logout}

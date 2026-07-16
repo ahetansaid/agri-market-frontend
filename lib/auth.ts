@@ -22,6 +22,7 @@ export interface Me {
   telephone: string | null;
   ville: string | null;
   user_type: string;
+  is_staff?: boolean;
   date_joined: string;
   country_code: string | null;
   country_name: string | null;
