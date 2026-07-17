@@ -33,6 +33,28 @@ export default function PrivacyPage() {
         n&apos;est envoyé sans votre consentement.
       </p>
 
+      <h2>Cookies</h2>
+      <p>
+        Nous utilisons deux catégories de cookies (et technologies de stockage
+        local) :
+      </p>
+      <ul>
+        <li>
+          <strong>Essentiels</strong> — indispensables au fonctionnement
+          (session de connexion, préférences). Toujours actifs.
+        </li>
+        <li>
+          <strong>Mesure & amélioration</strong> — pour comprendre
+          l&apos;usage du site. Soumis à votre consentement via le bandeau
+          affiché à votre première visite.
+        </li>
+      </ul>
+      <p>
+        Vous pouvez <strong>accepter ou refuser</strong> les cookies non
+        essentiels depuis ce bandeau. Pour revoir votre choix, videz le stockage
+        du site dans votre navigateur : le bandeau réapparaîtra.
+      </p>
+
       <h2>Vos droits</h2>
       <p>
         Vous pouvez accéder à vos données, les rectifier depuis votre profil, ou

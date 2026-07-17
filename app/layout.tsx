@@ -3,6 +3,7 @@ import { Poppins, JetBrains_Mono } from "next/font/google";
 import { AuthProvider } from "@/lib/auth-context";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { FloatingChat } from "@/components/ui/floating-chat";
+import { CookieConsent } from "@/components/ui/cookie-consent";
 import "./globals.css";
 
 // Police principale de la charte IDA : Poppins
@@ -53,6 +54,7 @@ export default function RootLayout({
           {children}
           <BackToTop />
           <FloatingChat />
+          <CookieConsent />
         </AuthProvider>
       </body>
     </html>
