@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { logout, getConversationsUnread } from "@/lib/auth";
+import { NotificationBell } from "@/components/ui/notification-bell";
 import {
   LogIn,
   UserPlus,
@@ -82,6 +83,7 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
   if (user) {
     return (
       <div className="flex items-center gap-1">
+        <NotificationBell />
         <Link
           href="/messages"
           aria-label="Mes messages"

@@ -442,6 +442,43 @@ export async function getSupportUnread(): Promise<number> {
   }
 }
 
+export interface AppNotification {
+  id: number;
+  kind: "message" | "announcement" | "review" | "system";
+  title: string;
+  body: string;
+  link: string;
+  is_read: boolean;
+  created_at: string;
+}
+
+/** Notifications de l'utilisateur + compteur de non-lues. */
+export async function getNotifications(): Promise<{
+  unread: number;
+  results: AppNotification[];
+}> {
+  try {
+    return await authFetch<{ unread: number; results: AppNotification[] }>(
+      "/api/me/notifications/"
+    );
+  } catch {
+    return { unread: 0, results: [] };
+  }
+}
+
+/** Marque des notifications comme lues (toutes si `ids` est omis). */
+export async function markNotificationsRead(ids?: number[]): Promise<number> {
+  try {
+    const d = await authFetch<{ unread: number }>(
+      "/api/me/notifications/read/",
+      { method: "POST", body: JSON.stringify(ids ? { ids } : {}) }
+    );
+    return d.unread ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
 /** Nombre total de messages acheteur/vendeur non lus (badge header). */
 export async function getConversationsUnread(): Promise<number> {
   try {
