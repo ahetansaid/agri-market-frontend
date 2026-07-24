@@ -9,7 +9,7 @@ import { sanitizeHtml } from "@/lib/sanitize";
 import { ContactSellerButton } from "@/components/messaging/contact-seller-button";
 import {
   Tag,
-  ShoppingCart,
+  PackageSearch,
   Leaf,
   ShieldCheck,
   Package,
@@ -28,7 +28,7 @@ export const revalidate = 60;
 
 const typeIconMap: Record<string, typeof Tag> = {
   vente: Tag,
-  achat: ShoppingCart,
+  achat: PackageSearch,
   autre: Package,
 };
 

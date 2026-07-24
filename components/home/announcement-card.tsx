@@ -3,12 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Tag, ShoppingCart, Leaf, Package, ArrowRight, Star, BadgeCheck, Handshake } from "lucide-react";
+import { Tag, PackageSearch, Leaf, Package, ArrowRight, Star, BadgeCheck, Handshake } from "lucide-react";
 import type { Announcement } from "@/lib/api";
 
 const typeIcons: Record<string, typeof Tag> = {
   vente: Tag,
-  achat: ShoppingCart,
+  achat: PackageSearch,
   autre: Package,
   partenariat: Handshake,
 };
