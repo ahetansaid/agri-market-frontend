@@ -420,11 +420,16 @@ export async function getSupportMessages(): Promise<SupportMsg[]> {
   return data.messages;
 }
 
+/**
+ * Envoie une question à l'assistant : la réponse de l'IA est générée côté
+ * serveur (la clé OpenRouter ne quitte jamais le backend) et le fil complet
+ * est renvoyé.
+ */
 export async function sendSupportMessage(body: string): Promise<SupportMsg[]> {
-  const data = await authFetch<{ messages: SupportMsg[] }>(
-    "/api/support/messages/",
-    { method: "POST", body: JSON.stringify({ body }) }
-  );
+  const data = await authFetch<{ messages: SupportMsg[] }>("/api/support/ai/", {
+    method: "POST",
+    body: JSON.stringify({ body }),
+  });
   return data.messages;
 }
 

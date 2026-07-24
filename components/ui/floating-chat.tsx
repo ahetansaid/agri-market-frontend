@@ -57,13 +57,12 @@ export function FloatingChat() {
     }
   }, []);
 
-  // Chargement + polling toutes les 4s tant que le panneau est ouvert & connecté
+  // Chargement de l'historique à l'ouverture. Pas de polling : la réponse de
+  // l'assistant est renvoyée directement par l'envoi.
   useEffect(() => {
     if (!open || !user) return;
     setLoading(true);
     load().finally(() => setLoading(false));
-    const iv = setInterval(load, 4000);
-    return () => clearInterval(iv);
   }, [open, user, load]);
 
   // Auto-scroll vers le dernier message
