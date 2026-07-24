@@ -15,6 +15,7 @@ import {
   getStats,
   getAnnouncements,
   getCategories,
+  getCountriesActivity,
   getProducerOfMonth,
   getEvents,
 } from "@/lib/api";
@@ -24,20 +25,22 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   // Un seul appel d'annonces (les autres rails sont dérivés) pour soulager
   // le serveur Django de dev (mono-process + N+1 sur les notes).
-  const [stats, all, categories, producerData, events] = await Promise.all([
-    getStats().catch(() => ({
-      producteurs: 0,
-      pays_africains: 54,
-      filieres: 0,
-      commission: "0%",
-      annonces_actives: 0,
-      pays_actifs: 0,
-    })),
-    getAnnouncements({ sort: "recent", limit: 24 }).catch(() => []),
-    getCategories().catch(() => []),
-    getProducerOfMonth().catch(() => ({ producer: null, featured: null })),
-    getEvents(3).catch(() => []),
-  ]);
+  const [stats, all, categories, producerData, events, countriesActivity] =
+    await Promise.all([
+      getStats().catch(() => ({
+        producteurs: 0,
+        pays_africains: 54,
+        filieres: 0,
+        commission: "0%",
+        annonces_actives: 0,
+        pays_actifs: 0,
+      })),
+      getAnnouncements({ sort: "recent", limit: 24 }).catch(() => []),
+      getCategories().catch(() => []),
+      getProducerOfMonth().catch(() => ({ producer: null, featured: null })),
+      getEvents(3).catch(() => []),
+      getCountriesActivity().catch(() => ({ counts: {} })),
+    ]);
 
   // Rails dérivés du même jeu de données (aucune requête supplémentaire)
   const recent = all.slice(0, 12);
@@ -57,7 +60,11 @@ export default async function HomePage() {
         <PromoBanner />
 
         {/* Hero */}
-        <Hero stats={stats} />
+        <Hero
+          stats={stats}
+          categories={categories}
+          countries={countriesActivity.counts ?? {}}
+        />
 
         {/* Accès rapide */}
         <QuickAccess />
