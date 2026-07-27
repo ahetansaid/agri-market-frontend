@@ -67,21 +67,21 @@ export default async function AnnouncementsPage({
           <div className="pointer-events-none absolute -left-24 top-10 h-96 w-96 rounded-full bg-brand-600 opacity-30 blur-[100px]" />
           <div className="pointer-events-none absolute -right-24 top-40 h-80 w-80 rounded-full bg-brand-400 opacity-20 blur-[100px]" />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20">
+          <div className="relative mx-auto max-w-7xl px-5 py-14 sm:px-6 sm:py-20">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-400" />
               <span className="text-[10px] font-bold uppercase tracking-widest">
                 Marketplace agricole
               </span>
             </div>
-            <h1 className="font-display text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
+            <h1 className="font-display text-[clamp(2rem,6vw,4.5rem)] font-medium leading-[1.05] tracking-tight">
               Toutes les annonces,
               <br />
               <em className="italic font-normal bg-gradient-to-br from-brand-300 via-brand-400 to-brand-600 bg-clip-text text-transparent">
                 en direct des terroirs.
               </em>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-white/70">
+            <p className="mt-5 max-w-xl text-base text-white/70 sm:text-lg">
               Producteurs, coopératives, acheteurs — explorez l&apos;offre la
               plus complète d&apos;Afrique. Multilingue, vérifiée, sans
               intermédiaire.

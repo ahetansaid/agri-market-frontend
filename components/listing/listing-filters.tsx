@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Tag,
   Grid3x3,
   Globe,
   Leaf,
+  SlidersHorizontal,
+  X,
 } from "lucide-react";
 import type { Category } from "@/lib/api";
 
@@ -48,6 +51,8 @@ export function ListingFilters({
   categories: Category[];
   current: Current;
 }) {
+  const [open, setOpen] = useState(false);
+
   const buildLink = (updates: Record<string, string | undefined>) => {
     const params = new URLSearchParams();
     if (current.q) params.set("q", current.q);
@@ -64,8 +69,14 @@ export function ListingFilters({
     return `/annonces${qs ? "?" + qs : ""}`;
   };
 
-  return (
-    <aside className="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-2xl bg-card p-6 shadow-sm ring-1 ring-border">
+  const activeCount =
+    (current.type ? 1 : 0) +
+    (current.category ? 1 : 0) +
+    (current.country ? 1 : 0) +
+    (current.bio ? 1 : 0);
+
+  const content = (
+    <>
       {/* Type */}
       <FilterSection icon={Tag} title="Type d'annonce">
         <ul className="space-y-0.5">
@@ -88,7 +99,7 @@ export function ListingFilters({
 
       {/* Filières */}
       <FilterSection icon={Grid3x3} title="Filières">
-        <ul className="space-y-0.5 max-h-60 overflow-y-auto pr-1">
+        <ul className="max-h-60 space-y-0.5 overflow-y-auto pr-1">
           {categories.slice(0, 12).map((cat) => (
             <FilterLink
               key={cat.id}
@@ -104,7 +115,7 @@ export function ListingFilters({
 
       {/* Pays */}
       <FilterSection icon={Globe} title="Pays">
-        <ul className="space-y-0.5 max-h-60 overflow-y-auto pr-1">
+        <ul className="max-h-60 space-y-0.5 overflow-y-auto pr-1">
           {AFRICAN_COUNTRIES.slice(0, 20).map((c) => (
             <FilterLink
               key={c.code}
@@ -129,7 +140,67 @@ export function ListingFilters({
           </FilterLink>
         </ul>
       </FilterSection>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop : sidebar sticky */}
+      <aside className="sticky top-24 hidden max-h-[calc(100vh-8rem)] overflow-y-auto rounded-2xl bg-card p-6 shadow-sm ring-1 ring-border lg:block">
+        {content}
+      </aside>
+
+      {/* Mobile : bouton + panneau coulissant */}
+      <div className="lg:hidden">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
+        >
+          <SlidersHorizontal className="h-4 w-4 text-brand-600" strokeWidth={2} />
+          Filtres
+          {activeCount > 0 && (
+            <span className="grid h-5 min-w-[20px] place-items-center rounded-full bg-brand-600 px-1.5 text-[11px] font-bold text-white">
+              {activeCount}
+            </span>
+          )}
+        </button>
+
+        {open && (
+          <div className="fixed inset-0 z-[60] lg:hidden">
+            <div
+              className="absolute inset-0 bg-sand-900/50 backdrop-blur-sm"
+              onClick={() => setOpen(false)}
+            />
+            <div className="absolute inset-y-0 left-0 flex w-[86%] max-w-sm flex-col bg-card shadow-2xl">
+              <div className="flex items-center justify-between border-b border-border px-5 py-4">
+                <h2 className="font-display text-lg font-semibold">Filtres</h2>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  aria-label="Fermer"
+                  className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition hover:bg-secondary"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-5" onClick={() => setOpen(false)}>
+                {content}
+              </div>
+              <div className="border-t border-border p-4">
+                <Link
+                  href="/annonces"
+                  onClick={() => setOpen(false)}
+                  className="block w-full rounded-xl bg-secondary py-2.5 text-center text-sm font-semibold text-foreground/80 transition hover:bg-sand-200"
+                >
+                  Tout effacer
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
