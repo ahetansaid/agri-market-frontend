@@ -263,8 +263,36 @@ export function DashboardShell({
           </div>
         </motion.header>
 
+        {/* Navigation mobile (la sidebar est masquée < lg) : barre de pills
+            horizontale scrollable pour atteindre les sections sur téléphone. */}
+        <nav className="sticky top-0 z-30 border-b border-border/60 bg-background/95 backdrop-blur lg:hidden">
+          <div className="flex gap-2 overflow-x-auto px-4 py-2.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {nav.map((item) => {
+              const active =
+                pathname === item.href ||
+                (item.href !== `/dashboard/${role}` &&
+                  pathname.startsWith(item.href));
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`inline-flex shrink-0 items-center gap-2 rounded-full px-3.5 py-2 text-sm font-semibold transition ${
+                    active
+                      ? "bg-brand-600 text-white shadow-sm"
+                      : "bg-secondary/70 text-foreground/70 hover:bg-secondary"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" strokeWidth={2} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+
         {/* Content */}
-        <div className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
+        <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-10">
           {children}
         </div>
       </div>
