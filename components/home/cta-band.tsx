@@ -8,7 +8,7 @@ interface Props {
 
 export function CtaBand({ stats }: Props) {
   return (
-    <section className="relative overflow-hidden py-28">
+    <section className="relative overflow-hidden py-20 sm:py-28">
       <Image
         src="/images/cta-africa-farms.jpg"
         alt=""
@@ -21,7 +21,7 @@ export function CtaBand({ stats }: Props) {
       <div className="pointer-events-none absolute -left-20 bottom-0 h-80 w-80 rounded-full bg-brand-500 opacity-30 blur-[110px]" />
       <div className="pointer-events-none absolute -right-16 top-0 h-80 w-80 rounded-full bg-harvest-500 opacity-25 blur-[110px]" />
 
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-white">
+      <div className="relative z-10 mx-auto max-w-4xl px-5 text-center text-white sm:px-6">
         <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur">
           <Sprout className="h-3.5 w-3.5 text-harvest-300" />
           Rejoignez le mouvement
@@ -34,7 +34,7 @@ export function CtaBand({ stats }: Props) {
             </span>
           </em>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-white/75">
+        <p className="mx-auto mt-6 max-w-xl text-base text-white/75 sm:text-lg">
           Rejoignez plus de {stats.producteurs.toLocaleString("fr-FR")} producteurs
           et acheteurs qui font grandir l&apos;agriculture africaine — sans
           intermédiaire, sans commission.
