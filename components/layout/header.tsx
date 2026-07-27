@@ -133,12 +133,13 @@ export function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-1.5">
-            <button
+            <Link
+              href="/annonces"
               aria-label="Rechercher"
               className="grid place-items-center rounded-full p-2.5 text-sand-600 transition hover:bg-secondary hover:text-brand-600 md:hidden"
             >
               <Search className="h-5 w-5" strokeWidth={2} />
-            </button>
+            </Link>
             <AuthLinks variant="header" />
             <Link
               href="/annonces/nouvelle"
