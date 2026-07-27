@@ -67,15 +67,6 @@ const COLUMNS = [
   },
 ];
 
-const PARTNERS = [
-  "/images/partenaires/ANOPACI_logo.jpg",
-  "/images/partenaires/CGMF_logo.jpg",
-  "/images/partenaires/Cosem_Logo.png",
-  "/images/partenaires/DomTerrylogo.png",
-  "/images/partenaires/Logo_MAD.png",
-  "/images/partenaires/Logo_NourDign.png",
-];
-
 export function Footer() {
   return (
     <footer className="relative mt-24 overflow-hidden bg-sand-900 text-sand-100">
@@ -186,43 +177,20 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Réseaux + partenaires */}
-        <div className="mt-12 flex flex-col gap-8 border-t border-white/5 pt-8 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4">
-            <span className="text-sm font-semibold text-white">
-              Rejoignez-nous
-            </span>
-            <div className="flex items-center gap-2">
-              {[FacebookIcon, InstagramIcon, YoutubeIcon].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sand-200 transition hover:bg-gradient-to-br hover:from-brand-500 hover:to-harvest-500 hover:text-white"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Partenaires */}
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs uppercase tracking-widest text-sand-500">
-              Partenaires
-            </span>
-            {PARTNERS.map((src) => (
-              <div
-                key={src}
-                className="grid h-10 w-16 place-items-center rounded-lg bg-white p-1.5 opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0"
+        {/* Réseaux sociaux */}
+        <div className="mt-12 flex items-center gap-4 border-t border-white/5 pt-8">
+          <span className="text-sm font-semibold text-white">
+            Rejoignez-nous
+          </span>
+          <div className="flex items-center gap-2">
+            {[FacebookIcon, InstagramIcon, YoutubeIcon].map((Icon, i) => (
+              <a
+                key={i}
+                href="#"
+                className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-sand-200 transition hover:bg-gradient-to-br hover:from-brand-500 hover:to-harvest-500 hover:text-white"
               >
-                <Image
-                  src={src}
-                  alt="Partenaire"
-                  width={56}
-                  height={32}
-                  className="h-full w-full object-contain"
-                />
-              </div>
+                <Icon className="h-4 w-4" />
+              </a>
             ))}
           </div>
         </div>
