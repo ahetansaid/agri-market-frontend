@@ -42,3 +42,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# base sqlite parasite
+db.sqlite3
+*.sqlite3
