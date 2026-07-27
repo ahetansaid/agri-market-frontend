@@ -71,8 +71,10 @@ export default async function HomePage() {
 
         {/* Carrousel — Dernières annonces */}
         <ProductRail
+          eyebrow="Marketplace"
           title="Dernières"
           accent="annonces"
+          description="Les produits fraîchement mis en ligne par les producteurs du continent."
           viewAllHref="/annonces?sort=recent"
           items={recent.slice(0, 12)}
         />
