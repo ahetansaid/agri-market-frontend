@@ -22,15 +22,17 @@ import {
   PlusCircle,
 } from "lucide-react";
 import { AuthLinks } from "@/components/auth/auth-links";
+import { useT } from "@/lib/i18n/client";
+import { LocaleSwitcher } from "@/components/ui/locale-switcher";
 
 const LINKS = [
-  { href: "/", label: "Accueil", icon: Home },
-  { href: "/annonces", label: "Marketplace", icon: Store },
-  { href: "/filieres", label: "Filières", icon: Sprout },
-  { href: "/pays", label: "Pays", icon: Globe },
-  { href: "/evenements", label: "Événements", icon: CalendarDays },
-  { href: "/apropos", label: "À propos", icon: Info },
-  { href: "/annonces/nouvelle", label: "Publier une annonce", icon: PlusCircle },
+  { href: "/", key: "nav.home", icon: Home },
+  { href: "/annonces", key: "nav.marketplace", icon: Store },
+  { href: "/filieres", key: "nav.filieres", icon: Sprout },
+  { href: "/pays", key: "nav.pays", icon: Globe },
+  { href: "/evenements", key: "nav.evenements", icon: CalendarDays },
+  { href: "/apropos", key: "nav.apropos", icon: Info },
+  { href: "/annonces/nouvelle", key: "nav.publish", icon: PlusCircle },
 ] as const;
 
 /* Icônes de marque (retirées de lucide) */
@@ -62,6 +64,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function Header() {
   const pathname = usePathname();
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -140,7 +143,7 @@ export function Header() {
             <input
               type="search"
               name="q"
-              placeholder="Rechercher un produit, une filière, un pays…"
+              placeholder={t("action.search")}
               className="w-full bg-transparent text-sm text-foreground placeholder-muted-foreground outline-none"
             />
           </form>
@@ -154,13 +157,14 @@ export function Header() {
             >
               <Search className="h-5 w-5" strokeWidth={2} />
             </Link>
+            <LocaleSwitcher />
             <AuthLinks variant="header" />
             <Link
               href="/annonces/nouvelle"
               className="hidden items-center gap-2 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 md:inline-flex"
             >
               <Plus className="h-4 w-4" strokeWidth={2.5} />
-              Publier
+              {t("action.publish")}
             </Link>
 
             {/* Bouton MENU (hamburger 2 barres inégales) */}
@@ -171,7 +175,7 @@ export function Header() {
               className="group ml-1 flex h-11 items-center gap-2.5 rounded-full border border-border bg-secondary/60 pl-4 pr-2.5 transition-all hover:border-harvest-400 hover:bg-harvest-50"
             >
               <span className="hidden text-xs font-bold uppercase tracking-wider text-foreground/80 transition group-hover:text-harvest-700 sm:inline">
-                Menu
+                {t("action.menu")}
               </span>
               <span className="flex h-7 w-7 flex-col items-center justify-center gap-[5px] rounded-full bg-foreground/5 transition group-hover:bg-harvest-500/20">
                 <span className="block h-[2px] w-3.5 rounded bg-foreground transition-all group-hover:w-4 group-hover:bg-harvest-600" />
@@ -270,7 +274,7 @@ export function Header() {
                               active ? "text-harvest-700" : "text-foreground"
                             }`}
                           >
-                            {link.label}
+                            {t(link.key)}
                           </span>
                           <ArrowRight
                             className={`h-4 w-4 transition ${
@@ -298,7 +302,7 @@ export function Header() {
                     onClick={() => setOpen(false)}
                     className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:shadow-brand-600/50"
                   >
-                    Créer mon compte gratuit
+                    {t("action.createAccount")}
                     <ArrowRight className="h-4 w-4" strokeWidth={2.5} />
                   </Link>
                 </motion.div>

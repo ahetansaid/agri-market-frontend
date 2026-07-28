@@ -4,6 +4,8 @@ import { AuthProvider } from "@/lib/auth-context";
 import { BackToTop } from "@/components/ui/back-to-top";
 import { FloatingChat } from "@/components/ui/floating-chat";
 import { CookieConsent } from "@/components/ui/cookie-consent";
+import { LocaleProvider } from "@/lib/i18n/client";
+import { getLocale } from "@/lib/i18n/server";
 import "./globals.css";
 
 // Police principale de la charte IDA : Poppins
@@ -38,24 +40,27 @@ export const metadata: Metadata = {
   authors: [{ name: "IDA International / NourDign" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   return (
     <html
-      lang="fr"
+      lang={locale}
       className={`${poppins.variable} ${jetbrains.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <AuthProvider>
-          {children}
-          <BackToTop />
-          <FloatingChat />
-          <CookieConsent />
-        </AuthProvider>
+        <LocaleProvider locale={locale}>
+          <AuthProvider>
+            {children}
+            <BackToTop />
+            <FloatingChat />
+            <CookieConsent />
+          </AuthProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

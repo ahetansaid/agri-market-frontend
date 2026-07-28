@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { logout, getConversationsUnread } from "@/lib/auth";
 import { NotificationBell } from "@/components/ui/notification-bell";
+import { useT } from "@/lib/i18n/client";
 import {
   LogIn,
   UserPlus,
@@ -20,6 +21,7 @@ import {
  */
 export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer" }) {
   const { user } = useAuth();
+  const { t } = useT();
   const [unread, setUnread] = useState(0);
 
   // Badge messages non-lus : sondage leger (header uniquement).
@@ -47,17 +49,17 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
           <>
             <li>
               <Link href="/messages" className={cls}>
-                Mes messages
+                {t("action.messages")}
               </Link>
             </li>
             <li>
               <Link href="/dashboard" className={cls}>
-                Mon espace
+                {t("action.myspace")}
               </Link>
             </li>
             <li>
               <button type="button" onClick={logout} className={cls}>
-                Se déconnecter
+                {t("action.logout")}
               </button>
             </li>
           </>
@@ -65,12 +67,12 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
           <>
             <li>
               <Link href="/login" className={cls}>
-                Se connecter
+                {t("action.login")}
               </Link>
             </li>
             <li>
               <Link href="/register" className={cls}>
-                S&apos;inscrire
+                {t("action.register")}
               </Link>
             </li>
           </>
@@ -101,7 +103,7 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
           className="hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-secondary hover:text-brand-700 lg:inline-flex"
         >
           <LayoutDashboard className="h-4 w-4" strokeWidth={2} />
-          Mon espace
+          {t("action.myspace")}
         </Link>
         <button
           type="button"
@@ -122,14 +124,14 @@ export function AuthLinks({ variant = "header" }: { variant?: "header" | "footer
         className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground/80 transition hover:bg-secondary hover:text-brand-700"
       >
         <LogIn className="h-4 w-4" strokeWidth={2} />
-        Se connecter
+        {t("action.login")}
       </Link>
       <Link
         href="/register"
         className="inline-flex items-center gap-1.5 rounded-full bg-harvest-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-harvest-700"
       >
         <UserPlus className="h-4 w-4" strokeWidth={2.5} />
-        S&apos;inscrire
+        {t("action.register")}
       </Link>
     </div>
   );
