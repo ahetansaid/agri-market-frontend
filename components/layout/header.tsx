@@ -6,17 +6,31 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import type { SVGProps } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Search, Plus, X, ArrowRight, Phone, Mail } from "lucide-react";
+import {
+  Search,
+  Plus,
+  X,
+  ArrowRight,
+  Phone,
+  Mail,
+  Home,
+  Store,
+  Sprout,
+  Globe,
+  CalendarDays,
+  Info,
+  PlusCircle,
+} from "lucide-react";
 import { AuthLinks } from "@/components/auth/auth-links";
 
 const LINKS = [
-  { href: "/", label: "Accueil", num: "01" },
-  { href: "/annonces", label: "Marketplace", num: "02" },
-  { href: "/filieres", label: "Filières", num: "03" },
-  { href: "/pays", label: "Pays", num: "04" },
-  { href: "/evenements", label: "Événements", num: "05" },
-  { href: "/apropos", label: "À propos", num: "06" },
-  { href: "/annonces/nouvelle", label: "Publier une annonce", num: "07" },
+  { href: "/", label: "Accueil", icon: Home },
+  { href: "/annonces", label: "Marketplace", icon: Store },
+  { href: "/filieres", label: "Filières", icon: Sprout },
+  { href: "/pays", label: "Pays", icon: Globe },
+  { href: "/evenements", label: "Événements", icon: CalendarDays },
+  { href: "/apropos", label: "À propos", icon: Info },
+  { href: "/annonces/nouvelle", label: "Publier une annonce", icon: PlusCircle },
 ] as const;
 
 /* Icônes de marque (retirées de lucide) */
@@ -184,18 +198,26 @@ export function Header() {
 
             <motion.aside
               key="drawer"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 260 }}
-              className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col overflow-y-auto border-l border-border bg-card shadow-[-20px_0_60px_rgba(0,0,0,0.25)]"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 32, stiffness: 300 }}
+              className="fixed inset-x-0 bottom-0 z-50 flex max-h-[88vh] flex-col overflow-hidden rounded-t-3xl border-t border-border bg-card shadow-[0_-20px_60px_rgba(0,0,0,0.28)]"
             >
               {/* Glows charte */}
-              <div className="pointer-events-none absolute -left-20 top-1/4 h-80 w-80 rounded-full bg-brand-500 opacity-10 blur-[110px]" />
-              <div className="pointer-events-none absolute -right-16 bottom-1/4 h-72 w-72 rounded-full bg-harvest-500 opacity-10 blur-[110px]" />
+              <div className="pointer-events-none absolute -left-16 -top-10 h-64 w-64 rounded-full bg-brand-500 opacity-10 blur-[100px]" />
+              <div className="pointer-events-none absolute -right-16 -top-10 h-64 w-64 rounded-full bg-harvest-500 opacity-10 blur-[100px]" />
 
-              {/* Header drawer */}
-              <div className="relative flex items-center justify-between border-b border-border px-6 py-5">
+              {/* Poignée (grabber) */}
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Fermer le menu"
+                className="relative mx-auto mt-3 h-1.5 w-11 shrink-0 rounded-full bg-sand-300 transition hover:bg-sand-400"
+              />
+
+              {/* Header sheet */}
+              <div className="relative flex shrink-0 items-center justify-between px-6 pb-3 pt-3">
                 <div className="flex items-center gap-2.5">
                   <div className="relative h-9 w-9 rounded-lg bg-white p-1 ring-1 ring-brand-100">
                     <Image src="/logo.png" alt="" width={32} height={32} className="h-full w-full object-contain" />
@@ -204,59 +226,60 @@ export function Header() {
                     Agri <span className="text-brand-600">Market</span> Africa
                   </div>
                 </div>
-                <motion.button
+                <button
                   type="button"
                   onClick={() => setOpen(false)}
                   aria-label="Fermer le menu"
-                  whileHover={{ rotate: 90 }}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-border text-foreground/70 transition hover:border-brand-300 hover:text-brand-600"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-border text-foreground/70 transition hover:border-brand-300 hover:text-brand-600"
                 >
                   <X className="h-5 w-5" strokeWidth={2} />
-                </motion.button>
+                </button>
               </div>
 
               {/* Liens */}
-              <nav className="relative flex-1 px-4 py-6">
+              <nav className="relative flex-1 overflow-y-auto px-4 pb-4 pt-1">
                 <ul className="space-y-1">
                   {LINKS.map((link, i) => {
                     const active = isActive(link.href);
+                    const Icon = link.icon;
                     return (
                       <motion.li
                         key={link.href}
-                        initial={{ opacity: 0, x: 30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.12 + i * 0.05, duration: 0.4, ease: EASE }}
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.05 + i * 0.04, duration: 0.32, ease: EASE }}
                       >
                         <Link
                           href={link.href}
                           onClick={() => setOpen(false)}
-                          className={`group relative flex items-center gap-5 overflow-hidden rounded-2xl px-4 py-3.5 transition-all ${
-                            active
-                              ? "bg-harvest-500/12 shadow-[inset_0_0_0_1px_rgba(62,169,93,0.3)]"
-                              : "hover:bg-secondary"
+                          className={`group flex items-center gap-4 rounded-2xl px-4 py-3 transition ${
+                            active ? "bg-harvest-500/12" : "hover:bg-secondary"
                           }`}
                         >
                           <span
-                            className={`font-mono text-xs font-semibold ${
-                              active ? "text-harvest-600" : "text-muted-foreground"
+                            className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl transition ${
+                              active
+                                ? "bg-harvest-500 text-white shadow-sm"
+                                : "bg-secondary text-brand-700 group-hover:bg-brand-100"
                             }`}
                           >
-                            {link.num}
+                            <Icon className="h-5 w-5" strokeWidth={2} />
                           </span>
                           <span
-                            className={`flex-1 font-display text-2xl font-semibold tracking-tight ${
+                            className={`flex-1 font-display text-lg font-semibold tracking-tight ${
                               active ? "text-harvest-700" : "text-foreground"
                             }`}
                           >
                             {link.label}
                           </span>
-                          <motion.span
-                            animate={active ? { x: [0, 4, 0] } : {}}
-                            transition={active ? { duration: 1.5, repeat: Infinity } : {}}
-                            className={active ? "text-harvest-600" : "text-muted-foreground/40"}
-                          >
-                            <ArrowRight className="h-5 w-5" strokeWidth={2} />
-                          </motion.span>
+                          <ArrowRight
+                            className={`h-4 w-4 transition ${
+                              active
+                                ? "text-harvest-600"
+                                : "text-muted-foreground/30 group-hover:translate-x-0.5 group-hover:text-brand-600"
+                            }`}
+                            strokeWidth={2}
+                          />
                         </Link>
                       </motion.li>
                     );
@@ -281,8 +304,8 @@ export function Header() {
                 </motion.div>
               </nav>
 
-              {/* Footer drawer : contact + réseaux */}
-              <div className="relative border-t border-border px-6 py-5">
+              {/* Footer sheet : contact + réseaux */}
+              <div className="relative shrink-0 border-t border-border px-6 py-4">
                 <div className="flex flex-col gap-2 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
                     <Mail className="h-3.5 w-3.5 text-brand-600" />
