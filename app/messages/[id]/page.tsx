@@ -133,12 +133,24 @@ export default function ConversationPage() {
               </div>
 
               {/* Saisie */}
-              <form onSubmit={send} className="flex items-center gap-2 border-t border-border p-3">
-                <input
+              <form onSubmit={send} className="flex items-end gap-2 border-t border-border p-3">
+                <textarea
                   value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  placeholder="Votre message…"
-                  className="min-w-0 flex-1 rounded-full bg-secondary/60 px-4 py-2.5 text-sm outline-none focus:bg-secondary"
+                  rows={1}
+                  onChange={(e) => {
+                    setText(e.target.value);
+                    e.target.style.height = "auto";
+                    e.target.style.height =
+                      Math.min(e.target.scrollHeight, 160) + "px";
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      send(e as unknown as React.FormEvent);
+                    }
+                  }}
+                  placeholder="Votre message…  (Entrée pour envoyer, Maj+Entrée = saut de ligne)"
+                  className="max-h-40 min-h-[44px] min-w-0 flex-1 resize-none whitespace-pre-wrap break-words rounded-2xl bg-secondary/60 px-4 py-2.5 text-sm leading-relaxed outline-none focus:bg-secondary"
                 />
                 <button
                   type="submit"
