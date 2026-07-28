@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import type { SVGProps } from "react";
 import { AuthLinks } from "@/components/auth/auth-links";
-import { getT } from "@/lib/i18n/server";
+import { useT } from "@/lib/i18n/client";
 import {
   ShieldCheck,
   Clock,
@@ -68,8 +70,8 @@ const COLUMNS = [
   },
 ];
 
-export async function Footer() {
-  const { t } = await getT();
+export function Footer() {
+  const { t } = useT();
   return (
     <footer className="relative mt-24 overflow-hidden bg-sand-900 text-sand-100">
       {/* Accents charte */}
