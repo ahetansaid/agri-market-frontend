@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { SVGProps } from "react";
 import { AuthLinks } from "@/components/auth/auth-links";
+import { getT } from "@/lib/i18n/server";
 import {
   ShieldCheck,
   Clock,
@@ -67,7 +68,8 @@ const COLUMNS = [
   },
 ];
 
-export function Footer() {
+export async function Footer() {
+  const { t } = await getT();
   return (
     <footer className="relative mt-24 overflow-hidden bg-sand-900 text-sand-100">
       {/* Accents charte */}
@@ -180,7 +182,7 @@ export function Footer() {
         {/* Réseaux sociaux */}
         <div className="mt-12 flex items-center gap-4 border-t border-white/5 pt-8">
           <span className="text-sm font-semibold text-white">
-            Rejoignez-nous
+            {t("footer.join")}
           </span>
           <div className="flex items-center gap-2">
             {[FacebookIcon, InstagramIcon, YoutubeIcon].map((Icon, i) => (
@@ -201,8 +203,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs text-sand-400 md:flex-row">
           <p>
             &copy; {new Date().getFullYear()}{" "}
-            <strong className="text-sand-200">NourDign</strong> · Tous droits
-            réservés.
+            <strong className="text-sand-200">NourDign</strong> · {t("footer.rights")}
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Link href="/legal/terms" className="hover:text-harvest-300">

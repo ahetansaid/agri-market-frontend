@@ -6,6 +6,7 @@ import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { Search, Star, Layers, Globe, SlidersHorizontal } from "lucide-react";
 import type { Category } from "@/lib/api";
+import { useT } from "@/lib/i18n/client";
 
 interface HeroProps {
   stats: {
@@ -20,11 +21,11 @@ interface HeroProps {
 }
 
 const CHIPS = [
-  { label: "Céréales", q: "céréales" },
-  { label: "Cacao & Café", q: "cacao" },
-  { label: "Élevage", q: "mouton" },
-  { label: "Maraîchage", q: "tomate" },
-  { label: "Tubercules", q: "igname" },
+  { key: "chip.cereals", q: "céréales" },
+  { key: "chip.cocoa", q: "cacao" },
+  { key: "chip.livestock", q: "mouton" },
+  { key: "chip.market", q: "tomate" },
+  { key: "chip.tubers", q: "igname" },
 ];
 
 // Rangées d'images qui défilent horizontalement (sens alternés)
@@ -46,6 +47,7 @@ const ROWS: { dir: "left" | "right"; imgs: string[] }[] = [
 const DURATIONS = ["55s", "65s", "60s"];
 
 export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
+  const { t } = useT();
   // Liste de pays triée par volume d'annonces, avec nom lisible en français.
   const countryOptions = useMemo(() => {
     let naming: Intl.DisplayNames | null = null;
@@ -114,7 +116,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
             </span>
             <Star className="h-4 w-4 text-gold" strokeWidth={2.5} />
             <span className="text-sm font-bold text-white sm:text-base">
-              {stats.annonces_actives} annonces en direct
+              {stats.annonces_actives} {t("hero.live")}
             </span>
           </div>
 
@@ -122,17 +124,18 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
               Une seule ligne dès 640px ; wrap uniquement sur très petit mobile
               pour rester lisible. */}
           <h1 className="font-display text-[clamp(1.6rem,3.7vw,5rem)] font-medium leading-[1.1] tracking-tight drop-shadow-xl sm:whitespace-nowrap">
-            L&apos;agriculture africaine{" "}
+            {t("hero.title1")}{" "}
             <em className="font-normal italic">
               <span className="bg-gradient-to-r from-brand-300 via-brand-200 to-harvest-300 bg-clip-text text-transparent">
-                à portée de main.
+                {t("hero.title2")}
               </span>
             </em>
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl text-sm text-white/70 sm:text-base">
-            {stats.producteurs.toLocaleString("fr-FR")} producteurs · {stats.filieres} filières ·
-            54 pays. Sans commission, sans intermédiaire.
+            {stats.producteurs.toLocaleString("fr-FR")} {t("word.producers")} ·{" "}
+            {stats.filieres} {t("word.sectors")} · 54 {t("word.countries")}.{" "}
+            {t("hero.noCommission")}
           </p>
 
           {/* Recherche avancée : mot-clé + filière + pays */}
@@ -148,8 +151,8 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
                 <input
                   type="search"
                   name="q"
-                  placeholder="Cacao, mil, bovins, tracteur…"
-                  aria-label="Rechercher un produit"
+                  placeholder={t("hero.searchPlaceholder")}
+                  aria-label={t("action.searchBtn")}
                   className="min-w-0 flex-1 bg-transparent py-3 text-sm text-sand-900 placeholder-sand-400 outline-none"
                 />
               </div>
@@ -165,7 +168,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
                   defaultValue=""
                   className="w-full min-w-0 cursor-pointer bg-transparent py-3 text-sm text-sand-900 outline-none md:w-36"
                 >
-                  <option value="">Toutes filières</option>
+                  <option value="">{t("hero.allSectors")}</option>
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.name}
@@ -185,7 +188,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
                   defaultValue=""
                   className="w-full min-w-0 cursor-pointer bg-transparent py-3 text-sm text-sand-900 outline-none md:w-32"
                 >
-                  <option value="">Tous pays</option>
+                  <option value="">{t("hero.allCountries")}</option>
                   {countryOptions.map((c) => (
                     <option key={c.code} value={c.code}>
                       {c.name}
@@ -199,7 +202,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
                 className="flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5 hover:shadow-brand-600/50 md:py-3"
               >
                 <SlidersHorizontal className="h-4 w-4 md:hidden" strokeWidth={2.5} />
-                Rechercher
+                {t("action.searchBtn")}
               </button>
             </div>
           </form>
@@ -208,11 +211,11 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             {CHIPS.map((c) => (
               <Link
-                key={c.label}
+                key={c.key}
                 href={`/annonces?q=${encodeURIComponent(c.q)}`}
                 className="rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-xs font-medium text-white/90 backdrop-blur-sm transition hover:border-harvest-300 hover:bg-white/20"
               >
-                {c.label}
+                {t(c.key)}
               </Link>
             ))}
           </div>
