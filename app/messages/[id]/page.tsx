@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/lib/i18n/client";
 import {
   getConversation,
   sendConversationMessage,
@@ -16,6 +17,7 @@ export default function ConversationPage() {
   const params = useParams<{ id: string }>();
   const cid = Number(params?.id);
   const { user, isLoading } = useAuth();
+  const { t } = useT();
   const [convo, setConvo] = useState<ConvPayload | null>(null);
   const [text, setText] = useState("");
   const [sending, setSending] = useState(false);
@@ -67,13 +69,13 @@ export default function ConversationPage() {
                 <LogIn className="h-7 w-7" strokeWidth={1.75} />
               </div>
               <p className="text-sm text-muted-foreground">
-                Connectez-vous pour accéder à vos messages.
+                {t("messages.loginToAccess")}
               </p>
               <Link
                 href="/login"
                 className="mt-4 inline-flex rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white"
               >
-                Se connecter
+                {t("action.login")}
               </Link>
             </div>
           ) : (
@@ -113,7 +115,7 @@ export default function ConversationPage() {
                   </div>
                 ) : convo.messages.length === 0 ? (
                   <div className="grid h-full place-items-center px-6 text-center text-sm text-muted-foreground">
-                    Démarrez la conversation avec {convo.with.name}.
+                    {t("messages.startWith")} {convo.with.name}.
                   </div>
                 ) : (
                   convo.messages.map((m) => (
@@ -149,7 +151,7 @@ export default function ConversationPage() {
                       send(e as unknown as React.FormEvent);
                     }
                   }}
-                  placeholder="Votre message…  (Entrée pour envoyer, Maj+Entrée = saut de ligne)"
+                  placeholder={t("messages.inputPlaceholder")}
                   className="max-h-40 min-h-[44px] min-w-0 flex-1 resize-none whitespace-pre-wrap break-words rounded-2xl bg-secondary/60 px-4 py-2.5 text-sm leading-relaxed outline-none focus:bg-secondary"
                 />
                 <button

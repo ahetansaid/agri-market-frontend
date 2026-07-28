@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { useAuth } from "@/lib/auth-context";
 import { createAnnouncement } from "@/lib/auth";
 import { getCategories, type Category } from "@/lib/api";
+import { useT } from "@/lib/i18n/client";
 import {
   Plus,
   LogIn,
@@ -18,10 +19,10 @@ import {
 } from "lucide-react";
 
 const TYPES = [
-  { value: "vente", label: "Vente" },
-  { value: "achat", label: "Achat" },
-  { value: "partenariat", label: "Partenariat" },
-  { value: "autre", label: "Autre" },
+  { value: "vente", k: "filters.sale" },
+  { value: "achat", k: "filters.purchase" },
+  { value: "partenariat", k: "type.partnership" },
+  { value: "autre", k: "filters.other" },
 ];
 
 const PAYS = [
@@ -35,6 +36,7 @@ const PAYS = [
 
 export default function PublishPage() {
   const { user, isLoading } = useAuth();
+  const { t } = useT();
   const [categories, setCategories] = useState<Category[]>([]);
   const [type, setType] = useState("vente");
   const [categoryId, setCategoryId] = useState("");
@@ -79,8 +81,8 @@ export default function PublishPage() {
               Marketplace
             </span>
             <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-              Publier une{" "}
-              <em className="text-gradient-brand font-normal italic">annonce</em>
+              {t("publish.title1")}{" "}
+              <em className="text-gradient-brand font-normal italic">{t("publish.title2")}</em>
             </h1>
           </header>
 
@@ -91,11 +93,10 @@ export default function PublishPage() {
                 <LogIn className="h-8 w-8" strokeWidth={1.75} />
               </div>
               <h2 className="font-display text-2xl font-semibold">
-                Connectez-vous pour publier
+                {t("publish.loginTitle")}
               </h2>
               <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-                La publication d&apos;annonces est réservée aux membres. C&apos;est
-                gratuit et rapide.
+                {t("publish.loginText")}
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <Link
@@ -103,13 +104,13 @@ export default function PublishPage() {
                   className="inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:-translate-y-0.5"
                 >
                   <LogIn className="h-4 w-4" />
-                  Se connecter
+                  {t("action.login")}
                 </Link>
                 <Link
                   href="/register?next=/annonces/nouvelle"
                   className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold transition hover:border-harvest-400 hover:bg-harvest-50"
                 >
-                  S&apos;inscrire
+                  {t("action.register")}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -123,25 +124,24 @@ export default function PublishPage() {
                 <CheckCircle2 className="h-8 w-8" strokeWidth={2} />
               </div>
               <h2 className="font-display text-2xl font-semibold text-harvest-800">
-                Annonce soumise !
+                {t("publish.submittedTitle")}
               </h2>
               <p className="mx-auto mt-2 max-w-md text-sm text-harvest-700">
-                « {done.title} » (réf. {done.reference}) est en cours de validation
-                par notre équipe. Vous serez notifié dès sa publication.
+                « {done.title} » ({t("word.ref")} {done.reference}) {t("publish.submittedText")}
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <Link
                   href="/annonces"
                   className="inline-flex items-center gap-2 rounded-full bg-sand-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600"
                 >
-                  Voir les annonces
+                  {t("action.viewListings")}
                 </Link>
                 <button
                   onClick={() => setDone(null)}
                   className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold transition hover:bg-secondary"
                 >
                   <Plus className="h-4 w-4" />
-                  Publier une autre
+                  {t("publish.publishAnother")}
                 </button>
               </div>
             </div>
@@ -161,13 +161,13 @@ export default function PublishPage() {
               )}
 
               {/* Type */}
-              <Field label="Type d'annonce" required>
+              <Field label={t("filters.type")} required>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {TYPES.map((t) => (
+                  {TYPES.map((opt) => (
                     <label
-                      key={t.value}
+                      key={opt.value}
                       className={`cursor-pointer rounded-xl border px-3 py-2.5 text-center text-sm font-semibold transition ${
-                        type === t.value
+                        type === opt.value
                           ? "border-brand-500 bg-brand-50 text-brand-700"
                           : "border-border hover:border-brand-300"
                       }`}
@@ -175,31 +175,31 @@ export default function PublishPage() {
                       <input
                         type="radio"
                         name="type"
-                        value={t.value}
-                        checked={type === t.value}
+                        value={opt.value}
+                        checked={type === opt.value}
                         onChange={(e) => setType(e.target.value)}
                         className="sr-only"
                       />
-                      {t.label}
+                      {t(opt.k)}
                     </label>
                   ))}
                 </div>
               </Field>
 
               {/* Titre */}
-              <Field label="Titre" required>
+              <Field label={t("form.title")} required>
                 <input
                   name="title"
                   required
                   maxLength={100}
-                  placeholder="Ex : Riz parfumé de la vallée, 5 tonnes"
+                  placeholder={t("publish.titlePlaceholder")}
                   className={inputCls}
                 />
               </Field>
 
               {/* Catégorie + sous-catégorie */}
               <div className="grid gap-6 sm:grid-cols-2">
-                <Field label="Filière" required>
+                <Field label={t("form.sector")} required>
                   <select
                     name="category"
                     required
@@ -207,7 +207,7 @@ export default function PublishPage() {
                     onChange={(e) => setCategoryId(e.target.value)}
                     className={inputCls}
                   >
-                    <option value="">Choisir…</option>
+                    <option value="">{t("form.choose")}</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id}>
                         {c.name}
@@ -215,10 +215,10 @@ export default function PublishPage() {
                     ))}
                   </select>
                 </Field>
-                <Field label="Sous-filière" required>
+                <Field label={t("form.subsector")} required>
                   <select name="subcategory" required disabled={!subcats.length} className={inputCls}>
                     <option value="">
-                      {subcats.length ? "Choisir…" : "Choisir une filière d'abord"}
+                      {subcats.length ? t("form.choose") : t("form.chooseSectorFirst")}
                     </option>
                     {subcats.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -232,26 +232,26 @@ export default function PublishPage() {
               {/* Produit (vente/achat) */}
               {needsProduct && (
                 <div className="grid gap-6 sm:grid-cols-2">
-                  <Field label="Nom du produit" required>
+                  <Field label={t("form.productName")} required>
                     <input name="product_name" required placeholder="Ex : Riz" className={inputCls} />
                   </Field>
-                  <Field label="Variété (optionnel)">
+                  <Field label={t("form.variety")}>
                     <input name="variety" placeholder="Ex : Sahel 108" className={inputCls} />
                   </Field>
-                  <Field label="Quantité" required>
+                  <Field label={t("form.quantity")} required>
                     <input name="quantity" type="number" min={1} required placeholder="5" className={inputCls} />
                   </Field>
-                  <Field label="Unité" required>
-                    <input name="unit" required placeholder="tonnes, kg, litres…" className={inputCls} />
+                  <Field label={t("form.unit")} required>
+                    <input name="unit" required placeholder={t("form.unitPlaceholder")} className={inputCls} />
                   </Field>
                 </div>
               )}
 
               {/* Pays + bio */}
               <div className="grid gap-6 sm:grid-cols-2">
-                <Field label="Pays">
+                <Field label={t("form.country")}>
                   <select name="country" defaultValue={user.country_code ?? ""} className={inputCls}>
-                    <option value="">Sélectionner…</option>
+                    <option value="">{t("form.select")}</option>
                     {PAYS.map(([code, name]) => (
                       <option key={code} value={code}>
                         {name}
@@ -259,30 +259,30 @@ export default function PublishPage() {
                     ))}
                   </select>
                 </Field>
-                <Field label="Agriculture">
+                <Field label={t("form.agriculture")}>
                   <label className="flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-border px-4 text-sm">
                     <input type="checkbox" name="is_organic" value="true" className="h-4 w-4 accent-harvest-600" />
-                    Produit issu de l&apos;agriculture biologique
+                    {t("form.organicLabel")}
                   </label>
                 </Field>
               </div>
 
               {/* Description */}
-              <Field label="Description" required hint="N'indiquez aucune coordonnée (téléphone, email, réseaux) — elles sont interdites et détectées automatiquement.">
+              <Field label={t("form.description")} required hint={t("publish.descHint")}>
                 <textarea
                   name="description"
                   required
                   rows={5}
-                  placeholder="Décrivez votre produit, sa qualité, ses conditions…"
+                  placeholder={t("publish.descPlaceholder")}
                   className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition focus:border-brand-400"
                 />
               </Field>
 
               {/* Image */}
-              <Field label="Photo (optionnel)" hint="JPG ou PNG, 500 Ko max, idéalement 740×380 px.">
+              <Field label={t("form.photo")} hint={t("publish.photoHint")}>
                 <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dashed border-border bg-secondary/40 px-4 py-3 text-sm text-muted-foreground transition hover:border-brand-300 hover:bg-brand-50">
                   <ImagePlus className="h-5 w-5 text-brand-600" />
-                  <span>Choisir une image</span>
+                  <span>{t("publish.chooseImage")}</span>
                   <input type="file" name="image" accept="image/jpeg,image/png" className="sr-only" />
                 </label>
               </Field>
@@ -295,17 +295,17 @@ export default function PublishPage() {
                 {submitting ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Publication…
+                    {t("publish.publishing")}
                   </>
                 ) : (
                   <>
                     <Plus className="h-4 w-4" strokeWidth={2.5} />
-                    Publier l&apos;annonce
+                    {t("publish.submit")}
                   </>
                 )}
               </button>
               <p className="text-center text-xs text-muted-foreground">
-                Votre annonce sera vérifiée par notre équipe avant publication (sous 24h).
+                {t("publish.reviewNote")}
               </p>
             </form>
           )}

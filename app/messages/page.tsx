@@ -5,11 +5,13 @@ import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/lib/i18n/client";
 import { getMyConversations, type ConvSummary } from "@/lib/auth";
 import { MessageCircle, LogIn, Loader2, Tag, ChevronRight } from "lucide-react";
 
 export default function InboxPage() {
   const { user, isLoading } = useAuth();
+  const { t } = useT();
   const [convos, setConvos] = useState<ConvSummary[] | null>(null);
 
   useEffect(() => {
@@ -25,8 +27,8 @@ export default function InboxPage() {
       <main className="flex-1 bg-sand-50">
         <div className="mx-auto max-w-2xl px-4 py-10">
           <h1 className="font-display mb-6 text-3xl font-semibold tracking-tight">
-            Mes{" "}
-            <em className="text-gradient-brand font-normal italic">messages</em>
+            {t("messages.title1")}{" "}
+            <em className="text-gradient-brand font-normal italic">{t("messages.title2")}</em>
           </h1>
 
           {!isLoading && !user ? (
@@ -35,13 +37,13 @@ export default function InboxPage() {
                 <LogIn className="h-7 w-7" strokeWidth={1.75} />
               </div>
               <p className="text-sm text-muted-foreground">
-                Connectez-vous pour voir vos conversations.
+                {t("messages.loginToView")}
               </p>
               <Link
                 href="/login"
                 className="mt-4 inline-flex rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white"
               >
-                Se connecter
+                {t("action.login")}
               </Link>
             </div>
           ) : !convos ? (
@@ -54,17 +56,16 @@ export default function InboxPage() {
                 <MessageCircle className="h-7 w-7" strokeWidth={1.5} />
               </div>
               <h2 className="font-display text-xl font-semibold">
-                Aucune conversation
+                {t("messages.empty")}
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Contactez un vendeur depuis une annonce pour démarrer un
-                échange.
+                {t("messages.emptyText")}
               </p>
               <Link
                 href="/annonces"
                 className="mt-5 inline-flex rounded-full bg-sand-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600"
               >
-                Parcourir les annonces
+                {t("messages.browse")}
               </Link>
             </div>
           ) : (
