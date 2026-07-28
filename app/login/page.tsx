@@ -8,12 +8,14 @@ import { motion } from "motion/react";
 import { Eye, EyeOff, Loader2, ArrowRight, ShieldCheck } from "lucide-react";
 import { login, AuthError } from "@/lib/auth";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/lib/i18n/client";
 
 function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
   const next = search.get("next") || "/dashboard/producer";
   const { refresh } = useAuth();
+  const { t } = useT();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -138,14 +140,13 @@ function LoginForm() {
         >
           <div className="mb-8 text-center">
             <h1 className="font-display text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
-              Bon retour{" "}
+              {t("login.titleA")}{" "}
               <em className="italic font-normal bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-transparent">
-                parmi nous.
+                {t("login.titleB")}
               </em>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Connectez-vous pour publier, échanger et conclure vos
-              transactions.
+              {t("login.subtitle")}
             </p>
           </div>
 
@@ -162,7 +163,7 @@ function LoginForm() {
                 htmlFor="username"
                 className="mb-1.5 block text-sm font-semibold"
               >
-                Identifiant
+                {t("form.username")}
               </label>
               <input
                 id="username"
@@ -172,7 +173,7 @@ function LoginForm() {
                 autoFocus
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Nom d'utilisateur ou email"
+                placeholder={t("form.usernamePlaceholder")}
                 className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-3 focus:ring-brand-500/15"
               />
             </div>
@@ -182,7 +183,7 @@ function LoginForm() {
                 htmlFor="password"
                 className="mb-1.5 block text-sm font-semibold"
               >
-                Mot de passe
+                {t("form.password")}
               </label>
               <div className="relative">
                 <input
@@ -192,14 +193,14 @@ function LoginForm() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Votre mot de passe"
+                  placeholder={t("form.passwordPlaceholder")}
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-11 text-sm outline-none transition focus:border-brand-500 focus:ring-3 focus:ring-brand-500/15"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPwd((s) => !s)}
                   className="absolute right-1 top-1/2 -translate-y-1/2 grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-secondary hover:text-foreground"
-                  aria-label={showPwd ? "Masquer" : "Afficher"}
+                  aria-label={showPwd ? t("form.hide") : t("form.show")}
                 >
                   {showPwd ? (
                     <EyeOff className="h-4 w-4" />
@@ -218,13 +219,13 @@ function LoginForm() {
                   onChange={(e) => setRemember(e.target.checked)}
                   className="h-4 w-4 accent-brand-600 cursor-pointer"
                 />
-                <span className="text-muted-foreground">Se souvenir de moi</span>
+                <span className="text-muted-foreground">{t("login.remember")}</span>
               </label>
               <Link
                 href="/password-reset"
                 className="font-semibold text-brand-700 hover:underline"
               >
-                Mot de passe oublié ?
+                {t("login.forgot")}
               </Link>
             </div>
 
@@ -237,7 +238,7 @@ function LoginForm() {
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
-                  Connexion
+                  {t("login.submit")}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </>
               )}
@@ -251,12 +252,12 @@ function LoginForm() {
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Pas encore de compte ?{" "}
+            {t("login.noAccount")}{" "}
             <Link
               href="/register"
               className="ml-1 font-semibold text-brand-700 hover:underline"
             >
-              Créer un compte
+              {t("login.createAccount")}
             </Link>
           </p>
         </motion.div>

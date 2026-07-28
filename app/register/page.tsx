@@ -14,8 +14,10 @@ import {
   MailCheck,
 } from "lucide-react";
 import { register, AuthError } from "@/lib/auth";
+import { useT } from "@/lib/i18n/client";
 
 export default function RegisterPage() {
+  const { t } = useT();
   const [sent, setSent] = useState<string | null>(null);
   const [userType, setUserType] = useState<"individu" | "entreprise">(
     "individu"
@@ -142,36 +144,34 @@ export default function RegisterPage() {
                 <MailCheck className="h-8 w-8" strokeWidth={2} />
               </div>
               <h1 className="font-display text-2xl font-semibold text-harvest-800">
-                Vérifiez votre email
+                {t("register.checkEmail")}
               </h1>
               <p className="mx-auto mt-2 max-w-sm text-sm text-harvest-700">
-                Un lien de vérification a été envoyé à{" "}
-                <strong>{sent}</strong>. Cliquez dessus pour activer votre
-                compte, puis connectez-vous.
+                {t("register.checkEmailText1")}{" "}
+                <strong>{sent}</strong>. {t("register.checkEmailText2")}
               </p>
               <Link
                 href="/login"
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-sand-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600"
               >
-                Aller à la connexion
+                {t("register.goLogin")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <p className="mt-4 text-xs text-muted-foreground">
-                Vous n&apos;avez rien reçu ? Vérifiez vos spams.
+                {t("register.nothingReceived")}
               </p>
             </div>
           ) : (
           <>
           <div className="mb-8 text-center">
             <h1 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
-              Rejoignez{" "}
+              {t("register.title1")}{" "}
               <em className="italic font-normal bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-transparent">
-                la marketplace.
+                {t("register.title2")}
               </em>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Quelques informations pour commencer. Vous pourrez compléter
-              votre profil ensuite.
+              {t("register.subtitle")}
             </p>
           </div>
 
@@ -200,49 +200,49 @@ export default function RegisterPage() {
               <>
                 <div>
                   <label className="mb-2 block text-sm font-semibold">
-                    Type de compte
+                    {t("register.accountType")}
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     <TypeButton
                       active={userType === "individu"}
                       onClick={() => setUserType("individu")}
                       icon={User}
-                      title="Particulier"
-                      desc="Producteur individuel"
+                      title={t("register.individual")}
+                      desc={t("register.individualDesc")}
                     />
                     <TypeButton
                       active={userType === "entreprise"}
                       onClick={() => setUserType("entreprise")}
                       icon={Building2}
-                      title="Entreprise"
-                      desc="Coopérative ou société"
+                      title={t("register.company")}
+                      desc={t("register.companyDesc")}
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <Field
-                    label="Prénom"
+                    label={t("form.firstName")}
                     value={form.first_name}
                     onChange={(v) => setField("first_name", v)}
                     placeholder="Aminata"
                   />
                   <Field
-                    label="Nom"
+                    label={t("form.lastName")}
                     value={form.last_name}
                     onChange={(v) => setField("last_name", v)}
                     placeholder="Diallo"
                   />
                 </div>
                 <Field
-                  label="Nom d'utilisateur"
+                  label={t("form.usernameField")}
                   value={form.username}
                   onChange={(v) => setField("username", v)}
                   placeholder="aminata_d"
                   required
                 />
                 <Field
-                  label="Email"
+                  label={t("form.email")}
                   type="email"
                   value={form.email}
                   onChange={(v) => setField("email", v)}
@@ -256,7 +256,7 @@ export default function RegisterPage() {
                   disabled={!form.username || !form.email}
                   className="group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-400 via-brand-500 to-brand-700 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:-translate-y-0.5 hover:shadow-brand-600/50 disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Continuer
+                  {t("form.continue")}
                   <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                 </button>
               </>
@@ -265,14 +265,14 @@ export default function RegisterPage() {
             {step === 2 && (
               <>
                 <Field
-                  label="Téléphone (optionnel)"
+                  label={t("form.phoneOpt")}
                   type="tel"
                   value={form.telephone}
                   onChange={(v) => setField("telephone", v)}
                   placeholder="+229 XX XX XX XX"
                 />
                 <Field
-                  label="Ville (optionnel)"
+                  label={t("form.cityOpt")}
                   value={form.ville}
                   onChange={(v) => setField("ville", v)}
                   placeholder="Cotonou"
@@ -280,7 +280,7 @@ export default function RegisterPage() {
 
                 <div>
                   <label className="mb-1.5 block text-sm font-semibold">
-                    Mot de passe
+                    {t("form.password")}
                   </label>
                   <div className="relative">
                     <input
@@ -288,7 +288,7 @@ export default function RegisterPage() {
                       required
                       value={form.password}
                       onChange={(e) => setField("password", e.target.value)}
-                      placeholder="Au moins 10 caractères"
+                      placeholder={t("register.passwordHint")}
                       className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-11 text-sm outline-none transition focus:border-brand-500 focus:ring-3 focus:ring-brand-500/15"
                     />
                     <button
@@ -306,11 +306,11 @@ export default function RegisterPage() {
                 </div>
 
                 <Field
-                  label="Confirmer le mot de passe"
+                  label={t("form.confirmPassword")}
                   type={showPwd ? "text" : "password"}
                   value={form.password_confirm}
                   onChange={(v) => setField("password_confirm", v)}
-                  placeholder="Répétez votre mot de passe"
+                  placeholder={t("form.repeatPassword")}
                   required
                 />
 
@@ -324,7 +324,7 @@ export default function RegisterPage() {
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        Créer mon compte
+                        {t("register.submit")}
                         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                       </>
                     )}
@@ -334,7 +334,7 @@ export default function RegisterPage() {
                     onClick={() => setStep(1)}
                     className="rounded-xl border border-border px-6 py-3.5 text-sm font-semibold hover:bg-sand-100"
                   >
-                    Précédent
+                    {t("form.previous")}
                   </button>
                 </div>
               </>
@@ -342,12 +342,12 @@ export default function RegisterPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Déjà un compte ?{" "}
+            {t("register.haveAccount")}{" "}
             <Link
               href="/login"
               className="font-semibold text-brand-700 hover:underline"
             >
-              Se connecter
+              {t("action.login")}
             </Link>
           </p>
           </>
