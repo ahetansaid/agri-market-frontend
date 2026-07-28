@@ -19,27 +19,28 @@ import {
 import { useAuth } from "@/lib/auth-context";
 import { logout } from "@/lib/auth";
 import { API_URL } from "@/lib/api";
+import { useT } from "@/lib/i18n/client";
 
 interface NavItem {
   href: string;
-  label: string;
+  k: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   badge?: string | number;
 }
 
 const PRODUCER_NAV: NavItem[] = [
-  { href: "/dashboard/producer", label: "Vue d'ensemble", icon: LayoutDashboard },
-  { href: "/dashboard/producer/announcements", label: "Mes annonces", icon: Package },
-  { href: "/messages", label: "Messagerie", icon: MessageSquare },
-  { href: "/dashboard/producer/ratings", label: "Mes avis", icon: Star },
-  { href: "/dashboard/producer/profile", label: "Mon profil", icon: UserCircle },
+  { href: "/dashboard/producer", k: "dash.overview", icon: LayoutDashboard },
+  { href: "/dashboard/producer/announcements", k: "dash.myListings", icon: Package },
+  { href: "/messages", k: "dash.messaging", icon: MessageSquare },
+  { href: "/dashboard/producer/ratings", k: "dash.myReviews", icon: Star },
+  { href: "/dashboard/producer/profile", k: "dash.myProfile", icon: UserCircle },
 ];
 
 const BUYER_NAV: NavItem[] = [
-  { href: "/dashboard/buyer", label: "Vue d'ensemble", icon: LayoutDashboard },
-  { href: "/annonces", label: "Explorer", icon: Search },
-  { href: "/messages", label: "Messagerie", icon: MessageSquare },
-  { href: "/dashboard/buyer/profile", label: "Mon profil", icon: UserCircle },
+  { href: "/dashboard/buyer", k: "dash.overview", icon: LayoutDashboard },
+  { href: "/annonces", k: "dash.explore", icon: Search },
+  { href: "/messages", k: "dash.messaging", icon: MessageSquare },
+  { href: "/dashboard/buyer/profile", k: "dash.myProfile", icon: UserCircle },
 ];
 
 export function DashboardShell({
@@ -50,6 +51,7 @@ export function DashboardShell({
   role?: "producer" | "buyer";
 }) {
   const { user, isLoading } = useAuth();
+  const { t } = useT();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -97,7 +99,7 @@ export function DashboardShell({
               </em>
             </div>
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-              {role === "producer" ? "Espace producteur" : "Espace acheteur"}
+              {role === "producer" ? t("dash.producerSpace") : t("dash.buyerSpace")}
             </div>
           </div>
         </Link>
@@ -128,7 +130,7 @@ export function DashboardShell({
                   }`}
                   strokeWidth={2}
                 />
-                <span className="flex-1">{item.label}</span>
+                <span className="flex-1">{t(item.k)}</span>
                 {item.badge !== undefined && (
                   <span className="rounded-full bg-brand-500/15 px-2 py-0.5 text-[10px] font-bold text-brand-700">
                     {item.badge}
@@ -148,7 +150,7 @@ export function DashboardShell({
               className="mb-1 flex w-full items-center gap-3 rounded-xl bg-gradient-to-r from-brand-50 to-transparent px-3 py-2.5 text-sm font-semibold text-brand-700 transition hover:from-brand-100"
             >
               <ShieldCheck className="h-4 w-4" strokeWidth={2} />
-              Administration
+              {t("dash.admin")}
               <span className="ml-auto rounded-full bg-brand-500/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                 Staff
               </span>
@@ -160,7 +162,7 @@ export function DashboardShell({
             className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-destructive/5 hover:text-destructive"
           >
             <LogOut className="h-4 w-4" strokeWidth={2} />
-            Se déconnecter
+            {t("action.logout")}
           </button>
         </div>
       </aside>
@@ -196,7 +198,7 @@ export function DashboardShell({
               </div>
               <div>
                 <div className="text-xs uppercase tracking-widest text-white/50 font-semibold">
-                  Bonjour
+                  {t("dash.hello")}
                 </div>
                 <div className="font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
                   <em className="italic font-normal bg-gradient-to-br from-brand-200 via-brand-400 to-brand-600 bg-clip-text text-transparent">
@@ -223,7 +225,7 @@ export function DashboardShell({
                   )}
                   <span className="inline-flex items-center gap-1 text-harvest-300">
                     <ShieldCheck className="h-3 w-3" />
-                    Vérifié
+                    {t("dash.verified")}
                   </span>
                 </div>
               </div>
@@ -239,12 +241,12 @@ export function DashboardShell({
                 {role === "producer" ? (
                   <>
                     <Package className="h-4 w-4" />
-                    Publier
+                    {t("qa.publish")}
                   </>
                 ) : (
                   <>
                     <Search className="h-4 w-4" />
-                    Explorer
+                    {t("dash.explore")}
                   </>
                 )}
               </Link>
@@ -284,7 +286,7 @@ export function DashboardShell({
                   }`}
                 >
                   <Icon className="h-4 w-4" strokeWidth={2} />
-                  {item.label}
+                  {t(item.k)}
                 </Link>
               );
             })}

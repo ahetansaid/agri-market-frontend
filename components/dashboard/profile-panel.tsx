@@ -14,10 +14,12 @@ import {
 } from "lucide-react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { fetchMe, patchMe, AuthError, type Me } from "@/lib/auth";
+import { useT } from "@/lib/i18n/client";
 import { useAuth } from "@/lib/auth-context";
 
 export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
   const { user, refresh } = useAuth();
+  const { t } = useT();
   const [me, setMe] = useState<Me | null>(null);
   const [form, setForm] = useState({
     first_name: "",
@@ -61,7 +63,7 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
       setError(
         err instanceof AuthError
           ? err.message
-          : "Impossible d'enregistrer les modifications."
+          : t("profile.saveError")
       );
     } finally {
       setSaving(false);
@@ -72,13 +74,13 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
     <DashboardShell role={role}>
       <div className="mb-8">
         <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-          Mon{" "}
+          {t("profile.title1")}{" "}
           <em className="italic font-normal bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-transparent">
-            profil
+            {t("profile.title2")}
           </em>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Vos informations personnelles et vos coordonnées.
+          {t("profile.subtitle")}
         </p>
       </div>
 
@@ -92,13 +94,13 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
             {me?.display_name || me?.username || "…"}
           </div>
           <div className="text-sm text-muted-foreground">
-            {me?.user_type === "entreprise" ? "Entreprise / Coopérative" : "Particulier"}
+            {me?.user_type === "entreprise" ? t("profile.companyType") : t("register.individual")}
           </div>
 
           <div className="mt-4 flex flex-wrap justify-center gap-2 text-xs">
             <span className="inline-flex items-center gap-1 rounded-full bg-harvest-50 px-3 py-1 font-semibold text-harvest-700">
               <ShieldCheck className="h-3.5 w-3.5" />
-              Vérifié
+              {t("dash.verified")}
             </span>
             {me?.rating_avg != null && (
               <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 font-semibold text-amber-700">
@@ -127,9 +129,9 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
           onSubmit={submit}
           className="rounded-3xl border border-border bg-card p-6 shadow-sm"
         >
-          <h2 className="font-display text-lg font-semibold">Informations</h2>
+          <h2 className="font-display text-lg font-semibold">{t("profile.info")}</h2>
           <p className="mb-5 mt-0.5 text-sm text-muted-foreground">
-            Mettez à jour vos coordonnées à tout moment.
+            {t("profile.infoSub")}
           </p>
 
           {error && (
@@ -139,16 +141,16 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
           )}
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field icon={User} label="Prénom" value={form.first_name} onChange={(v) => set("first_name", v)} />
-            <Field icon={User} label="Nom" value={form.last_name} onChange={(v) => set("last_name", v)} />
+            <Field icon={User} label={t("form.firstName")} value={form.first_name} onChange={(v) => set("first_name", v)} />
+            <Field icon={User} label={t("form.lastName")} value={form.last_name} onChange={(v) => set("last_name", v)} />
             <Field
               icon={Phone}
-              label="Téléphone (format international)"
+              label={t("profile.phoneIntl")}
               value={form.telephone}
               onChange={(v) => set("telephone", v)}
               placeholder="+229 97 00 00 00"
             />
-            <Field icon={MapPin} label="Ville" value={form.ville} onChange={(v) => set("ville", v)} />
+            <Field icon={MapPin} label={t("form.city")} value={form.ville} onChange={(v) => set("ville", v)} />
           </div>
 
           <div className="mt-6 flex items-center gap-3">
@@ -164,7 +166,7 @@ export function ProfilePanel({ role }: { role: "producer" | "buyer" }) {
               ) : (
                 <Save className="h-4 w-4" />
               )}
-              {saved ? "Enregistré" : "Enregistrer"}
+              {saved ? t("profile.saved") : t("profile.save")}
             </button>
           </div>
         </form>
