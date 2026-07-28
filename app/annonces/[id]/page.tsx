@@ -7,6 +7,7 @@ import { AnnouncementCard } from "@/components/home/announcement-card";
 import { getAnnouncementDetail, getAnnouncements } from "@/lib/api";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { ContactSellerButton } from "@/components/messaging/contact-seller-button";
+import { getT } from "@/lib/i18n/server";
 import {
   Tag,
   PackageSearch,
@@ -49,6 +50,7 @@ export default async function DetailPage({
     limit: 4,
   }).catch(() => []);
   const similarFiltered = similar.filter((a) => a.id !== annonce.id).slice(0, 4);
+  const { t } = await getT();
 
   const TypeIcon = typeIconMap[annonce.type] || Package;
 
@@ -121,18 +123,18 @@ export default async function DetailPage({
                   )}
                   <span className="inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-harvest-700 shadow-lg">
                     <ShieldCheck className="h-3 w-3" strokeWidth={2.5} />
-                    Vérifié
+                    {t("dash.verified")}
                   </span>
                 </div>
               </div>
 
               {/* Specs */}
-              <SectionCard title="Caractéristiques essentielles" icon={Package}>
+              <SectionCard title={t("detail.essentialSpecs")} icon={Package}>
                 <div className="grid gap-4 sm:grid-cols-2">
                   {annonce.quantity && (
                     <Spec
                       icon={Package}
-                      label="Quantité disponible"
+                      label={t("detail.qtyAvailable")}
                       value={
                         <>
                           {annonce.quantity.toLocaleString("fr-FR")}{" "}
@@ -146,35 +148,35 @@ export default async function DetailPage({
                   {annonce.product_name && (
                     <Spec
                       icon={Leaf}
-                      label="Produit"
+                      label={t("detail.product")}
                       value={annonce.product_name}
                     />
                   )}
                   {annonce.variety && (
                     <Spec
                       icon={Leaf}
-                      label="Variété"
+                      label={t("detail.variety")}
                       value={annonce.variety}
                     />
                   )}
                   {annonce.brand && (
                     <Spec
                       icon={Tag}
-                      label="Marque"
+                      label={t("detail.brand")}
                       value={annonce.brand}
                     />
                   )}
                   {annonce.shipping_conditions && (
                     <Spec
                       icon={Truck}
-                      label="Livraison"
+                      label={t("detail.shipping")}
                       value={annonce.shipping_conditions}
                     />
                   )}
                   {annonce.transaction_details && (
                     <Spec
                       icon={Handshake}
-                      label="Conditions"
+                      label={t("detail.terms")}
                       value={annonce.transaction_details}
                     />
                   )}
@@ -183,7 +185,7 @@ export default async function DetailPage({
 
               {/* Description */}
               {annonce.description && (
-                <SectionCard title="Description" icon={Tag}>
+                <SectionCard title={t("form.description")} icon={Tag}>
                   <div
                     className="prose prose-sand max-w-none prose-a:text-brand-700"
                     dangerouslySetInnerHTML={{
@@ -247,8 +249,8 @@ export default async function DetailPage({
                   announcementId={annonce.id}
                   label={
                     annonce.type === "achat"
-                      ? "Proposer mon produit"
-                      : "Contacter le vendeur"
+                      ? t("detail.proposeProduct")
+                      : t("detail.contactSeller")
                   }
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition-all hover:-translate-y-0.5 hover:shadow-brand-600/50 disabled:opacity-60"
                 />
@@ -258,14 +260,14 @@ export default async function DetailPage({
                     className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-semibold transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700"
                   >
                     <Copy className="h-3.5 w-3.5" />
-                    Copier
+                    {t("detail.copy")}
                   </button>
                   <button
                     type="button"
                     className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-semibold transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700"
                   >
                     <Share2 className="h-3.5 w-3.5" />
-                    Partager
+                    {t("detail.share")}
                   </button>
                 </div>
                 <p className="mt-1 inline-flex items-start gap-1.5 text-xs text-harvest-700">
@@ -273,7 +275,7 @@ export default async function DetailPage({
                     className="h-4 w-4 shrink-0"
                     strokeWidth={2}
                   />
-                  Annonce vérifiée par double validation humaine
+                  {t("detail.verifiedNote")}
                 </p>
               </div>
 
@@ -302,7 +304,7 @@ export default async function DetailPage({
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[10px] uppercase tracking-widest text-white/50 font-semibold">
-                      Publié par
+                      {t("detail.publishedBy")}
                     </div>
                     <div className="truncate font-display font-semibold">
                       {annonce.seller.display_name ||
@@ -318,7 +320,7 @@ export default async function DetailPage({
                           {annonce.seller.rating_avg}
                         </span>
                         <span className="text-white/50">
-                          ({annonce.seller.ratings_count} avis)
+                          ({annonce.seller.ratings_count} {t("word.reviews")})
                         </span>
                       </div>
                     )}
@@ -335,12 +337,12 @@ export default async function DetailPage({
               <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
                 <div>
                   <span className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-700 ring-1 ring-brand-200 mb-3">
-                    Recommandations
+                    {t("detail.recommendations")}
                   </span>
                   <h2 className="font-display text-3xl font-medium tracking-tight sm:text-4xl">
-                    Annonces{" "}
+                    {t("detail.similar1")}{" "}
                     <em className="italic font-normal bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-transparent">
-                      similaires
+                      {t("detail.similar2")}
                     </em>
                   </h2>
                 </div>
@@ -348,7 +350,7 @@ export default async function DetailPage({
                   href="/annonces"
                   className="inline-flex items-center gap-2 rounded-full bg-sand-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-600 transition"
                 >
-                  Voir plus
+                  {t("detail.seeMore")}
                   <ChevronRight className="h-4 w-4" />
                 </Link>
               </div>
