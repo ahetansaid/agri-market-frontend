@@ -4,6 +4,7 @@ import { AnnouncementCard } from "@/components/home/announcement-card";
 import { ListingFilters } from "@/components/listing/listing-filters";
 import { ListingSort } from "@/components/listing/listing-sort";
 import { getAnnouncements, getCategories } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 import { PackageOpen, Filter } from "lucide-react";
 import Link from "next/link";
 
@@ -24,6 +25,7 @@ export default async function AnnouncementsPage({
   searchParams: Promise<Search>;
 }) {
   const params = await searchParams;
+  const { t } = await getT();
 
   const [annonces, categories] = await Promise.all([
     getAnnouncements({
@@ -71,20 +73,18 @@ export default async function AnnouncementsPage({
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-400" />
               <span className="text-[10px] font-bold uppercase tracking-widest">
-                Marketplace agricole
+                {t("annonces.eyebrow")}
               </span>
             </div>
             <h1 className="font-display text-[clamp(2rem,6vw,4.5rem)] font-medium leading-[1.05] tracking-tight">
-              Toutes les annonces,
+              {t("annonces.title1")}
               <br />
               <em className="italic font-normal bg-gradient-to-br from-brand-300 via-brand-400 to-brand-600 bg-clip-text text-transparent">
-                en direct des terroirs.
+                {t("annonces.title2")}
               </em>
             </h1>
             <p className="mt-5 max-w-xl text-base text-white/70 sm:text-lg">
-              Producteurs, coopératives, acheteurs — explorez l&apos;offre la
-              plus complète d&apos;Afrique. Multilingue, vérifiée, sans
-              intermédiaire.
+              {t("annonces.heroSubtitle")}
             </p>
 
             {/* Search bar XL */}
@@ -97,7 +97,7 @@ export default async function AnnouncementsPage({
                 type="search"
                 name="q"
                 defaultValue={params.q}
-                placeholder="Rechercher du cacao, du mil, des bovins..."
+                placeholder={t("annonces.searchPlaceholder")}
                 className="min-w-[240px] flex-1 rounded-lg bg-transparent px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none"
               />
               <select
@@ -105,7 +105,7 @@ export default async function AnnouncementsPage({
                 defaultValue={params.category ?? ""}
                 className="rounded-lg bg-transparent px-3 py-3 text-sm text-foreground outline-none"
               >
-                <option value="">Toutes filières</option>
+                <option value="">{t("hero.allSectors")}</option>
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.name}
@@ -116,7 +116,7 @@ export default async function AnnouncementsPage({
                 type="submit"
                 className="rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition hover:shadow-brand-600/50"
               >
-                Rechercher
+                {t("action.searchBtn")}
               </button>
             </form>
           </div>
@@ -129,12 +129,12 @@ export default async function AnnouncementsPage({
               <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
                 {params.q ? (
                   <>
-                    {annonces.length} résultat{annonces.length !== 1 && "s"}{" "}
-                    pour <em className="italic">&laquo; {params.q} &raquo;</em>
+                    {annonces.length} {t("word.results")} {t("annonces.for")}{" "}
+                    <em className="italic">&laquo; {params.q} &raquo;</em>
                   </>
                 ) : (
                   <>
-                    {annonces.length} annonce{annonces.length > 1 && "s"}
+                    {annonces.length} {t("word.listings")}
                   </>
                 )}
               </h2>
@@ -146,7 +146,7 @@ export default async function AnnouncementsPage({
           {activeFilters.length > 0 && (
             <div className="mb-6 flex flex-wrap items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3">
               <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Filtres :
+                {t("annonces.filtersLabel")}
               </span>
               {activeFilters.map((f) => (
                 <span
@@ -160,7 +160,7 @@ export default async function AnnouncementsPage({
                 href="/annonces"
                 className="ml-auto text-xs text-muted-foreground underline hover:text-foreground"
               >
-                Tout effacer
+                {t("annonces.clearAll")}
               </Link>
             </div>
           )}
@@ -192,18 +192,17 @@ export default async function AnnouncementsPage({
                     <PackageOpen className="h-8 w-8" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-display text-2xl font-semibold">
-                    Aucune annonce ne correspond
+                    {t("annonces.emptyTitle")}
                   </h3>
                   <p className="mt-2 mx-auto max-w-md text-sm text-muted-foreground">
-                    Essayez d&apos;élargir vos critères ou revenez plus tard —
-                    de nouvelles annonces sont validées chaque jour.
+                    {t("annonces.emptyText")}
                   </p>
                   <Link
                     href="/annonces"
                     className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-semibold text-white"
                   >
                     <Filter className="h-4 w-4" />
-                    Réinitialiser les filtres
+                    {t("annonces.resetFilters")}
                   </Link>
                 </div>
               )}

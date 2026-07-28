@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import type { Category } from "@/lib/api";
+import { useT } from "@/lib/i18n/client";
 
 const AFRICAN_COUNTRIES = [
   { code: "DZ", name: "Algérie" },
@@ -52,6 +53,7 @@ export function ListingFilters({
   current: Current;
 }) {
   const [open, setOpen] = useState(false);
+  const { t } = useT();
 
   const buildLink = (updates: Record<string, string | undefined>) => {
     const params = new URLSearchParams();
@@ -78,27 +80,27 @@ export function ListingFilters({
   const content = (
     <>
       {/* Type */}
-      <FilterSection icon={Tag} title="Type d'annonce">
+      <FilterSection icon={Tag} title={t("filters.type")}>
         <ul className="space-y-0.5">
           {[
-            { key: undefined, label: "Tous" },
-            { key: "vente", label: "Vente" },
-            { key: "achat", label: "Achat" },
-            { key: "autre", label: "Autre" },
-          ].map((t) => (
+            { key: undefined, k: "filters.all" },
+            { key: "vente", k: "filters.sale" },
+            { key: "achat", k: "filters.purchase" },
+            { key: "autre", k: "filters.other" },
+          ].map((opt) => (
             <FilterLink
-              key={t.label}
-              href={buildLink({ type: t.key })}
-              active={current.type === t.key}
+              key={opt.k}
+              href={buildLink({ type: opt.key })}
+              active={current.type === opt.key}
             >
-              {t.label}
+              {t(opt.k)}
             </FilterLink>
           ))}
         </ul>
       </FilterSection>
 
       {/* Filières */}
-      <FilterSection icon={Grid3x3} title="Filières">
+      <FilterSection icon={Grid3x3} title={t("qa.sectors")}>
         <ul className="max-h-60 space-y-0.5 overflow-y-auto pr-1">
           {categories.slice(0, 12).map((cat) => (
             <FilterLink
@@ -114,7 +116,7 @@ export function ListingFilters({
       </FilterSection>
 
       {/* Pays */}
-      <FilterSection icon={Globe} title="Pays">
+      <FilterSection icon={Globe} title={t("qa.countries")}>
         <ul className="max-h-60 space-y-0.5 overflow-y-auto pr-1">
           {AFRICAN_COUNTRIES.slice(0, 20).map((c) => (
             <FilterLink
@@ -130,13 +132,13 @@ export function ListingFilters({
       </FilterSection>
 
       {/* Bio */}
-      <FilterSection icon={Leaf} title="Qualité" last>
+      <FilterSection icon={Leaf} title={t("filters.quality")} last>
         <ul className="space-y-0.5">
           <FilterLink
             href={buildLink({ bio: "1" })}
             active={current.bio === true}
           >
-            Bio uniquement
+            {t("filters.bioOnly")}
           </FilterLink>
         </ul>
       </FilterSection>
@@ -158,7 +160,7 @@ export function ListingFilters({
           className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold shadow-sm transition hover:border-brand-300 hover:bg-brand-50"
         >
           <SlidersHorizontal className="h-4 w-4 text-brand-600" strokeWidth={2} />
-          Filtres
+          {t("filters.title")}
           {activeCount > 0 && (
             <span className="grid h-5 min-w-[20px] place-items-center rounded-full bg-brand-600 px-1.5 text-[11px] font-bold text-white">
               {activeCount}
@@ -174,7 +176,7 @@ export function ListingFilters({
             />
             <div className="absolute inset-y-0 left-0 flex w-[86%] max-w-sm flex-col bg-card shadow-2xl">
               <div className="flex items-center justify-between border-b border-border px-5 py-4">
-                <h2 className="font-display text-lg font-semibold">Filtres</h2>
+                <h2 className="font-display text-lg font-semibold">{t("filters.title")}</h2>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
@@ -193,7 +195,7 @@ export function ListingFilters({
                   onClick={() => setOpen(false)}
                   className="block w-full rounded-xl bg-secondary py-2.5 text-center text-sm font-semibold text-foreground/80 transition hover:bg-sand-200"
                 >
-                  Tout effacer
+                  {t("annonces.clearAll")}
                 </Link>
               </div>
             </div>

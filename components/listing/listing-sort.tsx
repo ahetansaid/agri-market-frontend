@@ -3,11 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ArrowUpDown, Clock, Flame, History, Check } from "lucide-react";
+import { useT } from "@/lib/i18n/client";
 
 const SORTS = {
-  recent: { label: "Plus récentes", icon: Clock },
-  popular: { label: "Plus consultées", icon: Flame },
-  old: { label: "Plus anciennes", icon: History },
+  recent: { k: "sort.recent", icon: Clock },
+  popular: { k: "sort.popular", icon: Flame },
+  old: { k: "sort.old", icon: History },
 } as const;
 
 interface Params {
@@ -25,6 +26,7 @@ export function ListingSort({
   current: string;
   params: Params;
 }) {
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -50,8 +52,9 @@ export function ListingSort({
     return `/annonces?${p.toString()}`;
   };
 
-  const currentLabel =
-    SORTS[current as keyof typeof SORTS]?.label ?? SORTS.recent.label;
+  const currentLabel = t(
+    (SORTS[current as keyof typeof SORTS] ?? SORTS.recent).k
+  );
 
   return (
     <div ref={ref} className="relative">
@@ -85,7 +88,7 @@ export function ListingSort({
                   className={`h-4 w-4 ${active ? "text-brand-600" : "text-muted-foreground"}`}
                   strokeWidth={2}
                 />
-                {item.label}
+                {t(item.k)}
                 {active && (
                   <Check className="ml-auto h-4 w-4 text-brand-600" />
                 )}
