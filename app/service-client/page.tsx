@@ -1,43 +1,29 @@
 import { StaticPage } from "@/components/layout/static-page";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = { title: "Service client" };
 
-export default function ServiceClientPage() {
+export default async function ServiceClientPage() {
+  const { t } = await getT();
   return (
-    <StaticPage
-      title="Service client"
-      subtitle="Une question, un problème, une suggestion ? Nous sommes là pour vous aider."
-    >
-      <h2>Le chat en direct</h2>
-      <p>
-        Le moyen le plus rapide : cliquez sur la bulle{" "}
-        <strong>« Assistance »</strong> en bas à droite de l&apos;écran pour
-        discuter avec notre équipe. Connectez-vous pour conserver l&apos;historique
-        de vos échanges.
-      </p>
+    <StaticPage title={t("svc.title")} subtitle={t("svc.subtitle")}>
+      <h2>{t("svc.hChat")}</h2>
+      <p>{t("svc.pChat")}</p>
 
-      <h2>Par email</h2>
+      <h2>{t("svc.hEmail")}</h2>
       <p>
-        Écrivez-nous à{" "}
+        {t("svc.emailPre")}
         <a href="mailto:agrimarketafrica@nourdignagrimarket.com">
           agrimarketafrica@nourdignagrimarket.com
         </a>
-        . Nous répondons généralement sous 24 h ouvrées.
+        {t("svc.emailPost")}
       </p>
 
-      <h2>Signaler un désagrément ou une arnaque</h2>
-      <p>
-        Si une annonce ou un utilisateur vous semble suspect, contactez-nous
-        immédiatement via le chat ou par email en précisant la référence de
-        l&apos;annonce. Notre équipe intervient rapidement pour protéger la
-        communauté.
-      </p>
+      <h2>{t("svc.hReport")}</h2>
+      <p>{t("svc.pReport")}</p>
 
-      <h2>Suggestions</h2>
-      <p>
-        Vos retours nous aident à améliorer la plateforme. N&apos;hésitez pas à
-        nous partager vos idées.
-      </p>
+      <h2>{t("svc.hSuggest")}</h2>
+      <p>{t("svc.pSuggest")}</p>
     </StaticPage>
   );
 }

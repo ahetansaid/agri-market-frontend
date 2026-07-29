@@ -1,75 +1,48 @@
 import { StaticPage } from "@/components/layout/static-page";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = { title: "Politique de confidentialité" };
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const { t } = await getT();
   return (
-    <StaticPage
-      title="Politique de confidentialité"
-      subtitle="Comment nous collectons, utilisons et protégeons vos données."
-    >
+    <StaticPage title={t("privacy.title")} subtitle={t("privacy.subtitle")}>
       <p className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-        Modèle à faire valider juridiquement avant mise en production.
+        {t("legal.draft")}
       </p>
 
-      <h2>Données collectées</h2>
+      <h2>{t("privacy.hData")}</h2>
       <ul>
-        <li>Données de compte : nom, email, téléphone, ville, pays.</li>
-        <li>Contenus publiés : annonces, messages.</li>
-        <li>Données techniques : logs de connexion, adresse IP.</li>
+        <li>{t("privacy.dataLi1")}</li>
+        <li>{t("privacy.dataLi2")}</li>
+        <li>{t("privacy.dataLi3")}</li>
       </ul>
 
-      <h2>Utilisation</h2>
-      <p>
-        Vos données servent uniquement au fonctionnement de la plateforme :
-        création de compte, mise en relation, messagerie, sécurité et lutte
-        contre la fraude. Nous ne vendons jamais vos données.
-      </p>
+      <h2>{t("privacy.hUse")}</h2>
+      <p>{t("privacy.pUse")}</p>
 
-      <h2>Emails</h2>
-      <p>
-        Nous envoyons des emails transactionnels (vérification de compte,
-        notifications) via un prestataire d&apos;envoi. Aucun email marketing
-        n&apos;est envoyé sans votre consentement.
-      </p>
+      <h2>{t("privacy.hEmails")}</h2>
+      <p>{t("privacy.pEmails")}</p>
 
-      <h2>Cookies</h2>
-      <p>
-        Nous utilisons deux catégories de cookies (et technologies de stockage
-        local) :
-      </p>
+      <h2>{t("privacy.hCookies")}</h2>
+      <p>{t("privacy.pCookies1")}</p>
       <ul>
-        <li>
-          <strong>Essentiels</strong> — indispensables au fonctionnement
-          (session de connexion, préférences). Toujours actifs.
-        </li>
-        <li>
-          <strong>Mesure & amélioration</strong> — pour comprendre
-          l&apos;usage du site. Soumis à votre consentement via le bandeau
-          affiché à votre première visite.
-        </li>
+        <li>{t("privacy.cookiesEss")}</li>
+        <li>{t("privacy.cookiesMeas")}</li>
       </ul>
-      <p>
-        Vous pouvez <strong>accepter ou refuser</strong> les cookies non
-        essentiels depuis ce bandeau. Pour revoir votre choix, videz le stockage
-        du site dans votre navigateur : le bandeau réapparaîtra.
-      </p>
+      <p>{t("privacy.pCookies2")}</p>
 
-      <h2>Vos droits</h2>
+      <h2>{t("privacy.hRights")}</h2>
       <p>
-        Vous pouvez accéder à vos données, les rectifier depuis votre profil, ou
-        demander leur suppression en écrivant à{" "}
+        {t("privacy.pRightsPre")}
         <a href="mailto:agrimarketafrica@nourdignagrimarket.com">
           agrimarketafrica@nourdignagrimarket.com
         </a>
         .
       </p>
 
-      <h2>Sécurité</h2>
-      <p>
-        Les mots de passe sont chiffrés, les connexions protégées par HTTPS, et
-        l&apos;accès aux comptes limité contre les tentatives d&apos;intrusion.
-      </p>
+      <h2>{t("privacy.hSec")}</h2>
+      <p>{t("privacy.pSec")}</p>
     </StaticPage>
   );
 }

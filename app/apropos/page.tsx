@@ -1,41 +1,27 @@
 import { StaticPage } from "@/components/layout/static-page";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = { title: "À propos" };
 
-export default function AProposPage() {
+export default async function AProposPage() {
+  const { t } = await getT();
   return (
-    <StaticPage
-      title="À propos d'Agri Market Africa"
-      subtitle="La marketplace de référence pour l'agriculture africaine — sans commission, sans intermédiaire."
-    >
-      <p>
-        Agri Market Africa met en relation directe producteurs, coopératives et
-        acheteurs à travers les 54 pays du continent. Notre mission : donner à
-        chaque acteur agricole africain un accès simple, transparent et gratuit
-        au marché.
-      </p>
+    <StaticPage title={t("apropos.title")} subtitle={t("apropos.subtitle")}>
+      <p>{t("apropos.p1")}</p>
 
-      <h2>Notre mission</h2>
-      <p>
-        Valoriser la production agricole africaine en supprimant les
-        intermédiaires superflus. Les vendeurs publient leurs produits, les
-        acheteurs les contactent directement — sans commission prélevée sur les
-        transactions.
-      </p>
+      <h2>{t("apropos.hMission")}</h2>
+      <p>{t("apropos.pMission")}</p>
 
-      <h2>Nos engagements</h2>
+      <h2>{t("apropos.hCommit")}</h2>
       <ul>
-        <li>0 % de commission sur les mises en relation.</li>
-        <li>Des annonces vérifiées via une double validation.</li>
-        <li>Une couverture panafricaine, multilingue (FR · EN · IT).</li>
-        <li>La protection des données de nos utilisateurs.</li>
+        <li>{t("apropos.li1")}</li>
+        <li>{t("apropos.li2")}</li>
+        <li>{t("apropos.li3")}</li>
+        <li>{t("apropos.li4")}</li>
       </ul>
 
-      <h2>Un projet porté par NourDign / IDA International</h2>
-      <p>
-        Agri Market Africa est développé par NourDign avec le soutien d&apos;IDA
-        International, au service du développement agricole du continent.
-      </p>
+      <h2>{t("apropos.hProject")}</h2>
+      <p>{t("apropos.pProject")}</p>
     </StaticPage>
   );
 }

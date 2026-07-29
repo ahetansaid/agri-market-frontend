@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { getCategories, type Category } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 import { Sprout, ArrowRight, Layers, Leaf, Package } from "lucide-react";
 
 export const metadata = { title: "Filières" };
@@ -9,6 +10,7 @@ export const metadata = { title: "Filières" };
 const ICONS = [Layers, Package, Leaf, Sprout];
 
 export default async function FilieresPage() {
+  const { t, locale } = await getT();
   let categories: Category[] = [];
   try {
     categories = await getCategories();
@@ -36,24 +38,23 @@ export default async function FilieresPage() {
           <div className="relative mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-brand-300 backdrop-blur">
               <Sprout className="h-3.5 w-3.5" />
-              Filières
+              {t("nav.filieres")}
             </span>
             <h1 className="mt-4 font-display text-[clamp(2rem,6vw,4rem)] font-medium leading-[1.05] tracking-tight">
-              Les filières{" "}
+              {t("fil.title1")}{" "}
               <em className="italic font-normal bg-gradient-to-br from-brand-300 via-brand-400 to-harvest-300 bg-clip-text text-transparent">
-                agricoles
+                {t("fil.title2")}
               </em>
             </h1>
             <p className="mt-4 max-w-xl text-base text-white/70 sm:text-lg">
-              Parcourez les grandes catégories de produits du continent et
-              accédez directement aux annonces de chaque filière.
+              {t("fil.desc")}
             </p>
 
             {/* Stats */}
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
-              <Stat value={categories.length} label="Filières" />
-              <Stat value={totalSub} label="Sous-filières" />
-              <Stat value={totalAnn} label="Annonces" />
+              <Stat value={categories.length} label={t("fil.statSectors")} locale={locale} />
+              <Stat value={totalSub} label={t("fil.statSub")} locale={locale} />
+              <Stat value={totalAnn} label={t("fil.statListings")} locale={locale} />
             </div>
           </div>
         </section>
@@ -61,12 +62,12 @@ export default async function FilieresPage() {
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-14">
           {categories.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
-              Les filières sont momentanément indisponibles.{" "}
+              {t("fil.unavailable")}{" "}
               <Link
                 href="/annonces"
                 className="font-semibold text-brand-700 hover:underline"
               >
-                Voir toutes les annonces
+                {t("dash.bSeeAll")}
               </Link>
             </div>
           ) : (
@@ -102,9 +103,10 @@ export default async function FilieresPage() {
                         {c.name}
                       </h2>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {subs.length} sous-filière{subs.length > 1 ? "s" : ""}
+                        {subs.length}{" "}
+                        {subs.length > 1 ? t("fil.subPlural") : t("fil.subSingular")}
                         {typeof c.annonces_count === "number"
-                          ? ` · ${c.annonces_count} annonce${c.annonces_count > 1 ? "s" : ""}`
+                          ? ` · ${c.annonces_count} ${c.annonces_count > 1 ? t("word.listings") : t("word.listing")}`
                           : ""}
                       </p>
 
@@ -131,7 +133,7 @@ export default async function FilieresPage() {
                           green ? "text-harvest-700" : "text-brand-700"
                         }`}
                       >
-                        Voir les annonces
+                        {t("fil.seeListings")}
                         <ArrowRight className="h-3.5 w-3.5" />
                       </div>
                     </div>
@@ -147,11 +149,11 @@ export default async function FilieresPage() {
   );
 }
 
-function Stat({ value, label }: { value: number; label: string }) {
+function Stat({ value, label, locale }: { value: number; label: string; locale: string }) {
   return (
     <div>
       <div className="font-display text-3xl font-bold leading-none tracking-tight sm:text-4xl">
-        {value.toLocaleString("fr-FR")}
+        {value.toLocaleString(locale)}
       </div>
       <div className="mt-1.5 text-[11px] font-semibold uppercase tracking-widest text-white/50">
         {label}

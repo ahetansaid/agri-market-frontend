@@ -2,14 +2,15 @@ import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { getCountriesActivity } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 import { Globe, ArrowRight } from "lucide-react";
 
 export const metadata = { title: "Pays" };
 
-function countryName(code: string): string {
+function countryName(code: string, locale: string): string {
   try {
     return (
-      new Intl.DisplayNames(["fr"], { type: "region" }).of(
+      new Intl.DisplayNames([locale], { type: "region" }).of(
         code.toUpperCase()
       ) || code
     );
@@ -19,6 +20,7 @@ function countryName(code: string): string {
 }
 
 export default async function PaysPage() {
+  const { t, locale } = await getT();
   let counts: Record<string, number> = {};
   try {
     counts = (await getCountriesActivity()).counts ?? {};
@@ -38,25 +40,24 @@ export default async function PaysPage() {
           <header className="mb-10 max-w-2xl">
             <span className="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-700">
               <Globe className="h-3.5 w-3.5" />
-              Couverture
+              {t("pays.eyebrow")}
             </span>
             <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Pays{" "}
+              {t("pays.title1")}{" "}
               <em className="italic font-normal bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-transparent">
-                actifs
+                {t("pays.title2")}
               </em>
             </h1>
             <p className="mt-3 text-muted-foreground">
-              La marketplace couvre 54 pays africains. Voici où l&apos;activité
-              se concentre en ce moment.
+              {t("pays.desc")}
             </p>
           </header>
 
           {rows.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
-              Données momentanément indisponibles.{" "}
+              {t("pays.unavailable")}{" "}
               <Link href="/annonces" className="font-semibold text-brand-700 hover:underline">
-                Voir toutes les annonces
+                {t("dash.bSeeAll")}
               </Link>
             </div>
           ) : (
@@ -72,10 +73,10 @@ export default async function PaysPage() {
                   />
                   <div className="min-w-0 flex-1">
                     <div className="truncate font-display font-semibold tracking-tight">
-                      {countryName(code)}
+                      {countryName(code, locale)}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      {n} annonce{n > 1 ? "s" : ""} active{n > 1 ? "s" : ""}
+                      {n} {n > 1 ? t("pays.listingsActive") : t("pays.listingActive")}
                     </div>
                   </div>
                   <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-brand-600" />
