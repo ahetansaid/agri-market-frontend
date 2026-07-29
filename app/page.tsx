@@ -24,7 +24,7 @@ import { getT } from "@/lib/i18n/server";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const { t } = await getT();
+  const { t, locale } = await getT();
   // Un seul appel d'annonces (les autres rails sont dérivés) pour soulager
   // le serveur Django de dev (mono-process + N+1 sur les notes).
   const [stats, all, categories, producerData, events, countriesActivity] =
@@ -37,10 +37,10 @@ export default async function HomePage() {
         annonces_actives: 0,
         pays_actifs: 0,
       })),
-      getAnnouncements({ sort: "recent", limit: 24 }).catch(() => []),
-      getCategories().catch(() => []),
-      getProducerOfMonth().catch(() => ({ producer: null, featured: null })),
-      getEvents(3).catch(() => []),
+      getAnnouncements({ sort: "recent", limit: 24 }, locale).catch(() => []),
+      getCategories(locale).catch(() => []),
+      getProducerOfMonth(locale).catch(() => ({ producer: null, featured: null })),
+      getEvents(3, locale).catch(() => []),
       getCountriesActivity().catch(() => ({ counts: {} })),
     ]);
 

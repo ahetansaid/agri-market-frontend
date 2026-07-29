@@ -25,19 +25,22 @@ export default async function AnnouncementsPage({
   searchParams: Promise<Search>;
 }) {
   const params = await searchParams;
-  const { t } = await getT();
+  const { t, locale } = await getT();
 
   const [annonces, categories] = await Promise.all([
-    getAnnouncements({
-      q: params.q,
-      type: params.type,
-      category: params.category ? Number(params.category) : undefined,
-      country: params.country,
-      bio: params.bio === "1",
-      sort:
-        (params.sort as "recent" | "popular" | "old" | undefined) ?? "recent",
-    }).catch(() => []),
-    getCategories().catch(() => []),
+    getAnnouncements(
+      {
+        q: params.q,
+        type: params.type,
+        category: params.category ? Number(params.category) : undefined,
+        country: params.country,
+        bio: params.bio === "1",
+        sort:
+          (params.sort as "recent" | "popular" | "old" | undefined) ?? "recent",
+      },
+      locale
+    ).catch(() => []),
+    getCategories(locale).catch(() => []),
   ]);
 
   const activeFilters = [

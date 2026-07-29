@@ -78,10 +78,19 @@ export interface CountriesActivity {
 // FETCHERS
 // ============================================================
 
-async function fetchJson<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
+async function fetchJson<T>(path: string, locale?: string): Promise<T> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  let url = `${API_URL}${path}`;
+  if (locale) {
+    // Django lit la langue via Accept-Language (LocaleMiddleware + modeltranslation,
+    // fallback FR). Le param _lang (ignoré côté Django) sert uniquement à obtenir
+    // une clé de cache Next distincte par langue.
+    headers["Accept-Language"] = locale;
+    url += (path.includes("?") ? "&" : "?") + "_lang=" + locale;
+  }
+  const res = await fetch(url, {
     next: { revalidate: 60 }, // ISR cache 60s
-    headers: { "Content-Type": "application/json" },
+    headers,
     // Évite tout blocage (build Vercel / SSR) si l'API est lente ou injoignable.
     signal: AbortSignal.timeout(10000),
   });
@@ -99,23 +108,27 @@ export async function getCountriesActivity(): Promise<CountriesActivity> {
   return fetchJson<CountriesActivity>("/api/countries/activity/");
 }
 
-export async function getCategories(): Promise<Category[]> {
+export async function getCategories(locale?: string): Promise<Category[]> {
   const data = await fetchJson<{ results?: Category[] } | Category[]>(
-    "/api/categories/"
+    "/api/categories/",
+    locale
   );
   // DRF ViewSet with pagination retourne { results: [] } sinon [] direct
   return Array.isArray(data) ? data : data.results || [];
 }
 
-export async function getAnnouncements(params?: {
-  q?: string;
-  type?: string;
-  category?: number;
-  country?: string;
-  bio?: boolean;
-  sort?: "recent" | "popular" | "old";
-  limit?: number;
-}): Promise<Announcement[]> {
+export async function getAnnouncements(
+  params?: {
+    q?: string;
+    type?: string;
+    category?: number;
+    country?: string;
+    bio?: boolean;
+    sort?: "recent" | "popular" | "old";
+    limit?: number;
+  },
+  locale?: string
+): Promise<Announcement[]> {
   const search = new URLSearchParams();
   if (params?.q) search.set("q", params.q);
   if (params?.type) search.set("type", params.type);
@@ -127,15 +140,16 @@ export async function getAnnouncements(params?: {
   const qs = search.toString();
   const data = await fetchJson<
     { results?: Announcement[] } | Announcement[]
-  >(`/api/announcements/${qs ? "?" + qs : ""}`);
+  >(`/api/announcements/${qs ? "?" + qs : ""}`, locale);
   const list = Array.isArray(data) ? data : data.results || [];
   return params?.limit ? list.slice(0, params.limit) : list;
 }
 
 export async function getAnnouncementDetail(
-  id: number
+  id: number,
+  locale?: string
 ): Promise<AnnouncementDetail> {
-  return fetchJson<AnnouncementDetail>(`/api/announcements/${id}/`);
+  return fetchJson<AnnouncementDetail>(`/api/announcements/${id}/`, locale);
 }
 
 // ============================================================
@@ -161,8 +175,10 @@ export interface ProducerOfMonth {
   featured: Announcement | null;
 }
 
-export async function getProducerOfMonth(): Promise<ProducerOfMonth> {
-  return fetchJson<ProducerOfMonth>("/api/producer-of-month/");
+export async function getProducerOfMonth(
+  locale?: string
+): Promise<ProducerOfMonth> {
+  return fetchJson<ProducerOfMonth>("/api/producer-of-month/", locale);
 }
 
 // ============================================================
@@ -177,9 +193,12 @@ export interface SpotlightCategory {
   subcategories: SubCategory[];
 }
 
-export async function getSpotlightCategory(): Promise<SpotlightCategory | null> {
+export async function getSpotlightCategory(
+  locale?: string
+): Promise<SpotlightCategory | null> {
   const data = await fetchJson<SpotlightCategory | null>(
-    "/api/spotlight-category/"
+    "/api/spotlight-category/",
+    locale
   );
   return data;
 }
@@ -203,9 +222,13 @@ export interface EventItem {
   prochain_evenement: boolean;
 }
 
-export async function getEvents(limit?: number): Promise<EventItem[]> {
+export async function getEvents(
+  limit?: number,
+  locale?: string
+): Promise<EventItem[]> {
   const data = await fetchJson<{ results?: EventItem[] } | EventItem[]>(
-    "/api/evenements/"
+    "/api/evenements/",
+    locale
   );
   const list = Array.isArray(data) ? data : data.results || [];
   // Les événements à venir d'abord, puis les plus récents
@@ -247,10 +270,14 @@ export interface EventDetail extends EventItem {
   } | null;
 }
 
-export async function getEventDetail(slug: string): Promise<EventDetail | null> {
+export async function getEventDetail(
+  slug: string,
+  locale?: string
+): Promise<EventDetail | null> {
   try {
     return await fetchJson<EventDetail>(
-      `/api/evenements/${encodeURIComponent(slug)}/`
+      `/api/evenements/${encodeURIComponent(slug)}/`,
+      locale
     );
   } catch {
     return null;

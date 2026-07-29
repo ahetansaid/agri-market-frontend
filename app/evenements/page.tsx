@@ -103,7 +103,7 @@ function EventCard({
 
 export default async function EvenementsPage() {
   const { t, locale } = await getT();
-  const events = await getEvents().catch(() => []);
+  const events = await getEvents(undefined, locale).catch(() => []);
   const upcoming = events.filter((e) => e.prochain_evenement);
   const past = events.filter((e) => !e.prochain_evenement);
 

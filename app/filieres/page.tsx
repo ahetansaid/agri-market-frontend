@@ -13,7 +13,7 @@ export default async function FilieresPage() {
   const { t, locale } = await getT();
   let categories: Category[] = [];
   try {
-    categories = await getCategories();
+    categories = await getCategories(locale);
   } catch {
     categories = [];
   }

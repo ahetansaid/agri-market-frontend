@@ -43,7 +43,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const { t, locale } = await getT();
-  const ev = await getEventDetail(slug);
+  const ev = await getEventDetail(slug, locale);
   if (!ev) return { title: t("evt.notFound") };
   return {
     title: ev.titre,
@@ -58,7 +58,7 @@ export default async function EvenementDetailPage({
 }) {
   const { slug } = await params;
   const { t, locale } = await getT();
-  const ev = await getEventDetail(slug);
+  const ev = await getEventDetail(slug, locale);
   if (!ev) notFound();
 
   const nbQuestions =

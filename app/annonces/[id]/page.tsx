@@ -42,20 +42,26 @@ export default async function DetailPage({
   const annonceId = Number(id);
   if (!Number.isFinite(annonceId)) notFound();
 
-  const annonce = await getAnnouncementDetail(annonceId).catch(() => null);
+  const { t, locale } = await getT();
+
+  const annonce = await getAnnouncementDetail(annonceId, locale).catch(
+    () => null
+  );
   if (!annonce) notFound();
 
-  const similar = await getAnnouncements({
-    sort: "recent",
-    limit: 4,
-  }).catch(() => []);
+  const similar = await getAnnouncements(
+    {
+      sort: "recent",
+      limit: 4,
+    },
+    locale
+  ).catch(() => []);
   const similarFiltered = similar.filter((a) => a.id !== annonce.id).slice(0, 4);
-  const { t } = await getT();
 
   const TypeIcon = typeIconMap[annonce.type] || Package;
 
   const publishedDate = new Date(annonce.published_at).toLocaleDateString(
-    "fr-FR",
+    locale,
     { day: "numeric", month: "long", year: "numeric" }
   );
 

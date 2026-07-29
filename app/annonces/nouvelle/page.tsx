@@ -36,7 +36,7 @@ const PAYS = [
 
 export default function PublishPage() {
   const { user, isLoading } = useAuth();
-  const { t } = useT();
+  const { t, locale } = useT();
   const [categories, setCategories] = useState<Category[]>([]);
   const [type, setType] = useState("vente");
   const [categoryId, setCategoryId] = useState("");
@@ -45,8 +45,8 @@ export default function PublishPage() {
   const [done, setDone] = useState<{ reference: string; title: string } | null>(null);
 
   useEffect(() => {
-    getCategories().then(setCategories).catch(() => {});
-  }, []);
+    getCategories(locale).then(setCategories).catch(() => {});
+  }, [locale]);
 
   const selectedCat = categories.find((c) => String(c.id) === categoryId);
   const subcats = selectedCat?.subcategories ?? [];
