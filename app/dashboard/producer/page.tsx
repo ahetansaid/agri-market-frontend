@@ -22,9 +22,11 @@ import {
   type MyRatingsPayload,
 } from "@/lib/auth";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/lib/i18n/client";
 
 export default function ProducerDashboard() {
   const { user } = useAuth();
+  const { t } = useT();
   const [anns, setAnns] = useState<MyAnnouncementsPayload | null>(null);
   const [ratings, setRatings] = useState<MyRatingsPayload | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,21 +49,21 @@ export default function ProducerDashboard() {
       <section className="mb-8 grid gap-4 grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={Package}
-          label="Annonces actives"
+          label={t("dash.pStatActive")}
           value={anns?.counts.approved ?? 0}
           loading={loading}
           tone="brand"
         />
         <StatCard
           icon={Clock}
-          label="En validation"
+          label={t("dash.pStatPending")}
           value={anns?.counts.pending ?? 0}
           loading={loading}
           tone="harvest"
         />
         <StatCard
           icon={Star}
-          label="Note moyenne"
+          label={t("dash.pStatRating")}
           value={
             ratings?.summary.avg !== null && ratings?.summary.avg !== undefined
               ? ratings.summary.avg
@@ -69,17 +71,17 @@ export default function ProducerDashboard() {
           }
           sub={
             ratings?.summary.count
-              ? `${ratings.summary.count} avis`
-              : "Aucun avis"
+              ? `${ratings.summary.count} ${t("dash.reviews")}`
+              : t("dash.noReviews")
           }
           loading={loading}
           tone="gold"
         />
         <StatCard
           icon={TrendingUp}
-          label="Vues"
+          label={t("dash.views")}
           value="—"
-          sub="À venir"
+          sub={t("dash.soon")}
           loading={false}
           tone="sky"
         />
@@ -92,10 +94,10 @@ export default function ProducerDashboard() {
           <header className="flex items-center justify-between border-b border-border px-6 py-5">
             <div>
               <h2 className="font-display text-xl font-semibold tracking-tight">
-                Vos annonces récentes
+                {t("dash.recentListings")}
               </h2>
               <p className="mt-0.5 text-sm text-muted-foreground">
-                Aperçu de vos publications les plus récentes.
+                {t("dash.recentListingsSub")}
               </p>
             </div>
             <Link
@@ -103,22 +105,22 @@ export default function ProducerDashboard() {
               className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:shadow-md transition"
             >
               <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
-              Publier
+              {t("qa.publish")}
             </Link>
           </header>
           <div>
             {loading ? (
               <RecentSkeleton />
             ) : anns && anns.counts.total > 0 ? (
-              <RecentList anns={anns} />
+              <RecentList anns={anns} t={t} />
             ) : (
               <EmptyState
                 icon={Package}
-                title="Aucune annonce publiée pour l'instant"
-                desc="Publiez votre première annonce en moins de 3 minutes."
+                title={t("dash.emptyTitle")}
+                desc={t("dash.emptyDesc")}
                 cta={{
                   href: "/annonces/nouvelle",
-                  label: "Publier une annonce",
+                  label: t("nav.publish"),
                 }}
               />
             )}
@@ -134,7 +136,7 @@ export default function ProducerDashboard() {
                 className="h-4 w-4 fill-amber-400 text-amber-400"
                 strokeWidth={0}
               />
-              Vos derniers avis
+              {t("dash.latestReviews")}
             </h3>
             <div className="mt-4">
               {loading ? (
@@ -184,8 +186,7 @@ export default function ProducerDashboard() {
                 </ul>
               ) : (
                 <p className="text-sm italic text-white/50">
-                  Aucun avis pour l&apos;instant. Concluez votre première
-                  transaction pour recevoir vos premiers avis.
+                  {t("dash.noReviewsLong")}
                 </p>
               )}
             </div>
@@ -193,7 +194,7 @@ export default function ProducerDashboard() {
               href="/dashboard/producer/ratings"
               className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-brand-300 hover:text-brand-200"
             >
-              Voir tous les avis
+              {t("dash.seeAllReviews")}
               <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -204,20 +205,20 @@ export default function ProducerDashboard() {
       <section className="mt-8 grid gap-4 sm:grid-cols-3">
         <QuickAction
           icon={Package}
-          title="Publier une annonce"
-          desc="Ajoutez un produit à votre catalogue en 3 min."
+          title={t("nav.publish")}
+          desc={t("dash.qaPublishDesc")}
           href="/annonces/nouvelle"
         />
         <QuickAction
           icon={MessageCircle}
-          title="Messagerie"
-          desc="Répondez aux acheteurs intéressés."
+          title={t("dash.messaging")}
+          desc={t("dash.qaMsgDesc")}
           href="/messages"
         />
         <QuickAction
           icon={CheckCircle2}
-          title="Certifications"
-          desc="Ajoutez vos certifications bio, coopérative..."
+          title={t("dash.certifications")}
+          desc={t("dash.qaCertDesc")}
           href="/dashboard/producer/profile"
         />
       </section>
@@ -299,7 +300,13 @@ function RecentSkeleton() {
   );
 }
 
-function RecentList({ anns }: { anns: MyAnnouncementsPayload }) {
+function RecentList({
+  anns,
+  t,
+}: {
+  anns: MyAnnouncementsPayload;
+  t: (key: string) => string;
+}) {
   const all = [
     ...(anns.approved as { id: number; title: string; type_display: string; image_url: string | null; quantity: number | null; unit: string | null }[]).map(
       (a) => ({ ...a, status: "approved" as const })
@@ -318,27 +325,27 @@ function RecentList({ anns }: { anns: MyAnnouncementsPayload }) {
   const statusStyles = {
     approved: {
       dot: "bg-harvest-500",
-      label: "En ligne",
+      label: t("dash.stOnline"),
       color: "text-harvest-700",
     },
     pending: {
       dot: "bg-amber-500",
-      label: "En validation",
+      label: t("dash.pStatPending"),
       color: "text-amber-700",
     },
     draft: {
       dot: "bg-sand-400",
-      label: "Brouillon",
+      label: t("dash.stDraft"),
       color: "text-sand-600",
     },
     rejected: {
       dot: "bg-destructive",
-      label: "Rejetée",
+      label: t("dash.stRejected"),
       color: "text-destructive",
     },
     expired: {
       dot: "bg-sand-500",
-      label: "Expirée",
+      label: t("dash.stExpired"),
       color: "text-sand-600",
     },
   };
@@ -440,6 +447,7 @@ function QuickAction({
   desc: string;
   href: string;
 }) {
+  const { t } = useT();
   return (
     <Link
       href={href}
@@ -453,7 +461,7 @@ function QuickAction({
         <h3 className="font-display font-semibold tracking-tight">{title}</h3>
         <p className="mt-1 text-xs text-muted-foreground">{desc}</p>
         <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-brand-700 transition group-hover:gap-2">
-          Y aller
+          {t("dash.goThere")}
           <ArrowRight className="h-3 w-3" />
         </div>
       </div>

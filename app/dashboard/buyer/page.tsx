@@ -13,9 +13,11 @@ import {
 } from "lucide-react";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/lib/i18n/client";
 
 export default function BuyerDashboard() {
   const { user } = useAuth();
+  const { t, locale } = useT();
 
   return (
     <DashboardShell role="buyer">
@@ -30,23 +32,23 @@ export default function BuyerDashboard() {
           <div>
             <span className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/60 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-700 ring-1 ring-brand-200 backdrop-blur">
               <Sparkles className="h-3 w-3" strokeWidth={2.5} />
-              Espace acheteur
+              {t("dash.buyerSpace")}
             </span>
             <h2 className="font-display text-3xl font-semibold tracking-tight">
-              Prêt à sourcer,{" "}
+              {t("dash.bReady")}{" "}
               <em className="italic font-normal bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-transparent">
                 {user?.first_name || user?.username} ?
               </em>
             </h2>
             <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-              Explorez 54 pays de producteurs vérifiés. Sans intermédiaire.
+              {t("dash.bSub")}
             </p>
           </div>
           <Link
             href="/annonces"
             className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:-translate-y-0.5"
           >
-            Explorer le marché
+            {t("dash.exploreMarket")}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -56,25 +58,25 @@ export default function BuyerDashboard() {
       <section className="mb-8 grid gap-4 grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={Search}
-          label="Recherches sauvées"
+          label={t("dash.bStatSearches")}
           value={0}
           tone="brand"
         />
         <StatCard
           icon={ShoppingBag}
-          label="Favoris"
+          label={t("dash.bStatFavorites")}
           value={0}
           tone="harvest"
         />
         <StatCard
           icon={MessageCircle}
-          label="Conversations"
+          label={t("dash.bStatConversations")}
           value={0}
           tone="sky"
         />
         <StatCard
           icon={Bell}
-          label="Alertes actives"
+          label={t("dash.bStatAlerts")}
           value={0}
           tone="gold"
         />
@@ -85,10 +87,10 @@ export default function BuyerDashboard() {
         {/* Placeholder : saved searches / recos */}
         <div className="rounded-3xl bg-card ring-1 ring-border shadow-sm p-8">
           <h2 className="font-display text-xl font-semibold tracking-tight">
-            Recommandations pour vous
+            {t("dash.bRecos")}
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Basées sur vos recherches et vos favoris.
+            {t("dash.bRecosSub")}
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -131,7 +133,7 @@ export default function BuyerDashboard() {
             href="/annonces"
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-sand-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600"
           >
-            Voir toutes les annonces
+            {t("dash.bSeeAll")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -141,14 +143,14 @@ export default function BuyerDashboard() {
           <div className="pointer-events-none absolute -top-10 -right-10 h-40 w-40 rounded-full bg-brand-500/25 blur-2xl" />
           <div className="relative">
             <h3 className="font-display text-lg font-semibold">
-              Votre profil
+              {t("dash.bYourProfile")}
             </h3>
             <div className="mt-3 space-y-2 text-sm">
-              <ProfileRow label="Nom" value={user?.display_name || "—"} />
+              <ProfileRow label={t("dash.rowName")} value={user?.display_name || "—"} />
               <ProfileRow label="Email" value={user?.email || "—"} />
               {user?.country_name && (
                 <ProfileRow
-                  label="Pays"
+                  label={t("dash.rowCountry")}
                   value={
                     <span className="inline-flex items-center gap-1">
                       <MapPin className="h-3 w-3 text-brand-400" />
@@ -157,12 +159,12 @@ export default function BuyerDashboard() {
                   }
                 />
               )}
-              {user?.ville && <ProfileRow label="Ville" value={user.ville} />}
+              {user?.ville && <ProfileRow label={t("form.city")} value={user.ville} />}
               <ProfileRow
-                label="Membre depuis"
+                label={t("dash.memberSince")}
                 value={
                   user?.date_joined
-                    ? new Date(user.date_joined).toLocaleDateString("fr-FR", {
+                    ? new Date(user.date_joined).toLocaleDateString(locale, {
                         month: "long",
                         year: "numeric",
                       })
@@ -174,7 +176,7 @@ export default function BuyerDashboard() {
               href="/dashboard/buyer/profile"
               className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-brand-300 hover:text-brand-200"
             >
-              Compléter mon profil
+              {t("dash.completeProfile")}
               <ArrowRight className="h-3 w-3" />
             </Link>
           </div>

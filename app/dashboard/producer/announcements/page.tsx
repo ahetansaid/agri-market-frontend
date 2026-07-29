@@ -18,26 +18,28 @@ import {
   type MyAnnItem,
 } from "@/lib/auth";
 import { useAuth } from "@/lib/auth-context";
+import { useT } from "@/lib/i18n/client";
 
 type Group = {
   key: keyof MyAnnouncementsPayload;
-  label: string;
+  labelKey: string;
   icon: typeof Package;
   dot: string;
   color: string;
 };
 
 const GROUPS: Group[] = [
-  { key: "approved", label: "En ligne", icon: CheckCircle2, dot: "bg-harvest-500", color: "text-harvest-700" },
-  { key: "pending_first", label: "En validation", icon: Clock, dot: "bg-amber-500", color: "text-amber-700" },
-  { key: "pending_second", label: "En validation (2)", icon: Clock, dot: "bg-amber-500", color: "text-amber-700" },
-  { key: "draft", label: "Brouillons", icon: FileText, dot: "bg-sand-400", color: "text-sand-600" },
-  { key: "rejected", label: "Rejetées", icon: XCircle, dot: "bg-destructive", color: "text-destructive" },
-  { key: "expired", label: "Expirées", icon: XCircle, dot: "bg-sand-500", color: "text-sand-600" },
+  { key: "approved", labelKey: "dash.stOnline", icon: CheckCircle2, dot: "bg-harvest-500", color: "text-harvest-700" },
+  { key: "pending_first", labelKey: "dash.pStatPending", icon: Clock, dot: "bg-amber-500", color: "text-amber-700" },
+  { key: "pending_second", labelKey: "dash.pending2", icon: Clock, dot: "bg-amber-500", color: "text-amber-700" },
+  { key: "draft", labelKey: "dash.draftsPlural", icon: FileText, dot: "bg-sand-400", color: "text-sand-600" },
+  { key: "rejected", labelKey: "dash.rejectedPlural", icon: XCircle, dot: "bg-destructive", color: "text-destructive" },
+  { key: "expired", labelKey: "dash.expiredPlural", icon: XCircle, dot: "bg-sand-500", color: "text-sand-600" },
 ];
 
 export default function MyAnnouncementsPage() {
   const { user } = useAuth();
+  const { t } = useT();
   const [data, setData] = useState<MyAnnouncementsPayload | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -56,13 +58,13 @@ export default function MyAnnouncementsPage() {
       <div className="mb-8 flex items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-            Mes{" "}
+            {t("dash.myList1")}{" "}
             <em className="italic font-normal bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-transparent">
-              annonces
+              {t("dash.myList2")}
             </em>
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Gérez toutes vos publications, tous statuts confondus.
+            {t("dash.myListSub")}
           </p>
         </div>
         <Link
@@ -70,7 +72,7 @@ export default function MyAnnouncementsPage() {
           className="inline-flex shrink-0 items-center gap-2 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:-translate-y-0.5"
         >
           <Plus className="h-4 w-4" strokeWidth={2.5} />
-          Publier
+          {t("qa.publish")}
         </Link>
       </div>
 
@@ -86,17 +88,17 @@ export default function MyAnnouncementsPage() {
             <Package className="h-8 w-8" strokeWidth={1.5} />
           </div>
           <h2 className="font-display text-xl font-semibold">
-            Aucune annonce publiée
+            {t("dash.noListings")}
           </h2>
           <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-            Publiez votre première annonce en moins de 3 minutes.
+            {t("dash.emptyDesc")}
           </p>
           <Link
             href="/annonces/nouvelle"
             className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg"
           >
             <Plus className="h-4 w-4" />
-            Publier une annonce
+            {t("nav.publish")}
           </Link>
         </div>
       ) : (
@@ -108,7 +110,7 @@ export default function MyAnnouncementsPage() {
               <section key={g.key}>
                 <h2 className={`mb-3 inline-flex items-center gap-2 text-sm font-bold ${g.color}`}>
                   <span className={`h-2 w-2 rounded-full ${g.dot}`} />
-                  {g.label}
+                  {t(g.labelKey)}
                   <span className="text-muted-foreground">({items.length})</span>
                 </h2>
                 <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
