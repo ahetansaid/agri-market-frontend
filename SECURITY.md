@@ -200,9 +200,9 @@ non-énumération sur le reset password.
 | B2 | `sanitize_html()` défini mais jamais branché (descriptions événements) | Élevée | ✅ Corrigé (assaini en sortie API) |
 | B3 | Proxy IA sans throttle dédié (abus de coût) | Moyenne | ✅ Corrigé (`ai 12/min`) |
 | B4 | Docs API exposées publiquement en prod | Faible | ✅ Corrigé (dev/opt-in only) |
-| B5 | Énumération d'utilisateurs à l'inscription | Moyenne | ⏳ En attente (change le flux UX) |
+| B5 | Énumération d'utilisateurs à l'inscription | Moyenne | ✅ Corrigé (flux non-révélateur + email info) |
 | B6 | 2FA staff contournable via flux JWT | Moyenne | ⏳ En attente |
-| B7 | Validateurs d'upload absents sur image annonce/profil | Faible | ⏳ En attente |
+| B7 | Validateurs d'upload absents sur image annonce/profil | Faible | ✅ Corrigé (validate_image_upload) |
 | B8 | Origines CORS `localhost` en prod ; DB `sslmode=require` | Faible | ⏳ Mineur |
 | B9 | `django-ckeditor` = CKEditor 4.22.1 (XSS non corrigées) | Moyenne | ⏳ Migrer vers CKEditor 5 ; sanitiser en attendant |
 | F1 | Aucun en-tête de sécurité (CSP, HSTS, X-Frame-Options…) | Élevée | ✅ Corrigé |
