@@ -6,18 +6,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { Loader2, CheckCircle2, XCircle, ArrowRight } from "lucide-react";
 import { activateAccount } from "@/lib/auth";
+import { useT } from "@/lib/i18n/client";
 
 export default function ActivatePage() {
   const params = useParams<{ uid: string; token: string }>();
+  const { t } = useT();
   const [state, setState] = useState<"loading" | "ok" | "error">("loading");
-  const [msg, setMsg] = useState("Activation de votre compte…");
+  const [msg, setMsg] = useState(t("activate.loading"));
 
   useEffect(() => {
     const uid = params?.uid as string | undefined;
     const token = params?.token as string | undefined;
     if (!uid || !token) {
       setState("error");
-      setMsg("Lien d'activation invalide.");
+      setMsg(t("activate.invalidLink"));
       return;
     }
     activateAccount(uid, token)
@@ -27,9 +29,9 @@ export default function ActivatePage() {
       })
       .catch((e) => {
         setState("error");
-        setMsg(e instanceof Error ? e.message : "Activation impossible.");
+        setMsg(e instanceof Error ? e.message : t("activate.failed"));
       });
-  }, [params]);
+  }, [params, t]);
 
   return (
     <main className="grid min-h-screen place-items-center bg-sand-50 px-6">
@@ -62,7 +64,7 @@ export default function ActivatePage() {
               <CheckCircle2 className="h-8 w-8" strokeWidth={2} />
             </div>
             <h1 className="font-display text-2xl font-semibold text-harvest-800">
-              Compte activé !
+              {t("activate.success")}
             </h1>
             <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
               {msg}
@@ -71,7 +73,7 @@ export default function ActivatePage() {
               href="/login"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-brand-500 to-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/25 transition hover:-translate-y-0.5"
             >
-              Se connecter
+              {t("action.login")}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </>
@@ -83,23 +85,23 @@ export default function ActivatePage() {
               <XCircle className="h-8 w-8" strokeWidth={2} />
             </div>
             <h1 className="font-display text-2xl font-semibold">
-              Lien invalide
+              {t("activate.invalidTitle")}
             </h1>
             <p className="mx-auto mt-2 max-w-sm text-sm text-muted-foreground">
-              {msg} Le lien a peut-être expiré ou déjà été utilisé.
+              {msg} {t("activate.expiredHint")}
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <Link
                 href="/register"
                 className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold transition hover:bg-secondary"
               >
-                Recommencer l&apos;inscription
+                {t("activate.retry")}
               </Link>
               <Link
                 href="/login"
                 className="inline-flex items-center gap-2 rounded-full bg-sand-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600"
               >
-                Se connecter
+                {t("action.login")}
               </Link>
             </div>
           </>

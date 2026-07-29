@@ -14,10 +14,12 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
+import { useT } from "@/lib/i18n/client";
 
 export default function PasswordResetConfirmPage() {
   const params = useParams<{ uid: string; token: string }>();
   const router = useRouter();
+  const { t } = useT();
   const uid = params?.uid ?? "";
   const token = params?.token ?? "";
 
@@ -32,7 +34,7 @@ export default function PasswordResetConfirmPage() {
     e.preventDefault();
     setError(null);
     if (password !== confirm) {
-      setError("Les mots de passe ne correspondent pas.");
+      setError(t("reset.mismatch"));
       return;
     }
     setLoading(true);
@@ -42,7 +44,7 @@ export default function PasswordResetConfirmPage() {
       setTimeout(() => router.push("/login"), 2000);
     } catch (err) {
       setError(
-        err instanceof AuthError ? err.message : "Réinitialisation impossible."
+        err instanceof AuthError ? err.message : t("reset.confirmFailed")
       );
     } finally {
       setLoading(false);
@@ -61,16 +63,16 @@ export default function PasswordResetConfirmPage() {
                   <CheckCircle2 className="h-7 w-7" strokeWidth={2} />
                 </div>
                 <h1 className="font-display text-2xl font-semibold tracking-tight">
-                  Mot de passe modifié
+                  {t("reset.changed")}
                 </h1>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Vous allez être redirigé vers la connexion…
+                  {t("reset.redirecting")}
                 </p>
                 <Link
                   href="/login"
                   className="mt-6 inline-flex items-center gap-2 rounded-full bg-sand-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600"
                 >
-                  Se connecter
+                  {t("action.login")}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -81,10 +83,10 @@ export default function PasswordResetConfirmPage() {
                     <LockKeyhole className="h-7 w-7" strokeWidth={1.75} />
                   </div>
                   <h1 className="font-display text-2xl font-semibold tracking-tight">
-                    Nouveau mot de passe
+                    {t("reset.newTitle")}
                   </h1>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Choisissez un nouveau mot de passe pour votre compte.
+                    {t("reset.newSub")}
                   </p>
                 </div>
 
@@ -97,7 +99,7 @@ export default function PasswordResetConfirmPage() {
                 <form onSubmit={submit} className="space-y-4">
                   <div>
                     <label className="mb-1.5 block text-sm font-semibold">
-                      Mot de passe
+                      {t("reset.pwdLabel")}
                     </label>
                     <div className="relative">
                       <input
@@ -105,13 +107,13 @@ export default function PasswordResetConfirmPage() {
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Au moins 10 caractères"
+                        placeholder={t("reset.pwdPlaceholder")}
                         className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-11 text-sm outline-none transition focus:border-brand-500 focus:ring-3 focus:ring-brand-500/15"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPwd((s) => !s)}
-                        aria-label={showPwd ? "Masquer" : "Afficher"}
+                        aria-label={showPwd ? t("reset.hide") : t("reset.show")}
                         className="absolute right-1 top-1/2 -translate-y-1/2 grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-secondary hover:text-foreground"
                       >
                         {showPwd ? (
@@ -124,14 +126,14 @@ export default function PasswordResetConfirmPage() {
                   </div>
                   <div>
                     <label className="mb-1.5 block text-sm font-semibold">
-                      Confirmer le mot de passe
+                      {t("reset.confirmLabel")}
                     </label>
                     <input
                       type={showPwd ? "text" : "password"}
                       required
                       value={confirm}
                       onChange={(e) => setConfirm(e.target.value)}
-                      placeholder="Répétez le mot de passe"
+                      placeholder={t("reset.confirmPlaceholder")}
                       className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-brand-500 focus:ring-3 focus:ring-brand-500/15"
                     />
                   </div>
@@ -143,7 +145,7 @@ export default function PasswordResetConfirmPage() {
                     {loading ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      "Réinitialiser"
+                      t("reset.reset")
                     )}
                   </button>
                 </form>

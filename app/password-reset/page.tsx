@@ -6,8 +6,10 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { requestPasswordReset, AuthError } from "@/lib/auth";
 import { KeyRound, ArrowLeft, Loader2, MailCheck } from "lucide-react";
+import { useT } from "@/lib/i18n/client";
 
 export default function PasswordResetPage() {
+  const { t } = useT();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -21,7 +23,7 @@ export default function PasswordResetPage() {
       await requestPasswordReset(email);
       setSent(true);
     } catch (err) {
-      setError(err instanceof AuthError ? err.message : "Demande impossible.");
+      setError(err instanceof AuthError ? err.message : t("reset.requestFailed"));
     } finally {
       setLoading(false);
     }
@@ -39,22 +41,21 @@ export default function PasswordResetPage() {
                   <MailCheck className="h-7 w-7" strokeWidth={2} />
                 </div>
                 <h1 className="font-display text-2xl font-semibold tracking-tight">
-                  Vérifiez votre email
+                  {t("reset.checkEmail")}
                 </h1>
                 <p className="mx-auto mt-3 max-w-sm text-sm text-muted-foreground">
-                  Si un compte existe pour <strong>{email}</strong>, un lien de
-                  réinitialisation vient d&apos;être envoyé. Cliquez dessus pour
-                  choisir un nouveau mot de passe.
+                  {t("reset.sentPre")} <strong>{email}</strong>
+                  {t("reset.sentPost")}
                 </p>
                 <Link
                   href="/login"
                   className="mt-6 inline-flex items-center gap-2 rounded-full bg-sand-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600"
                 >
                   <ArrowLeft className="h-4 w-4" />
-                  Retour à la connexion
+                  {t("reset.backToLogin")}
                 </Link>
                 <p className="mt-4 text-xs text-muted-foreground">
-                  Rien reçu ? Vérifiez vos spams.
+                  {t("reset.nothingReceived")}
                 </p>
               </div>
             ) : (
@@ -64,11 +65,10 @@ export default function PasswordResetPage() {
                     <KeyRound className="h-7 w-7" strokeWidth={1.75} />
                   </div>
                   <h1 className="font-display text-2xl font-semibold tracking-tight">
-                    Mot de passe oublié ?
+                    {t("reset.forgotTitle")}
                   </h1>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Entrez votre email : nous vous enverrons un lien pour
-                    réinitialiser votre mot de passe.
+                    {t("reset.forgotSub")}
                   </p>
                 </div>
 
@@ -105,7 +105,7 @@ export default function PasswordResetPage() {
                     {loading ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      "Envoyer le lien"
+                      t("reset.sendLink")
                     )}
                   </button>
                 </form>
@@ -115,7 +115,7 @@ export default function PasswordResetPage() {
                   className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:underline"
                 >
                   <ArrowLeft className="h-4 w-4" />
-                  Retour à la connexion
+                  {t("reset.backToLogin")}
                 </Link>
               </>
             )}

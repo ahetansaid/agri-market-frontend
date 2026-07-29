@@ -19,10 +19,12 @@ import {
   getProducerOfMonth,
   getEvents,
 } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  const { t } = await getT();
   // Un seul appel d'annonces (les autres rails sont dérivés) pour soulager
   // le serveur Django de dev (mono-process + N+1 sur les notes).
   const [stats, all, categories, producerData, events, countriesActivity] =
@@ -72,9 +74,9 @@ export default async function HomePage() {
         {/* Carrousel — Dernières annonces */}
         <ProductRail
           eyebrow="Marketplace"
-          title="Dernières"
-          accent="annonces"
-          description="Les produits fraîchement mis en ligne par les producteurs du continent."
+          title={t("home.railTitle")}
+          accent={t("word.listings")}
+          description={t("home.railDesc")}
           viewAllHref="/annonces?sort=recent"
           items={recent.slice(0, 12)}
         />
