@@ -105,8 +105,14 @@ Dernier audit : **2026-07-29** (frontend + backend). Audit précédent : 2026-07
 **Règles (frontend, `next.config.ts` — ajoutés le 2026-07-29)**
 - `Content-Security-Policy` : `default-src 'self'`, `object-src 'none'`,
   `frame-ancestors 'none'`, `base-uri 'self'`, `form-action 'self'`, sources
-  restreintes (dev assoupli pour le HMR). **Hardening cible : CSP à nonce**
-  (retirer `'unsafe-inline'` sur `script-src` via middleware).
+  restreintes (dev assoupli pour le HMR).
+- **CSP à nonce — évaluée puis écartée (2026-07-29).** La doc Next impose que
+  la CSP à nonce **force TOUTES les pages en rendu dynamique** → perte d'ISR et
+  de cache CDN, surcoût serveur, casse totale si la propagation du nonce échoue
+  (cette version de Next utilise la convention `proxy`, pas `middleware`, pour
+  le nonce). Mauvais rapport bénéfice/coût ici (le front assainit déjà le HTML,
+  pas d'`unsafe-eval` en prod). **Alternative si besoin de durcir : CSP par hash
+  (SRI, `experimental.sri` — garde le rendu statique), à tester en preview.**
 - `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`,
   `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`
   minimale, `Strict-Transport-Security` (prod), `poweredByHeader: false`.
