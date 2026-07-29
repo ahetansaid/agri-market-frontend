@@ -253,6 +253,7 @@ const fr: Dict = {
   "home.promo.cta": "Commencer",
   "home.railTitle": "Dernières",
   "home.railDesc": "Les produits fraîchement mis en ligne par les producteurs du continent.",
+  "word.loading": "Chargement…",
   // Dashboard producteur / acheteur
   "dash.pStatActive": "Annonces actives",
   "dash.pStatPending": "En validation",
@@ -689,6 +690,7 @@ const en: Dict = {
   "home.promo.cta": "Get started",
   "home.railTitle": "Latest",
   "home.railDesc": "Products freshly posted by producers across the continent.",
+  "word.loading": "Loading…",
   // Producer / buyer dashboard
   "dash.pStatActive": "Active listings",
   "dash.pStatPending": "In review",
@@ -1125,6 +1127,7 @@ const it: Dict = {
   "home.promo.cta": "Inizia",
   "home.railTitle": "Ultimi",
   "home.railDesc": "Prodotti appena pubblicati dai produttori del continente.",
+  "word.loading": "Caricamento…",
   // Dashboard produttore / acquirente
   "dash.pStatActive": "Annunci attivi",
   "dash.pStatPending": "In convalida",
