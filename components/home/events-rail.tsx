@@ -33,7 +33,10 @@ function formatRange(startISO: string, endISO: string): string {
 }
 
 export function EventsRail({ events }: { events: EventItem[] }) {
-  const { t } = useT();
+  const { t, locale } = useT();
+  const pickImg = (ev: EventItem) =>
+    (locale === "en" ? ev.image_en : locale === "it" ? ev.image_it : ev.image_fr) ||
+    ev.image_fr;
   if (!events.length) return null;
 
   return (
@@ -88,9 +91,9 @@ export function EventsRail({ events }: { events: EventItem[] }) {
               >
                 {/* Image */}
                 <div className="relative aspect-[580/360] overflow-hidden bg-sand-200">
-                  {ev.image_fr ? (
+                  {pickImg(ev) ? (
                     <Image
-                      src={ev.image_fr}
+                      src={pickImg(ev)!}
                       alt={ev.titre}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

@@ -67,6 +67,20 @@ export default async function EvenementDetailPage({
       0
     ) ?? 0;
 
+  // Image et description selon la langue active (fallback FR).
+  const img =
+    (locale === "en"
+      ? ev.image_en
+      : locale === "it"
+        ? ev.image_it
+        : ev.image_fr) || ev.image_fr;
+  const description =
+    (locale === "en"
+      ? ev.description_en
+      : locale === "it"
+        ? ev.description_it
+        : ev.description_fr) || ev.description_fr;
+
   return (
     <>
       <Header />
@@ -90,9 +104,9 @@ export default async function EvenementDetailPage({
             {/* Main */}
             <div>
               <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-sand-200 shadow-xl">
-                {ev.image_fr ? (
+                {img ? (
                   <Image
-                    src={ev.image_fr}
+                    src={img}
                     alt={ev.titre}
                     fill
                     sizes="(max-width: 1024px) 100vw, 60vw"
@@ -116,7 +130,7 @@ export default async function EvenementDetailPage({
                 </span>
               </div>
 
-              {ev.description_fr && (
+              {description && (
                 <section className="mt-6 rounded-3xl bg-card p-6 sm:p-8 shadow-sm ring-1 ring-border">
                   <h2 className="mb-5 flex items-center gap-2 font-display text-xl font-semibold tracking-tight">
                     <CalendarDays className="h-5 w-5 text-harvest-600" strokeWidth={2} />
@@ -124,7 +138,7 @@ export default async function EvenementDetailPage({
                   </h2>
                   <div
                     className="prose prose-sand max-w-none prose-a:text-harvest-700"
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(ev.description_fr) }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
                   />
                 </section>
               )}

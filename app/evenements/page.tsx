@@ -27,6 +27,13 @@ function formatRange(startISO: string, endISO: string, locale: string): string {
   return `${d1} ${m1} – ${d2} ${m2} ${y}`;
 }
 
+/** Image de l'événement selon la langue active (fallback FR). */
+function pickImg(ev: EventItem, locale: string): string | null {
+  const byLocale =
+    locale === "en" ? ev.image_en : locale === "it" ? ev.image_it : ev.image_fr;
+  return byLocale || ev.image_fr;
+}
+
 function EventCard({
   ev,
   t,
@@ -36,15 +43,16 @@ function EventCard({
   t: (key: string) => string;
   locale: string;
 }) {
+  const img = pickImg(ev, locale);
   return (
     <Link
       href={`/evenements/${ev.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition hover:-translate-y-1 hover:border-harvest-500/50 hover:shadow-xl hover:shadow-harvest-500/10"
     >
       <div className="relative aspect-[580/360] overflow-hidden bg-sand-200">
-        {ev.image_fr ? (
+        {img ? (
           <Image
-            src={ev.image_fr}
+            src={img}
             alt={ev.titre}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
