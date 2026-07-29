@@ -2,35 +2,40 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Partners } from "@/components/home/partners";
 import { getEvents, type EventItem } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Users, ArrowRight, MapPin, CalendarX } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-const MOIS = [
-  "janvier", "février", "mars", "avril", "mai", "juin",
-  "juillet", "août", "septembre", "octobre", "novembre", "décembre",
-];
-
-function formatRange(startISO: string, endISO: string): string {
+function formatRange(startISO: string, endISO: string, locale: string): string {
   const s = new Date(startISO);
   const e = new Date(endISO);
+  const mf = new Intl.DateTimeFormat(locale, { month: "long", timeZone: "UTC" });
   const sameMonth =
     s.getUTCFullYear() === e.getUTCFullYear() &&
     s.getUTCMonth() === e.getUTCMonth();
   const sameDay = sameMonth && s.getUTCDate() === e.getUTCDate();
   const d1 = s.getUTCDate();
   const d2 = e.getUTCDate();
-  const m1 = MOIS[s.getUTCMonth()];
-  const m2 = MOIS[e.getUTCMonth()];
+  const m1 = mf.format(s);
+  const m2 = mf.format(e);
   const y = e.getUTCFullYear();
   if (sameDay) return `${d1} ${m1} ${y}`;
   if (sameMonth) return `${d1} – ${d2} ${m1} ${y}`;
   return `${d1} ${m1} – ${d2} ${m2} ${y}`;
 }
 
-function EventCard({ ev }: { ev: EventItem }) {
+function EventCard({
+  ev,
+  t,
+  locale,
+}: {
+  ev: EventItem;
+  t: (key: string) => string;
+  locale: string;
+}) {
   return (
     <Link
       href={`/evenements/${ev.slug}`}
@@ -58,7 +63,7 @@ function EventCard({ ev }: { ev: EventItem }) {
               : "bg-white/90 text-sand-700"
           }`}
         >
-          {ev.prochain_evenement ? "À venir" : "Édition passée"}
+          {ev.prochain_evenement ? t("home.ev.upcoming") : t("home.ev.past")}
         </span>
         <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 text-xs font-bold text-sand-900 shadow-lg backdrop-blur-sm">
           <Users className="h-3 w-3 text-harvest-600" strokeWidth={2.5} />
@@ -68,7 +73,7 @@ function EventCard({ ev }: { ev: EventItem }) {
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-2 flex items-center gap-2 text-xs font-semibold text-harvest-700">
           <CalendarDays className="h-3.5 w-3.5" strokeWidth={2.5} />
-          {formatRange(ev.date_debut, ev.date_fin)}
+          {formatRange(ev.date_debut, ev.date_fin, locale)}
         </div>
         <h3 className="font-display line-clamp-2 text-lg font-semibold leading-snug tracking-tight text-foreground">
           {ev.titre}
@@ -76,10 +81,10 @@ function EventCard({ ev }: { ev: EventItem }) {
         <div className="mt-auto flex items-center justify-between gap-2 border-t border-border/60 pt-4">
           <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
             <MapPin className="h-3.5 w-3.5" strokeWidth={2} />
-            Salon B2B
+            {t("home.ev.b2b")}
           </span>
           <span className="inline-flex items-center gap-1 rounded-full bg-harvest-100/70 px-3 py-1 text-[11px] font-semibold text-harvest-700 transition group-hover:bg-harvest-600 group-hover:text-white">
-            Découvrir
+            {t("home.ev.discover")}
             <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" strokeWidth={2.5} />
           </span>
         </div>
@@ -89,6 +94,7 @@ function EventCard({ ev }: { ev: EventItem }) {
 }
 
 export default async function EvenementsPage() {
+  const { t, locale } = await getT();
   const events = await getEvents().catch(() => []);
   const upcoming = events.filter((e) => e.prochain_evenement);
   const past = events.filter((e) => !e.prochain_evenement);
@@ -106,19 +112,18 @@ export default async function EvenementsPage() {
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-harvest-400" />
               <span className="text-[10px] font-bold uppercase tracking-widest">
-                Rencontres & salons
+                {t("home.ev.eyebrow")}
               </span>
             </div>
             <h1 className="font-display text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl md:text-7xl">
-              Là où l&apos;Afrique agricole
+              {t("evt.title1")}
               <br />
               <em className="italic font-normal bg-gradient-to-br from-harvest-300 via-harvest-400 to-harvest-600 bg-clip-text text-transparent">
-                se rencontre.
+                {t("evt.title2")}
               </em>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-white/70">
-              Salons B2B, forums d&apos;investissement, rencontres filières.
-              Retrouvez producteurs, coopératives et acheteurs sur le terrain.
+              {t("evt.desc")}
             </p>
           </div>
         </section>
@@ -130,11 +135,10 @@ export default async function EvenementsPage() {
                 <CalendarX className="h-8 w-8" strokeWidth={1.5} />
               </div>
               <h3 className="font-display text-2xl font-semibold">
-                Aucun événement pour l&apos;instant
+                {t("evt.emptyTitle")}
               </h3>
               <p className="mt-2 mx-auto max-w-md text-sm text-muted-foreground">
-                Revenez bientôt — de nouveaux salons et rencontres sont publiés
-                régulièrement.
+                {t("evt.emptyDesc")}
               </p>
             </div>
           ) : (
@@ -142,14 +146,14 @@ export default async function EvenementsPage() {
               {upcoming.length > 0 && (
                 <section className="mb-16">
                   <h2 className="mb-8 font-display text-3xl font-semibold tracking-tight">
-                    À{" "}
+                    {t("evt.upcoming1")}{" "}
                     <em className="italic font-normal bg-gradient-to-br from-harvest-500 to-harvest-700 bg-clip-text text-transparent">
-                      venir
+                      {t("evt.upcoming2")}
                     </em>
                   </h2>
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {upcoming.map((ev) => (
-                      <EventCard key={ev.id} ev={ev} />
+                      <EventCard key={ev.id} ev={ev} t={t} locale={locale} />
                     ))}
                   </div>
                 </section>
@@ -158,11 +162,11 @@ export default async function EvenementsPage() {
               {past.length > 0 && (
                 <section>
                   <h2 className="mb-8 font-display text-3xl font-semibold tracking-tight text-muted-foreground">
-                    Éditions passées
+                    {t("evt.pastTitle")}
                   </h2>
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {past.map((ev) => (
-                      <EventCard key={ev.id} ev={ev} />
+                      <EventCard key={ev.id} ev={ev} t={t} locale={locale} />
                     ))}
                   </div>
                 </section>

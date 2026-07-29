@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getT } from "@/lib/i18n/server";
 
 const PARTNERS = [
   "/images/partenaires/ANOPACI_logo.jpg",
@@ -10,22 +11,22 @@ const PARTNERS = [
 ];
 
 /** Bande « Nos partenaires » — affichée sur la page Événements. */
-export function Partners() {
+export async function Partners() {
+  const { t } = await getT();
   return (
     <section className="border-t border-border/60 bg-sand-50">
       <div className="mx-auto max-w-6xl px-4 py-14 text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-widest text-harvest-700 shadow-sm ring-1 ring-border">
-          Ils nous font confiance
+          {t("evt.partnersEyebrow")}
         </span>
         <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-          Nos{" "}
+          {t("evt.partners1")}{" "}
           <em className="italic font-normal bg-gradient-to-br from-harvest-500 to-harvest-700 bg-clip-text text-transparent">
-            partenaires
+            {t("evt.partners2")}
           </em>
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-sm text-muted-foreground">
-          Institutions, coopératives et entreprises qui soutiennent
-          l&apos;agriculture africaine à nos côtés.
+          {t("evt.partnersDesc")}
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-4 sm:gap-6">

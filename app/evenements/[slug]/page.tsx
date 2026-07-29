@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { getEventDetail } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 import { sanitizeHtml } from "@/lib/sanitize";
 import {
   CalendarDays,
@@ -19,14 +20,13 @@ import {
 
 export const revalidate = 60;
 
-const MOIS = [
-  "janvier", "février", "mars", "avril", "mai", "juin",
-  "juillet", "août", "septembre", "octobre", "novembre", "décembre",
-];
-
-function fmt(iso: string): string {
+function fmt(iso: string, locale: string): string {
   const d = new Date(iso);
-  return `${d.getUTCDate()} ${MOIS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+  const month = new Intl.DateTimeFormat(locale, {
+    month: "long",
+    timeZone: "UTC",
+  }).format(d);
+  return `${d.getUTCDate()} ${month} ${d.getUTCFullYear()}`;
 }
 
 function fmtTime(iso: string): string {
@@ -42,11 +42,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const { t, locale } = await getT();
   const ev = await getEventDetail(slug);
-  if (!ev) return { title: "Événement introuvable" };
+  if (!ev) return { title: t("evt.notFound") };
   return {
     title: ev.titre,
-    description: `${ev.titre} — ${fmt(ev.date_debut)}. ${ev.nb_interesses} personnes intéressées.`,
+    description: `${ev.titre} — ${fmt(ev.date_debut, locale)}. ${ev.nb_interesses} ${t("evt.interested")}.`,
   };
 }
 
@@ -56,6 +57,7 @@ export default async function EvenementDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const { t, locale } = await getT();
   const ev = await getEventDetail(slug);
   if (!ev) notFound();
 
@@ -78,7 +80,7 @@ export default async function EvenementDetailPage({
             </Link>
             <ChevronRight className="h-3 w-3 text-sand-300" />
             <Link href="/evenements" className="hover:text-harvest-700">
-              Événements
+              {t("nav.evenements")}
             </Link>
             <ChevronRight className="h-3 w-3 text-sand-300" />
             <span className="font-medium text-foreground truncate">{ev.titre}</span>
@@ -110,7 +112,7 @@ export default async function EvenementDetailPage({
                       : "bg-white/90 text-sand-700"
                   }`}
                 >
-                  {ev.prochain_evenement ? "À venir" : "Édition passée"}
+                  {ev.prochain_evenement ? t("home.ev.upcoming") : t("home.ev.past")}
                 </span>
               </div>
 
@@ -118,7 +120,7 @@ export default async function EvenementDetailPage({
                 <section className="mt-6 rounded-3xl bg-card p-6 sm:p-8 shadow-sm ring-1 ring-border">
                   <h2 className="mb-5 flex items-center gap-2 font-display text-xl font-semibold tracking-tight">
                     <CalendarDays className="h-5 w-5 text-harvest-600" strokeWidth={2} />
-                    À propos de l&apos;événement
+                    {t("evt.about")}
                   </h2>
                   <div
                     className="prose prose-sand max-w-none prose-a:text-harvest-700"
@@ -140,12 +142,12 @@ export default async function EvenementDetailPage({
                     <CalendarDays className="mt-0.5 h-4 w-4 shrink-0 text-harvest-600" strokeWidth={2} />
                     <div>
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                        Dates
+                        {t("evt.dates")}
                       </dt>
                       <dd className="font-medium">
-                        {fmt(ev.date_debut)}
-                        {fmt(ev.date_debut) !== fmt(ev.date_fin) && (
-                          <> → {fmt(ev.date_fin)}</>
+                        {fmt(ev.date_debut, locale)}
+                        {fmt(ev.date_debut, locale) !== fmt(ev.date_fin, locale) && (
+                          <> → {fmt(ev.date_fin, locale)}</>
                         )}
                       </dd>
                     </div>
@@ -154,7 +156,7 @@ export default async function EvenementDetailPage({
                     <Clock className="mt-0.5 h-4 w-4 shrink-0 text-harvest-600" strokeWidth={2} />
                     <div>
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                        Horaire
+                        {t("evt.time")}
                       </dt>
                       <dd className="font-medium">
                         {fmtTime(ev.date_debut)} – {fmtTime(ev.date_fin)}
@@ -165,9 +167,9 @@ export default async function EvenementDetailPage({
                     <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-harvest-600" strokeWidth={2} />
                     <div>
                       <dt className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                        Format
+                        {t("evt.format")}
                       </dt>
-                      <dd className="font-medium">Salon B2B</dd>
+                      <dd className="font-medium">{t("home.ev.b2b")}</dd>
                     </div>
                   </div>
                 </dl>
@@ -183,7 +185,7 @@ export default async function EvenementDetailPage({
                       {ev.nb_interesses}
                     </div>
                     <div className="text-xs text-white/60">
-                      personnes intéressées
+                      {t("evt.interested")}
                     </div>
                   </div>
                 </div>
@@ -198,21 +200,20 @@ export default async function EvenementDetailPage({
                       className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-harvest-500 via-harvest-600 to-harvest-700 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-harvest-600/30 transition-all hover:-translate-y-0.5 hover:shadow-harvest-600/50"
                     >
                       <ClipboardList className="h-4 w-4" strokeWidth={2.5} />
-                      Manifester mon intérêt
+                      {t("evt.express")}
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                     {nbQuestions > 0 && (
                       <p className="text-center text-xs text-muted-foreground">
-                        Formulaire d&apos;inscription en {nbQuestions} question
-                        {nbQuestions > 1 ? "s" : ""}
+                        {t("evt.formPre")} {nbQuestions}{" "}
+                        {nbQuestions > 1 ? t("evt.questions") : t("evt.question")}
                       </p>
                     )}
                   </>
                 ) : (
                   <p className="inline-flex items-start gap-1.5 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4 shrink-0 text-sand-400" strokeWidth={2} />
-                    Cette édition est terminée. Restez à l&apos;affût des
-                    prochaines rencontres.
+                    {t("evt.ended")}
                   </p>
                 )}
               </div>
@@ -222,7 +223,7 @@ export default async function EvenementDetailPage({
                 className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold transition hover:border-harvest-300 hover:bg-harvest-100/40 hover:text-harvest-700"
               >
                 <ChevronRight className="h-4 w-4 rotate-180" />
-                Tous les événements
+                {t("home.ev.all")}
               </Link>
             </aside>
           </section>
