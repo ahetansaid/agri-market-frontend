@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { CalendarDays, Users, ArrowRight, MapPin } from "lucide-react";
 import type { EventItem } from "@/lib/api";
+import { useT } from "@/lib/i18n/client";
 
 const MOIS = [
   "janv.", "févr.", "mars", "avr.", "mai", "juin",
@@ -32,6 +33,7 @@ function formatRange(startISO: string, endISO: string): string {
 }
 
 export function EventsRail({ events }: { events: EventItem[] }) {
+  const { t } = useT();
   if (!events.length) return null;
 
   return (
@@ -51,12 +53,12 @@ export function EventsRail({ events }: { events: EventItem[] }) {
           <div>
             <span className="mb-3 inline-flex items-center gap-2 rounded-full bg-harvest-100 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-harvest-700 ring-1 ring-harvest-500/20">
               <CalendarDays className="h-3 w-3" strokeWidth={2.5} />
-              Rencontres & salons
+              {t("home.ev.eyebrow")}
             </span>
             <h2 className="font-display text-4xl font-medium tracking-tight sm:text-5xl">
-              Événements{" "}
+              {t("home.ev.title1")}{" "}
               <em className="italic font-normal bg-gradient-to-br from-harvest-500 to-harvest-700 bg-clip-text text-transparent">
-                à ne pas manquer.
+                {t("home.ev.title2")}
               </em>
             </h2>
           </div>
@@ -64,7 +66,7 @@ export function EventsRail({ events }: { events: EventItem[] }) {
             href="/evenements"
             className="group inline-flex items-center gap-2 rounded-full bg-sand-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-harvest-600"
           >
-            Tous les événements
+            {t("home.ev.all")}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </motion.header>
@@ -110,7 +112,7 @@ export function EventsRail({ events }: { events: EventItem[] }) {
                         : "bg-white/90 text-sand-700"
                     }`}
                   >
-                    {ev.prochain_evenement ? "À venir" : "Édition passée"}
+                    {ev.prochain_evenement ? t("home.ev.upcoming") : t("home.ev.past")}
                   </span>
 
                   {/* Intéressés */}
@@ -134,10 +136,10 @@ export function EventsRail({ events }: { events: EventItem[] }) {
                   <div className="mt-auto flex items-center justify-between gap-2 border-t border-border/60 pt-4">
                     <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
                       <MapPin className="h-3.5 w-3.5" strokeWidth={2} />
-                      Salon B2B
+                      {t("home.ev.b2b")}
                     </span>
                     <span className="inline-flex items-center gap-1 rounded-full bg-harvest-100/70 px-3 py-1 text-[11px] font-semibold text-harvest-700 transition group-hover:bg-harvest-600 group-hover:text-white">
-                      Découvrir
+                      {t("home.ev.discover")}
                       <ArrowRight
                         className="h-3 w-3 transition-transform group-hover:translate-x-0.5"
                         strokeWidth={2.5}

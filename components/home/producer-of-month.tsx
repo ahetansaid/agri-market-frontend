@@ -14,8 +14,10 @@ import {
   MapPin,
 } from "lucide-react";
 import type { ProducerOfMonth } from "@/lib/api";
+import { useT } from "@/lib/i18n/client";
 
 export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
+  const { t } = useT();
   if (!data.producer) return null;
   const { producer, featured } = data;
 
@@ -45,13 +47,13 @@ export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400 opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-500" />
             </span>
-            Producteur du mois
+            {t("home.pm.eyebrow")}
           </span>
           <h2 className="font-display text-4xl font-medium leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl">
-            Derrière chaque annonce,
+            {t("home.pm.title1")}
             <br />
             <em className="italic font-normal bg-gradient-to-br from-brand-500 via-brand-600 to-brand-800 bg-clip-text text-transparent">
-              un visage, une terre, une histoire.
+              {t("home.pm.title2")}
             </em>
           </h2>
         </motion.header>
@@ -155,9 +157,7 @@ export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
               >
                 &ldquo;
               </span>
-              Nos terres ont une histoire à raconter. Chaque récolte est un
-              dialogue entre la patience du producteur et la générosité du sol
-              africain.
+              {t("home.pm.quote")}
             </blockquote>
 
             {/* Mini stats */}
@@ -167,7 +167,7 @@ export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
                   {producer.transactions_count}
                 </div>
                 <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-                  Annonces
+                  {t("home.pm.listings")}
                 </div>
               </div>
               <div className="text-center">
@@ -175,7 +175,7 @@ export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
                   {producer.years_active || 1}
                 </div>
                 <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-                  {producer.years_active === 1 ? "An" : "Ans"}
+                  {producer.years_active === 1 ? t("home.pm.year") : t("home.pm.years")}
                 </div>
               </div>
               <div className="text-center">
@@ -188,8 +188,8 @@ export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
                 </div>
                 <div className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                   {producer.user_type === "entreprise"
-                    ? "Entreprise"
-                    : "Particulier"}
+                    ? t("home.pm.company")
+                    : t("home.pm.individual")}
                 </div>
               </div>
             </div>

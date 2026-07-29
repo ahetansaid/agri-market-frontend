@@ -2,8 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, BadgeCheck } from "lucide-react";
 import type { Announcement, Seller } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 
-export function TopProducers({ items }: { items: Announcement[] }) {
+export async function TopProducers({ items }: { items: Announcement[] }) {
   // Dédoublonne les vendeurs à partir des annonces, garde les mieux notés
   const map = new Map<number, Seller>();
   for (const a of items) {
@@ -15,24 +16,26 @@ export function TopProducers({ items }: { items: Announcement[] }) {
 
   if (producers.length < 3) return null;
 
+  const { t } = await getT();
+
   return (
     <section className="py-10">
       <div className="mx-auto max-w-7xl px-6">
         <header className="mb-6 flex items-end justify-between gap-4">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-widest text-harvest-700">
-              Vendeurs vérifiés
+              {t("home.tp.eyebrow")}
             </span>
             <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Producteurs{" "}
-              <em className="text-gradient-brand font-normal italic">à la une</em>
+              {t("home.tp.title1")}{" "}
+              <em className="text-gradient-brand font-normal italic">{t("home.tp.title2")}</em>
             </h2>
           </div>
           <Link
             href="/annonces"
             className="hidden text-sm font-semibold text-brand-700 hover:underline sm:inline"
           >
-            Tous les producteurs →
+            {t("home.tp.all")} →
           </Link>
         </header>
 

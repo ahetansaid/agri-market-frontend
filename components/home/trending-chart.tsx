@@ -2,8 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, Package, ArrowRight, Flame, Leaf } from "lucide-react";
 import type { Announcement } from "@/lib/api";
+import { getT } from "@/lib/i18n/server";
 
-export function TrendingChart({
+export async function TrendingChart({
   items,
   viewAllHref,
 }: {
@@ -14,6 +15,8 @@ export function TrendingChart({
   const first = items[0];
   const rest = items.slice(1, 6);
 
+  const { t } = await getT();
+
   return (
     <section className="bg-sand-50 py-14">
       <div className="mx-auto max-w-7xl px-6">
@@ -21,18 +24,18 @@ export function TrendingChart({
           <div>
             <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-brand-700">
               <Flame className="h-3.5 w-3.5" strokeWidth={2.5} />
-              En ce moment
+              {t("home.tr.eyebrow")}
             </span>
             <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Les plus{" "}
-              <em className="text-gradient-brand font-normal italic">recherchés</em>
+              {t("home.tr.title1")}{" "}
+              <em className="text-gradient-brand font-normal italic">{t("home.tr.title2")}</em>
             </h2>
           </div>
           <Link
             href={viewAllHref}
             className="text-sm font-semibold text-brand-700 hover:underline"
           >
-            Voir tout →
+            {t("home.tr.all")} →
           </Link>
         </header>
 
