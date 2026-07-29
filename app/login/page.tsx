@@ -10,10 +10,24 @@ import { login, AuthError } from "@/lib/auth";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n/client";
 
+/**
+ * N'autorise qu'un chemin interne comme cible de redirection post-login.
+ * Rejette les URL absolues, protocol-relative (`//`, `/\`) et non-`/` pour
+ * empêcher l'open redirect (phishing après authentification).
+ */
+function safeNextPath(raw: string | null): string {
+  const fallback = "/dashboard/producer";
+  if (!raw) return fallback;
+  if (!raw.startsWith("/") || raw.startsWith("//") || raw.startsWith("/\\")) {
+    return fallback;
+  }
+  return raw;
+}
+
 function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
-  const next = search.get("next") || "/dashboard/producer";
+  const next = safeNextPath(search.get("next"));
   const { refresh } = useAuth();
   const { t } = useT();
 

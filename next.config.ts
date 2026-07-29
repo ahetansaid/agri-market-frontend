@@ -16,7 +16,59 @@ try {
   // URL invalide -> on garde le défaut local
 }
 
+const isDev = process.env.NODE_ENV === "development";
+const apiOrigin = `${apiHost.protocol}://${apiHost.hostname}${
+  apiHost.port ? ":" + apiHost.port : ""
+}`;
+
+// Content-Security-Policy. En dev on assouplit (eval + ws pour le HMR de Next,
+// http pour l'API/media locaux). En prod : politique stricte.
+// NB : script-src conserve 'unsafe-inline' car Next injecte des scripts inline
+// d'hydratation sans nonce ; durcissement futur = CSP à nonce via middleware.
+const csp = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "form-action 'self'",
+  `img-src 'self' data: blob: https:${isDev ? " http:" : ""}`,
+  "font-src 'self' data:",
+  "style-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `connect-src 'self' ${apiOrigin} https:${isDev ? " ws: http:" : ""}`,
+  "frame-src 'self'",
+  "manifest-src 'self'",
+  "worker-src 'self' blob:",
+  ...(isDev ? [] : ["upgrade-insecure-requests"]),
+].join("; ");
+
+const securityHeaders = [
+  { key: "Content-Security-Policy", value: csp },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+  },
+  { key: "X-DNS-Prefetch-Control", value: "off" },
+  // HSTS uniquement en prod (jamais sur le HTTP local de dev).
+  ...(isDev
+    ? []
+    : [
+        {
+          key: "Strict-Transport-Security",
+          value: "max-age=63072000; includeSubDomains; preload",
+        },
+      ]),
+];
+
 const nextConfig: NextConfig = {
+  // N'expose pas la version de Next dans l'en-tête X-Powered-By.
+  poweredByHeader: false,
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
   images: {
     // En dev : images servies en direct (pas de proxy next/image qui saturait
     // le Django de dev). En prod (Vercel) : optimisation active + hôte autorisé.

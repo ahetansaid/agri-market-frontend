@@ -67,19 +67,29 @@ export function getRefreshToken(): string | null {
   return localStorage.getItem(REFRESH_KEY);
 }
 
+/** `; Secure` en HTTPS pour que le cookie ne parte jamais en clair. */
+function cookieSecure(): string {
+  return typeof window !== "undefined" && window.location.protocol === "https:"
+    ? "; Secure"
+    : "";
+}
+
 export function setTokens(access: string, refresh: string) {
   if (typeof window === "undefined") return;
   localStorage.setItem(ACCESS_KEY, access);
   localStorage.setItem(REFRESH_KEY, refresh);
-  // Cookie leger pour que le middleware Next.js puisse detecter l'auth
-  document.cookie = `ama_auth=1; path=/; max-age=${60 * 60 * 24 * 14}; SameSite=Lax`;
+  // Cookie leger (drapeau non sensible) pour que le middleware Next.js puisse
+  // detecter la presence d'une session. L'autorite reste l'API Django.
+  document.cookie = `ama_auth=1; path=/; max-age=${
+    60 * 60 * 24 * 14
+  }; SameSite=Lax${cookieSecure()}`;
 }
 
 export function clearTokens() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(ACCESS_KEY);
   localStorage.removeItem(REFRESH_KEY);
-  document.cookie = "ama_auth=; path=/; max-age=0; SameSite=Lax";
+  document.cookie = `ama_auth=; path=/; max-age=0; SameSite=Lax${cookieSecure()}`;
 }
 
 // ============================================================

@@ -31,7 +31,8 @@ export function LocaleSwitcher() {
   }, [open]);
 
   const choose = (l: Locale) => {
-    document.cookie = `${LOCALE_COOKIE}=${l};path=/;max-age=31536000;samesite=lax`;
+    const secure = window.location.protocol === "https:" ? ";Secure" : "";
+    document.cookie = `${LOCALE_COOKIE}=${l};path=/;max-age=31536000;samesite=lax${secure}`;
     // Recharge pour re-rendre aussi les composants serveur avec la nouvelle langue.
     window.location.reload();
   };
