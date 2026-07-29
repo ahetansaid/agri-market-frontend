@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { ProducerOfMonth } from "@/lib/api";
 import { useT } from "@/lib/i18n/client";
+import { ProductImage } from "@/components/ui/product-image";
 
 export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
   const { t } = useT();
@@ -69,7 +70,7 @@ export function ProducerOfMonthSection({ data }: { data: ProducerOfMonth }) {
           {/* MEDIA */}
           <div className="relative aspect-[4/3] overflow-hidden bg-sand-200 md:aspect-auto">
             {featured?.image_url ? (
-              <Image
+              <ProductImage
                 src={featured.image_url}
                 alt={featured.title}
                 fill

@@ -7,6 +7,7 @@ import { AnnouncementCard } from "@/components/home/announcement-card";
 import { getAnnouncementDetail, getAnnouncements } from "@/lib/api";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { ContactSellerButton } from "@/components/messaging/contact-seller-button";
+import { ProductImage } from "@/components/ui/product-image";
 import { getT } from "@/lib/i18n/server";
 import {
   Tag,
@@ -100,20 +101,15 @@ export default async function DetailPage({
             {/* Media */}
             <div>
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-sand-200 shadow-xl">
-                {annonce.image_url ? (
-                  <Image
-                    src={annonce.image_url}
-                    alt={annonce.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 60vw"
-                    priority
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="grid h-full w-full place-items-center bg-gradient-to-br from-sand-300 to-sand-400 text-sand-100">
-                    <Leaf className="h-32 w-32 opacity-30" />
-                  </div>
-                )}
+                {/* Repli auto sur l'image agricole par défaut si absente/cassée */}
+                <ProductImage
+                  src={annonce.image_url}
+                  alt={annonce.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  priority
+                  className="object-cover"
+                />
 
                 {/* Badges bottom */}
                 <div className="absolute bottom-4 left-4 flex flex-wrap gap-2 z-10">

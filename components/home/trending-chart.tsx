@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Star, Package, ArrowRight, Flame, Leaf } from "lucide-react";
+import { Star, Package, ArrowRight, Flame } from "lucide-react";
+import { ProductImage } from "@/components/ui/product-image";
 import type { Announcement } from "@/lib/api";
 import { getT } from "@/lib/i18n/server";
 
@@ -45,19 +45,13 @@ export async function TrendingChart({
             href={`/annonces/${first.id}`}
             className="group relative flex min-h-[320px] overflow-hidden rounded-3xl ring-1 ring-black/5"
           >
-            {first.image_url ? (
-              <Image
-                src={first.image_url}
-                alt={first.title}
-                fill
-                sizes="(max-width: 1024px) 100vw, 55vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-            ) : (
-              <div className="grid h-full w-full place-items-center bg-gradient-to-br from-sand-300 to-sand-400">
-                <Leaf className="h-20 w-20 text-white/40" />
-              </div>
-            )}
+            <ProductImage
+              src={first.image_url}
+              alt={first.title}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-sand-900/85 via-sand-900/20 to-transparent" />
 
             <span className="absolute left-5 top-5 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 font-display text-2xl font-bold text-white shadow-lg">
@@ -103,15 +97,13 @@ export async function TrendingChart({
                     {i + 2}
                   </span>
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-sand-200">
-                    {a.image_url && (
-                      <Image
-                        src={a.image_url}
-                        alt={a.title}
-                        fill
-                        sizes="64px"
-                        className="object-cover"
-                      />
-                    )}
+                    <ProductImage
+                      src={a.image_url}
+                      alt={a.title}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
+                    />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-[10px] font-semibold uppercase tracking-wide text-brand-600">

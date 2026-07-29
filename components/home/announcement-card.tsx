@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "motion/react";
-import { Tag, PackageSearch, Leaf, Package, ArrowRight, Star, BadgeCheck, Handshake } from "lucide-react";
+import { Tag, PackageSearch, Package, ArrowRight, Star, BadgeCheck, Handshake } from "lucide-react";
+import { ProductImage } from "@/components/ui/product-image";
 import type { Announcement } from "@/lib/api";
 
 const typeIcons: Record<string, typeof Tag> = {
@@ -35,21 +35,15 @@ export function AnnouncementCard({ annonce }: { annonce: Announcement }) {
         href={`/annonces/${annonce.id}`}
         className="group relative block h-full overflow-hidden rounded-2xl border border-border/60 bg-card transition hover:border-brand-500/50 hover:shadow-xl hover:shadow-brand-500/10"
       >
-        {/* Image */}
+        {/* Image (repli auto sur l'image agricole par défaut si absente/cassée) */}
         <div className="relative aspect-[4/3] overflow-hidden bg-sand-200">
-          {annonce.image_url ? (
-            <Image
-              src={annonce.image_url}
-              alt={annonce.title}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          ) : (
-            <div className="grid h-full w-full place-items-center bg-gradient-to-br from-sand-300 to-sand-400 text-sand-100">
-              <Leaf className="h-16 w-16 opacity-40" />
-            </div>
-          )}
+          <ProductImage
+            src={annonce.image_url}
+            alt={annonce.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+          />
 
           {/* Gradient overlay */}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10" />

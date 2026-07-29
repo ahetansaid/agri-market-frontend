@@ -19,6 +19,7 @@ import {
 } from "@/lib/auth";
 import { useAuth } from "@/lib/auth-context";
 import { useT } from "@/lib/i18n/client";
+import { DEFAULT_PRODUCT_IMAGE } from "@/components/ui/product-image";
 
 type Group = {
   key: keyof MyAnnouncementsPayload;
@@ -121,14 +122,17 @@ export default function MyAnnouncementsPage() {
                         className="group flex items-center gap-4 p-4 transition hover:bg-sand-50/70"
                       >
                         <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-sand-200">
-                          {a.image_url ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={a.image_url} alt="" className="h-full w-full object-cover" />
-                          ) : (
-                            <div className="grid h-full w-full place-items-center text-sand-500">
-                              <Package className="h-6 w-6" />
-                            </div>
-                          )}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={a.image_url || DEFAULT_PRODUCT_IMAGE}
+                            alt=""
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              if (!e.currentTarget.src.endsWith(DEFAULT_PRODUCT_IMAGE)) {
+                                e.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
+                              }
+                            }}
+                          />
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="truncate font-display font-semibold tracking-tight">
