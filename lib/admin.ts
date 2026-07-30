@@ -151,3 +151,37 @@ export async function deleteAdminEvent(slug: string): Promise<void> {
     throw new Error(`Suppression impossible (${res.status}).`);
   }
 }
+
+// ============================================================
+// ADMIN — Utilisateurs
+// ============================================================
+
+export interface AdminUser {
+  id: number;
+  username: string;
+  email: string;
+  display_name: string;
+  is_active: boolean;
+  is_staff: boolean;
+  is_superuser: boolean;
+  user_type: string | null;
+  country_name: string | null;
+  date_joined: string;
+}
+
+export function fetchAdminUsers(
+  q?: string
+): Promise<{ count: number; results: AdminUser[] }> {
+  const qs = q ? `?q=${encodeURIComponent(q)}` : "";
+  return authFetch(`/api/admin/users/${qs}`);
+}
+
+export function updateAdminUser(
+  id: number,
+  patch: { is_active?: boolean; is_staff?: boolean }
+): Promise<AdminUser> {
+  return authFetch(`/api/admin/users/${id}/`, {
+    method: "PATCH",
+    body: JSON.stringify(patch),
+  });
+}

@@ -9,6 +9,7 @@ import {
   FileText,
   ShieldCheck,
   CalendarDays,
+  Users,
   ExternalLink,
   LogOut,
   Loader2,
@@ -30,6 +31,7 @@ const NAV: NavItem[] = [
   { href: "/dashboard/admin/about", label: "Page À propos", icon: FileText },
   { href: "/dashboard/admin/moderation", label: "Modération", icon: ShieldCheck },
   { href: "/dashboard/admin/events", label: "Événements", icon: CalendarDays },
+  { href: "/dashboard/admin/users", label: "Utilisateurs", icon: Users },
 ];
 
 /**

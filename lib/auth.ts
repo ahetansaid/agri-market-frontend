@@ -23,6 +23,7 @@ export interface Me {
   ville: string | null;
   user_type: string;
   is_staff?: boolean;
+  is_superuser?: boolean;
   date_joined: string;
   country_code: string | null;
   country_name: string | null;

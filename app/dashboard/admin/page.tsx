@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
-import { FileText, ShieldCheck, CalendarDays, ArrowRight, Clock } from "lucide-react";
+import {
+  FileText,
+  ShieldCheck,
+  CalendarDays,
+  Users,
+  ArrowRight,
+  Clock,
+} from "lucide-react";
 
 const MODULES = [
   {
@@ -24,6 +31,13 @@ const MODULES = [
     icon: CalendarDays,
     title: "Événements",
     desc: "Créer, modifier et supprimer les salons et rencontres.",
+    ready: true,
+  },
+  {
+    href: "/dashboard/admin/users",
+    icon: Users,
+    title: "Utilisateurs",
+    desc: "Rechercher, promouvoir en admin, activer ou désactiver des comptes.",
     ready: true,
   },
 ];
