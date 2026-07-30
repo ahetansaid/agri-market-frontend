@@ -153,6 +153,40 @@ export async function getAnnouncementDetail(
 }
 
 // ============================================================
+// PAGE À PROPOS (contenu dynamique)
+// ============================================================
+
+export interface AboutValueItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface AboutContent {
+  title: string;
+  intro: string;
+  vision_title: string;
+  vision: string;
+  perspectives_title: string;
+  perspectives: string;
+  values_title: string;
+  mission_title: string;
+  mission: string;
+  values: AboutValueItem[];
+}
+
+export async function getAboutPage(
+  locale?: string
+): Promise<AboutContent | null> {
+  const data = await fetchJson<AboutContent | Record<string, never>>(
+    "/api/about/",
+    locale
+  );
+  if (!data || !("intro" in data)) return null;
+  return data as AboutContent;
+}
+
+// ============================================================
 // PRODUCER OF THE MONTH
 // ============================================================
 
