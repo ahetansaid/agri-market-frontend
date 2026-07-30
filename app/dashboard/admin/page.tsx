@@ -20,11 +20,11 @@ const MODULES = [
     ready: true,
   },
   {
-    href: "#",
+    href: "/dashboard/admin/events",
     icon: CalendarDays,
     title: "Événements",
-    desc: "Créer et gérer les salons et rencontres.",
-    ready: false,
+    desc: "Créer, modifier et supprimer les salons et rencontres.",
+    ready: true,
   },
 ];
 

@@ -1,4 +1,5 @@
-import { authFetch } from "./auth";
+import { authFetch, getAccessToken } from "./auth";
+import { API_URL } from "./api";
 
 // ============================================================
 // ADMIN — Page À propos (édition, réservé au staff)
@@ -80,4 +81,73 @@ export function moderateAnnouncement(
     method: "POST",
     body: JSON.stringify({ action, reason }),
   });
+}
+
+// ============================================================
+// ADMIN — Événements (CRUD)
+// ============================================================
+
+export interface AdminEvent {
+  id: number;
+  slug: string;
+  titre: string;
+  description_fr: string;
+  image_fr: string | null;
+  date_debut: string;
+  date_fin: string;
+  est_actif: boolean;
+  prochain_evenement: boolean;
+}
+
+export async function fetchAdminEvents(): Promise<AdminEvent[]> {
+  // Avec un JWT staff, le ViewSet renvoie TOUS les événements (actifs + passés).
+  const data = await authFetch<{ results?: AdminEvent[] } | AdminEvent[]>(
+    "/api/evenements/"
+  );
+  return Array.isArray(data) ? data : data.results ?? [];
+}
+
+/**
+ * Crée (POST) ou met à jour (PATCH) un événement en multipart (permet
+ * l'upload d'image). On n'utilise pas authFetch ici car il force le
+ * Content-Type JSON — en multipart, le navigateur doit poser la frontière.
+ */
+export async function saveAdminEvent(
+  form: FormData,
+  slug?: string
+): Promise<AdminEvent> {
+  const token = getAccessToken();
+  const path = slug ? `/api/evenements/${slug}/` : "/api/evenements/";
+  const res = await fetch(`${API_URL}${path}`, {
+    method: slug ? "PATCH" : "POST",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    body: form,
+  });
+  if (!res.ok) {
+    let msg = `Erreur ${res.status}`;
+    try {
+      const d = await res.json();
+      msg =
+        d.detail ||
+        Object.entries(d)
+          .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(" ") : v}`)
+          .join(" · ") ||
+        msg;
+    } catch {
+      /* ignore */
+    }
+    throw new Error(msg);
+  }
+  return res.json();
+}
+
+export async function deleteAdminEvent(slug: string): Promise<void> {
+  const token = getAccessToken();
+  const res = await fetch(`${API_URL}/api/evenements/${slug}/`, {
+    method: "DELETE",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+  if (!res.ok && res.status !== 204) {
+    throw new Error(`Suppression impossible (${res.status}).`);
+  }
 }

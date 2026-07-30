@@ -29,7 +29,7 @@ const NAV: NavItem[] = [
   { href: "/dashboard/admin", label: "Tableau de bord", icon: LayoutDashboard },
   { href: "/dashboard/admin/about", label: "Page À propos", icon: FileText },
   { href: "/dashboard/admin/moderation", label: "Modération", icon: ShieldCheck },
-  { href: "/dashboard/admin/events", label: "Événements", icon: CalendarDays, soon: true },
+  { href: "/dashboard/admin/events", label: "Événements", icon: CalendarDays },
 ];
 
 /**
