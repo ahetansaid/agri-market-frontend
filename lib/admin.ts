@@ -44,3 +44,40 @@ export function saveAdminAbout(
     body: JSON.stringify(data),
   });
 }
+
+// ============================================================
+// ADMIN — Modération des annonces
+// ============================================================
+
+export interface PendingAnnouncement {
+  id: number;
+  reference: string;
+  title: string;
+  type: string;
+  type_display: string;
+  status: "pending_first" | "pending_second" | string;
+  status_display: string;
+  author: string;
+  image_url: string | null;
+  description: string;
+  submitted_at: string | null;
+  can_validate: boolean;
+}
+
+export function fetchPendingAnnouncements(): Promise<{
+  count: number;
+  results: PendingAnnouncement[];
+}> {
+  return authFetch("/api/admin/announcements/pending/");
+}
+
+export function moderateAnnouncement(
+  id: number,
+  action: "approve" | "reject",
+  reason?: string
+): Promise<PendingAnnouncement> {
+  return authFetch(`/api/admin/announcements/${id}/moderate/`, {
+    method: "POST",
+    body: JSON.stringify({ action, reason }),
+  });
+}

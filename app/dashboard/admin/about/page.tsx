@@ -2,8 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Header } from "@/components/layout/header";
-import { AdminGuard } from "@/components/admin/admin-guard";
 import { useT } from "@/lib/i18n/client";
 import {
   fetchAdminAbout,
@@ -108,17 +106,14 @@ export default function AdminAboutEditor() {
   };
 
   return (
-    <AdminGuard>
-      <Header />
-      <main className="flex-1 bg-sand-50">
-        <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
-          <Link
-            href="/dashboard/admin"
-            className="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Administration
-          </Link>
+    <div className="mx-auto max-w-3xl">
+      <Link
+        href="/dashboard/admin"
+        className="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Administration
+      </Link>
 
           <div className="mb-6">
             <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -329,9 +324,7 @@ export default function AdminAboutEditor() {
               </div>
             </form>
           )}
-        </div>
-      </main>
-    </AdminGuard>
+    </div>
   );
 }
 
