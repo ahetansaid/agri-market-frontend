@@ -160,6 +160,9 @@ export interface AdminUser {
   id: number;
   username: string;
   email: string;
+  first_name: string;
+  last_name: string;
+  telephone: string;
   display_name: string;
   is_active: boolean;
   is_staff: boolean;
@@ -167,6 +170,15 @@ export interface AdminUser {
   user_type: string | null;
   country_name: string | null;
   date_joined: string;
+}
+
+export interface AdminUserPatch {
+  is_active?: boolean;
+  is_staff?: boolean;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  telephone?: string;
 }
 
 export function fetchAdminUsers(
@@ -178,10 +190,29 @@ export function fetchAdminUsers(
 
 export function updateAdminUser(
   id: number,
-  patch: { is_active?: boolean; is_staff?: boolean }
+  patch: AdminUserPatch
 ): Promise<AdminUser> {
   return authFetch(`/api/admin/users/${id}/`, {
     method: "PATCH",
     body: JSON.stringify(patch),
+  });
+}
+
+export async function deleteAdminUser(id: number): Promise<void> {
+  const token = getAccessToken();
+  const res = await fetch(`${API_URL}/api/admin/users/${id}/`, {
+    method: "DELETE",
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+  if (!res.ok && res.status !== 204) {
+    throw new Error(`Suppression impossible (${res.status}).`);
+  }
+}
+
+export function resetAdminUserPassword(
+  id: number
+): Promise<{ detail: string }> {
+  return authFetch(`/api/admin/users/${id}/reset-password/`, {
+    method: "POST",
   });
 }
