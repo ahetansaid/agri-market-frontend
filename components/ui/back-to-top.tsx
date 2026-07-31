@@ -27,7 +27,7 @@ export function BackToTop() {
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.92 }}
           transition={{ type: "spring", stiffness: 400, damping: 24 }}
-          className="fixed bottom-6 right-6 z-50 grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-xl shadow-brand-600/40 ring-1 ring-white/20 transition-shadow hover:shadow-brand-600/60"
+          className="fixed bottom-6 left-6 z-50 grid h-12 w-12 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-xl shadow-brand-600/40 ring-1 ring-white/20 transition-shadow hover:shadow-brand-600/60"
         >
           <ArrowUp className="h-5 w-5" strokeWidth={2.5} />
         </motion.button>

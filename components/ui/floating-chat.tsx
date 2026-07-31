@@ -96,7 +96,7 @@ export function FloatingChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300, damping: 26 }}
-            className="fixed bottom-24 left-6 z-50 flex h-[440px] w-[350px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
+            className="fixed bottom-24 right-6 z-50 flex h-[440px] w-[350px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-2xl"
           >
             {/* En-tête */}
             <div className="relative shrink-0 bg-gradient-to-br from-brand-500 to-harvest-600 p-4 text-white">
@@ -211,7 +211,7 @@ export function FloatingChat() {
         aria-label={LABEL}
         whileHover={{ y: -3 }}
         whileTap={{ scale: 0.94 }}
-        className="fixed bottom-6 left-6 z-50 flex h-14 items-center gap-2.5 rounded-full bg-gradient-to-br from-brand-500 to-harvest-600 pl-4 pr-5 text-white shadow-xl shadow-brand-600/30 ring-1 ring-white/20 transition-shadow hover:shadow-brand-600/50"
+        className="fixed bottom-6 right-6 z-50 flex h-14 items-center gap-2.5 rounded-full bg-gradient-to-br from-brand-500 to-harvest-600 pl-4 pr-5 text-white shadow-xl shadow-brand-600/30 ring-1 ring-white/20 transition-shadow hover:shadow-brand-600/50"
       >
         <span className="grid h-9 w-9 place-items-center rounded-full bg-white/15">
           {open ? (
