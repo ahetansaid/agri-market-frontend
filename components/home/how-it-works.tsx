@@ -3,29 +3,29 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { fadeUp, stagger, inViewProps } from "@/lib/motion";
-import { PlusCircle, Users, BadgeCheck, ArrowRight } from "lucide-react";
+import { PlusCircle, Compass, ShieldCheck, ArrowRight } from "lucide-react";
 
 const STEPS = [
   {
     n: "01",
     icon: PlusCircle,
     tone: "orange",
-    title: "Publiez votre annonce",
-    text: "Créez une annonce gratuite en 3 minutes — photos, quantité, prix. Validée par notre équipe sous 24h.",
+    title: "Publier en 3 minutes",
+    text: "Créez votre annonce avec photos, quantité, filière. Validation humaine en 24h. Aucune commission sur vos transactions.",
   },
   {
     n: "02",
-    icon: Users,
+    icon: Compass,
     tone: "green",
-    title: "Connectez-vous aux acheteurs",
-    text: "Recevez des demandes vérifiées depuis 54 pays africains. En direct, sans intermédiaire ni commission cachée.",
+    title: "Sourcer localement",
+    text: "Explorez par pays, filière, quantité, certification bio. Contactez le vendeur directement — pas d'intermédiaire, pas de marge cachée.",
   },
   {
     n: "03",
-    icon: BadgeCheck,
+    icon: ShieldCheck,
     tone: "orange",
-    title: "Vendez au juste prix",
-    text: "Négociez, concluez, expédiez. Vous gardez 100 % de votre marge — zéro commission sur vos ventes.",
+    title: "Prouver sa fiabilité",
+    text: "Note vendeur sur 5 étoiles, badges Made in Africa, historique des transactions public. La confiance qui remplace l'intermédiaire.",
   },
 ] as const;
 
@@ -47,13 +47,20 @@ export function HowItWorks() {
     <section className="relative overflow-hidden bg-gradient-to-b from-sand-50 to-background py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-6">
         <header className="mx-auto mb-14 max-w-2xl text-center">
-          <span className="eyebrow text-brand-600">Simple, direct, transparent</span>
+          <span className="eyebrow text-brand-600">
+            L&apos;infrastructure de l&apos;agri africain
+          </span>
           <h2 className="font-display mt-3 text-4xl font-medium tracking-tight sm:text-5xl">
-            De la récolte à la vente,{" "}
+            Un produit,{" "}
             <em className="text-gradient-brand font-normal italic">
-              en 3 étapes.
+              trois métiers réunis.
             </em>
           </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground">
+            Publier, découvrir, prouver. Toute l&apos;infrastructure dont un
+            producteur ou un acheteur a besoin pour vendre ou sourcer en
+            confiance — sur 54 pays, en 3 langues, sans commission.
+          </p>
         </header>
 
         <motion.div

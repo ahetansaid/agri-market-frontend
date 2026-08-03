@@ -1,6 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Partners } from "@/components/home/partners";
+import { Sponsors } from "@/components/home/sponsors";
 import { getEvents, type EventItem } from "@/lib/api";
 import { getT } from "@/lib/i18n/server";
 import Image from "next/image";
@@ -185,6 +186,9 @@ export default async function EvenementsPage() {
 
         {/* Nos partenaires (déplacé depuis le footer) */}
         <Partners />
+
+        {/* Nos sponsors */}
+        <Sponsors />
       </main>
 
       <Footer />

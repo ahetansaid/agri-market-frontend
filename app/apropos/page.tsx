@@ -18,6 +18,8 @@ import {
   HeartHandshake,
   Rocket,
   Globe,
+  Languages,
+  Percent,
 } from "lucide-react";
 
 export const metadata = { title: "À propos" };
@@ -35,6 +37,36 @@ const VALUE_ICONS: Record<string, typeof Award> = {
   Rocket,
   Globe,
 };
+
+const STATS = [
+  { icon: Globe, value: "54", label: "Pays africains" },
+  { icon: Users, value: "10 000+", label: "Producteurs ciblés" },
+  { icon: Languages, value: "3", label: "Langues (FR · EN · IT)" },
+  { icon: Percent, value: "0 €", label: "Commission sur ventes" },
+];
+
+const TIMELINE = [
+  {
+    year: "2024",
+    title: "Une idée née sur le terrain",
+    text: "L'équipe IDA International, présente en Afrique de l'Ouest depuis plus de dix ans, constate la difficulté chronique des producteurs à trouver des débouchés équitables.",
+  },
+  {
+    year: "Début 2025",
+    title: "Prototype et premiers pilotes",
+    text: "Lancement de la plateforme en bêta avec une dizaine de coopératives partenaires au Bénin, au Sénégal et en Côte d'Ivoire.",
+  },
+  {
+    year: "Mi-2025",
+    title: "Ouverture publique",
+    text: "La marketplace s'ouvre aux 54 pays africains. Multilingue, multi-filières, validation à deux niveaux pour garantir la qualité.",
+  },
+  {
+    year: "2026",
+    title: "Vers une communauté panafricaine",
+    text: "Objectif : devenir la référence du B2B agricole africain, avec événements, partenariats institutionnels et services à valeur ajoutée pour les producteurs.",
+  },
+];
 
 export default async function AProposPage() {
   const { t, locale } = await getT();
@@ -83,6 +115,25 @@ export default async function AProposPage() {
             <p className="mt-6 text-base leading-relaxed text-white/75 sm:text-lg">
               {about.intro}
             </p>
+          </div>
+        </section>
+
+        {/* BARRE DE STATS */}
+        <section className="border-b border-border bg-white">
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-5 py-8 sm:px-6 lg:grid-cols-4">
+            {STATS.map(({ icon: Icon, value, label }) => (
+              <div key={label} className="flex items-center gap-3">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600">
+                  <Icon className="h-5 w-5" strokeWidth={2} />
+                </span>
+                <div>
+                  <div className="font-display text-2xl font-semibold tracking-tight">
+                    {value}
+                  </div>
+                  <div className="text-xs text-muted-foreground">{label}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -156,6 +207,38 @@ export default async function AProposPage() {
             title={about.mission_title}
             text={about.mission}
           />
+
+          {/* PARCOURS / TIMELINE */}
+          <section className="pt-4">
+            <div className="mb-8 text-center">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-widest text-harvest-700 shadow-sm ring-1 ring-border">
+                Parcours
+              </span>
+              <h2 className="mt-4 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+                Le chemin parcouru.
+              </h2>
+            </div>
+            <ol className="relative mx-auto max-w-2xl space-y-6 border-l-2 border-border pl-6">
+              {TIMELINE.map((step) => (
+                <li key={step.year} className="relative">
+                  <span className="absolute -left-[31px] top-1 grid h-5 w-5 place-items-center rounded-full border-2 border-brand-500 bg-white">
+                    <span className="h-2 w-2 rounded-full bg-brand-500" />
+                  </span>
+                  <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+                    <span className="text-xs font-bold uppercase tracking-wide text-harvest-700">
+                      {step.year}
+                    </span>
+                    <h3 className="mt-1 font-display text-lg font-semibold tracking-tight">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {step.text}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
 
           {/* CTA */}
           <div className="rounded-3xl bg-gradient-to-br from-sand-900 to-sand-800 p-8 text-center text-white shadow-xl sm:p-10">
