@@ -48,24 +48,33 @@ const TRUST = [
 
 const COLUMNS = [
   {
-    title: "Services et programmes",
+    title: "Marketplace",
     links: [
-      { label: "Découvrir la marketplace", href: "/annonces" },
+      { label: "Toutes les annonces", href: "/annonces" },
       { label: "Filières agricoles", href: "/filieres" },
-      { label: "Comment s'inscrire", href: "/register" },
-      { label: "Service client", href: "/service-client" },
-      { label: "Avis et suggestions", href: "/service-client" },
+      { label: "Pays", href: "/pays" },
+      { label: "Publier une annonce", href: "/annonces/nouvelle" },
+      { label: "Recherche avancée", href: "/annonces" },
     ],
   },
   {
-    title: "Votre compte",
+    title: "Communauté",
     links: [
+      { label: "Notre mission", href: "/apropos" },
+      { label: "Présentation", href: "/presentation" },
+      { label: "Événements & salons", href: "/evenements" },
+      { label: "Guide utilisateur", href: "/guide" },
+      { label: "Questions fréquentes", href: "/faq" },
+    ],
+  },
+  {
+    title: "Aide & services",
+    links: [
+      { label: "Service client", href: "/service-client" },
+      { label: "Comment s'inscrire", href: "/register" },
       { label: "Créer un compte professionnel", href: "/register?type=pro" },
-      { label: "Mon profil", href: "/dashboard/producer/profile" },
       { label: "Signaler un désagrément", href: "/service-client" },
-      { label: "Alerte arnaque & sécurité", href: "/legal/privacy" },
-      { label: "Accueil", href: "/" },
-      { label: "À propos de Agri Market Africa", href: "/apropos" },
+      { label: "Alerte arnaque & sécurité", href: "/faq" },
     ],
   },
 ];
@@ -99,7 +108,7 @@ export function Footer() {
 
       {/* Corps */}
       <div className="relative mx-auto max-w-7xl px-6 py-14">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           {/* Marque + newsletter */}
           <div>
             <div className="flex items-center gap-3">

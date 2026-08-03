@@ -313,7 +313,7 @@ export function Header() {
                 <div className="flex flex-col gap-2 text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
                     <Mail className="h-3.5 w-3.5 text-brand-600" />
-                    contact@idamarketplace.com
+                    agrimarketafrica@nourdignagrimarket.com
                   </span>
                   <span className="inline-flex items-center gap-2">
                     <Phone className="h-3.5 w-3.5 text-brand-600" />
