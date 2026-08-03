@@ -66,7 +66,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
   }, [countries]);
 
   return (
-    <section className="relative h-[660px] overflow-hidden bg-sand-900 text-white lg:h-[740px]">
+    <section className="relative h-[440px] overflow-hidden bg-sand-900 text-white sm:h-[660px] lg:h-[740px]">
       {/* Mur d'images qui défilent horizontalement */}
       <div className="marquee-pause absolute inset-0 flex flex-col gap-3 p-3">
         {ROWS.map((row, ri) => (
@@ -109,7 +109,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
           className="w-full"
         >
           {/* Badge live */}
-          <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-sand-900/55 px-5 py-2.5 backdrop-blur">
+          <div className="mb-6 hidden items-center gap-2.5 rounded-full border border-white/25 bg-sand-900/55 px-5 py-2.5 backdrop-blur sm:inline-flex">
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-harvest-400 opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-harvest-500" />
@@ -123,7 +123,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
           {/* Titre — pleine largeur, taille fluide.
               Une seule ligne dès 640px ; wrap uniquement sur très petit mobile
               pour rester lisible. */}
-          <h1 className="font-display text-[clamp(1.6rem,3.7vw,5rem)] font-medium leading-[1.1] tracking-tight drop-shadow-xl sm:whitespace-nowrap">
+          <h1 className="hidden font-display text-[clamp(1.6rem,3.7vw,5rem)] font-medium leading-[1.1] tracking-tight drop-shadow-xl sm:block sm:whitespace-nowrap">
             {t("hero.title1")}{" "}
             <em className="font-normal italic">
               <span className="bg-gradient-to-r from-brand-300 via-brand-200 to-harvest-300 bg-clip-text text-transparent">
@@ -132,7 +132,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
             </em>
           </h1>
 
-          <p className="mx-auto mt-5 max-w-xl text-sm text-white/70 sm:text-base">
+          <p className="mx-auto mt-5 hidden max-w-xl text-sm text-white/70 sm:block sm:text-base">
             {stats.producteurs.toLocaleString("fr-FR")} {t("word.producers")} ·{" "}
             {stats.filieres} {t("word.sectors")} · 54 {t("word.countries")}.{" "}
             {t("hero.noCommission")}
@@ -142,7 +142,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
           <form
             action="/annonces"
             method="GET"
-            className="mx-auto mt-8 w-full max-w-3xl rounded-3xl bg-white/97 p-2.5 shadow-2xl shadow-black/40 backdrop-blur supports-[backdrop-filter]:bg-white/95"
+            className="mx-auto mt-0 w-full max-w-3xl rounded-3xl bg-white/97 p-2.5 shadow-2xl shadow-black/40 backdrop-blur supports-[backdrop-filter]:bg-white/95 sm:mt-8"
           >
             <div className="flex flex-col gap-2 md:flex-row md:items-center">
               {/* Mot-clé */}
@@ -208,7 +208,7 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
           </form>
 
           {/* Chips */}
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-5 hidden flex-wrap items-center justify-center gap-2 sm:flex">
             {CHIPS.map((c) => (
               <Link
                 key={c.key}

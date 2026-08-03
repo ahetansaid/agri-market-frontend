@@ -37,6 +37,31 @@ const LINKS = [
   { href: "/annonces/nouvelle", key: "nav.publish", icon: PlusCircle },
 ] as const;
 
+// Titre de la page courante (affiché sur mobile pour situer l'utilisateur).
+// Ordre : préfixes les plus spécifiques d'abord.
+const PAGE_TITLES: { prefix: string; label: string }[] = [
+  { prefix: "/annonces/nouvelle", label: "Publier une annonce" },
+  { prefix: "/annonces", label: "Annonces" },
+  { prefix: "/filieres", label: "Filières" },
+  { prefix: "/pays", label: "Pays" },
+  { prefix: "/evenements", label: "Événements" },
+  { prefix: "/apropos", label: "À propos" },
+  { prefix: "/presentation", label: "Présentation" },
+  { prefix: "/faq", label: "FAQ" },
+  { prefix: "/guide", label: "Guide" },
+  { prefix: "/service-client", label: "Service client" },
+  { prefix: "/messages", label: "Messagerie" },
+  { prefix: "/dashboard/admin", label: "Espace admin" },
+  { prefix: "/dashboard", label: "Tableau de bord" },
+  { prefix: "/login", label: "Connexion" },
+  { prefix: "/register", label: "Inscription" },
+  { prefix: "/password-reset", label: "Mot de passe" },
+  { prefix: "/legal/mentions", label: "Mentions légales" },
+  { prefix: "/legal/privacy", label: "Confidentialité" },
+  { prefix: "/legal/terms", label: "Conditions" },
+  { prefix: "/activate", label: "Activation du compte" },
+];
+
 /* Icônes de marque (retirées de lucide) */
 function FacebookIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -98,6 +123,12 @@ export function Header() {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 
+  // Titre de la page courante (mobile) — null sur l'accueil.
+  const pageTitle =
+    pathname === "/"
+      ? null
+      : PAGE_TITLES.find((p) => pathname.startsWith(p.prefix))?.label ?? null;
+
   return (
     <>
       <motion.header
@@ -134,6 +165,13 @@ export function Header() {
               </div>
             </div>
           </Link>
+
+          {/* Titre de la page courante — mobile uniquement (repère de navigation) */}
+          {pageTitle && (
+            <span className="flex-1 truncate px-3 text-center font-display text-sm font-semibold text-foreground md:hidden">
+              {pageTitle}
+            </span>
+          )}
 
           {/* Recherche persistante (desktop) */}
           <form
