@@ -54,14 +54,13 @@ const COLUMNS = [
       { label: "Filières agricoles", href: "/filieres" },
       { label: "Pays", href: "/pays" },
       { label: "Publier une annonce", href: "/annonces/nouvelle" },
-      { label: "Recherche avancée", href: "/annonces" },
     ],
   },
   {
     title: "Communauté",
     links: [
       { label: "Notre mission", href: "/apropos" },
-      { label: "Présentation", href: "/presentation" },
+      { label: "Présentation d'IDA", href: "/presentation" },
       { label: "Événements & salons", href: "/evenements" },
       { label: "Guide utilisateur", href: "/guide" },
       { label: "Questions fréquentes", href: "/faq" },
@@ -72,9 +71,6 @@ const COLUMNS = [
     links: [
       { label: "Service client", href: "/service-client" },
       { label: "Comment s'inscrire", href: "/register" },
-      { label: "Créer un compte professionnel", href: "/register?type=pro" },
-      { label: "Signaler un désagrément", href: "/service-client" },
-      { label: "Alerte arnaque & sécurité", href: "/faq" },
     ],
   },
 ];

@@ -7,6 +7,8 @@ export const IDA = {
   expansion: "Initiative pour le Développement de l'Afrique",
   phone: "+221 33 856 42 98",
   email: "info@idainternational.org",
+  logo: "/images/presentation/logo-ida.png",
+  image: "/images/presentation/ida-mission.jpg",
   description: {
     fr: [
       "L'IDA (Initiative pour le Développement de l'Afrique) est une ONG qui promeut, à travers des activités commerciales et culturelles, les principes d'un monde meilleur et contribue, par la coopération internationale, au développement du continent africain.",
