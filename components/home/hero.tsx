@@ -100,8 +100,8 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
       <div className="pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full bg-brand-600 opacity-25 blur-[130px]" />
       <div className="pointer-events-none absolute -right-24 bottom-1/4 h-96 w-96 rounded-full bg-harvest-600 opacity-20 blur-[130px]" />
 
-      {/* Contenu centré */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-5 text-center sm:px-6">
+      {/* Contenu centré — masqué sur mobile pour laisser les images en plein écran */}
+      <div className="relative z-10 hidden h-full flex-col items-center justify-center px-5 text-center sm:flex sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
