@@ -208,9 +208,13 @@ h1, h2, h3, h4, h5, h6 {
 .animate-marquee-y-rev {
   animation: marquee-y var(--col-duration, 50s) linear infinite reverse;
 }
-.marquee-pause:hover .animate-marquee-y,
-.marquee-pause:hover .animate-marquee-y-rev {
-  animation-play-state: paused;
+/* Pause au survol UNIQUEMENT sur appareils pointeur fin (souris) — évite le
+   « hover collant » qui fige le défilement après un tap sur mobile. */
+@media (hover: hover) and (pointer: fine) {
+  .marquee-pause:hover .animate-marquee-y,
+  .marquee-pause:hover .animate-marquee-y-rev {
+    animation-play-state: paused;
+  }
 }
 .animate-marquee {
   animation: marquee var(--marquee-duration, 45s) linear infinite;
@@ -222,9 +226,11 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
-.marquee-pause:hover .animate-marquee,
-.marquee-pause:hover .animate-marquee-rev {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .marquee-pause:hover .animate-marquee,
+  .marquee-pause:hover .animate-marquee-rev {
+    animation-play-state: paused;
+  }
 }
 
 /* Grain/texture subtile pour les fonds sombres */

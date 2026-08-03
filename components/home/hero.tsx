@@ -159,8 +159,8 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
 
               <span className="hidden h-7 w-px shrink-0 bg-sand-200 md:block" />
 
-              {/* Filière */}
-              <div className="flex items-center gap-2 rounded-2xl bg-sand-50 px-3.5 md:bg-transparent md:px-2">
+              {/* Filière (masquée sur mobile pour mettre les images en avant) */}
+              <div className="hidden items-center gap-2 rounded-2xl bg-sand-50 px-3.5 md:flex md:bg-transparent md:px-2">
                 <Layers className="h-4 w-4 shrink-0 text-harvest-600" strokeWidth={2.5} />
                 <select
                   name="category"
@@ -179,8 +179,8 @@ export function Hero({ stats, categories = [], countries = {} }: HeroProps) {
 
               <span className="hidden h-7 w-px shrink-0 bg-sand-200 md:block" />
 
-              {/* Pays */}
-              <div className="flex items-center gap-2 rounded-2xl bg-sand-50 px-3.5 md:bg-transparent md:px-2">
+              {/* Pays (masqué sur mobile) */}
+              <div className="hidden items-center gap-2 rounded-2xl bg-sand-50 px-3.5 md:flex md:bg-transparent md:px-2">
                 <Globe className="h-4 w-4 shrink-0 text-brand-600" strokeWidth={2.5} />
                 <select
                   name="country"
