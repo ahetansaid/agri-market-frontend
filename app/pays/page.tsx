@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { getCountriesActivity } from "@/lib/api";
 import { getT } from "@/lib/i18n/server";
 import { Globe, ArrowRight } from "lucide-react";
+import { AfricaMapInteractive } from "@/components/pays/africa-map-interactive";
 
 export const metadata = { title: "Pays" };
 
@@ -52,6 +53,17 @@ export default async function PaysPage() {
               {t("pays.desc")}
             </p>
           </header>
+
+          {/* Carte interactive d'Afrique */}
+          <div className="mb-12">
+            <AfricaMapInteractive counts={counts} />
+          </div>
+
+          {rows.length > 0 && (
+            <h2 className="mb-4 font-display text-xl font-semibold tracking-tight">
+              Tous les pays actifs
+            </h2>
+          )}
 
           {rows.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
