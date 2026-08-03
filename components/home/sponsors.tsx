@@ -1,14 +1,15 @@
-import { IDA } from "@/lib/content/ida";
+import Image from "next/image";
 import { HeartHandshake } from "lucide-react";
+import { IDA } from "@/lib/content/ida";
 
 /**
- * Bande « Nos sponsors » — soutiens financiers & techniques (noms réels repris
- * du CMS de l'ancienne plateforme). `cta` affiche le bouton « Devenir sponsor ».
+ * Bande « Nos sponsors » — logos réels repris du CMS de l'ancienne plateforme.
+ * `cta` affiche le bouton « Devenir sponsor ».
  */
 export function Sponsors({ cta = false }: { cta?: boolean }) {
   return (
     <section className="border-t border-border/60 bg-white">
-      <div className="mx-auto max-w-5xl px-4 py-14 text-center">
+      <div className="mx-auto max-w-6xl px-4 py-14 text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-sand-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-harvest-700 shadow-sm ring-1 ring-border">
           Sponsors
         </span>
@@ -20,14 +21,21 @@ export function Sponsors({ cta = false }: { cta?: boolean }) {
           impact panafricain.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5">
-          {IDA.sponsors.map((name) => (
-            <span
-              key={name}
-              className="rounded-full border border-border bg-sand-50 px-4 py-2 text-sm font-medium text-foreground/80 transition hover:border-harvest-300 hover:text-harvest-700"
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+          {IDA.sponsors.map((s) => (
+            <div
+              key={s.name}
+              title={s.name}
+              className="grid h-16 w-28 place-items-center rounded-xl border border-border bg-white p-3 shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:h-20 sm:w-32"
             >
-              {name}
-            </span>
+              <Image
+                src={s.logo}
+                alt={s.name}
+                width={120}
+                height={60}
+                className="h-full w-full object-contain"
+              />
+            </div>
           ))}
         </div>
 

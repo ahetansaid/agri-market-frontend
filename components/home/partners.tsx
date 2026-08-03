@@ -1,16 +1,8 @@
 import Image from "next/image";
 import { getT } from "@/lib/i18n/server";
+import { IDA } from "@/lib/content/ida";
 
-const PARTNERS = [
-  "/images/partenaires/ANOPACI_logo.jpg",
-  "/images/partenaires/CGMF_logo.jpg",
-  "/images/partenaires/Cosem_Logo.png",
-  "/images/partenaires/DomTerrylogo.png",
-  "/images/partenaires/Logo_MAD.png",
-  "/images/partenaires/Logo_NourDign.png",
-];
-
-/** Bande « Nos partenaires » — affichée sur la page Événements. */
+/** Bande « Nos partenaires » — logos réels repris du CMS (couleurs d'origine). */
 export async function Partners() {
   const { t } = await getT();
   return (
@@ -30,17 +22,18 @@ export async function Partners() {
         </p>
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-          {PARTNERS.map((src) => (
+          {IDA.partners.map((p) => (
             <div
-              key={src}
+              key={p.name}
+              title={p.name}
               className="grid h-20 w-32 place-items-center rounded-2xl border border-border bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:h-24 sm:w-40"
             >
               <Image
-                src={src}
-                alt="Partenaire"
+                src={p.logo}
+                alt={p.name}
                 width={140}
                 height={72}
-                className="h-full w-full object-contain grayscale transition duration-300 hover:grayscale-0"
+                className="h-full w-full object-contain"
               />
             </div>
           ))}

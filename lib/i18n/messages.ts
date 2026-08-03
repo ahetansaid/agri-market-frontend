@@ -22,6 +22,7 @@ const fr: Dict = {
   "nav.pays": "Pays",
   "nav.evenements": "Événements",
   "nav.apropos": "À propos",
+  "nav.presentation": "Présentation",
   "nav.publish": "Publier une annonce",
   // Header actions
   "action.search": "Rechercher un produit, une filière, un pays…",
@@ -462,6 +463,7 @@ const en: Dict = {
   "nav.pays": "Countries",
   "nav.evenements": "Events",
   "nav.apropos": "About",
+  "nav.presentation": "Presentation",
   "nav.publish": "Post a listing",
   "action.search": "Search a product, a sector, a country…",
   "action.publish": "Post",
@@ -899,6 +901,7 @@ const it: Dict = {
   "nav.pays": "Paesi",
   "nav.evenements": "Eventi",
   "nav.apropos": "Chi siamo",
+  "nav.presentation": "Presentazione",
   "nav.publish": "Pubblica un annuncio",
   "action.search": "Cerca un prodotto, una filiera, un paese…",
   "action.publish": "Pubblica",

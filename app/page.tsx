@@ -3,9 +3,6 @@ import { Footer } from "@/components/layout/footer";
 import { PromoBanner } from "@/components/home/promo-banner";
 import { Hero } from "@/components/home/hero";
 import { QuickAccess } from "@/components/home/quick-access";
-import { HowItWorks } from "@/components/home/how-it-works";
-import { AfricaMapSection } from "@/components/home/africa-map";
-import { Partners } from "@/components/home/partners";
 import { ProductRail } from "@/components/home/product-rail";
 import { TrendingChart } from "@/components/home/trending-chart";
 import { BioSpotlight } from "@/components/home/bio-spotlight";
@@ -57,10 +54,6 @@ export default async function HomePage() {
     items: all.filter((a) => a.category_name === c.name),
   }));
 
-  // Carte « Le pouls de l'Afrique » — activité par pays (données déjà chargées).
-  const countryCounts = countriesActivity.counts ?? {};
-  const activeCountries = Object.values(countryCounts).filter((n) => n > 0).length;
-
   return (
     <>
       <Header />
@@ -78,9 +71,6 @@ export default async function HomePage() {
         {/* Accès rapide */}
         <QuickAccess />
 
-        {/* Comment ça marche — un produit, trois métiers */}
-        <HowItWorks />
-
         {/* Carrousel — Dernières annonces */}
         <ProductRail
           eyebrow="Marketplace"
@@ -96,12 +86,6 @@ export default async function HomePage() {
 
         {/* Producteurs à la une (avatars) */}
         <TopProducers items={recent} />
-
-        {/* Le pouls de l'Afrique agricole — carte interactive 54 pays */}
-        <AfricaMapSection
-          counts={countryCounts}
-          activeCountriesCount={activeCountries}
-        />
 
         {/* Éditorial — Bio (panneau + grille) */}
         <BioSpotlight items={bio} />
@@ -122,9 +106,6 @@ export default async function HomePage() {
 
         {/* Événements & salons */}
         <EventsRail events={events} />
-
-        {/* Partenaires — ils soutiennent l'agriculture africaine */}
-        <Partners />
 
         {/* CTA final */}
         <CtaBand stats={stats} />

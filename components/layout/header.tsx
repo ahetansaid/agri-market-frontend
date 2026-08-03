@@ -19,6 +19,7 @@ import {
   Globe,
   CalendarDays,
   Info,
+  Landmark,
   PlusCircle,
 } from "lucide-react";
 import { AuthLinks } from "@/components/auth/auth-links";
@@ -32,6 +33,7 @@ const LINKS = [
   { href: "/pays", key: "nav.pays", icon: Globe },
   { href: "/evenements", key: "nav.evenements", icon: CalendarDays },
   { href: "/apropos", key: "nav.apropos", icon: Info },
+  { href: "/presentation", key: "nav.presentation", icon: Landmark },
   { href: "/annonces/nouvelle", key: "nav.publish", icon: PlusCircle },
 ] as const;
 
