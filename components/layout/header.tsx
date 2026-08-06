@@ -17,10 +17,8 @@ import {
   Store,
   Sprout,
   Globe,
-  CalendarDays,
   Info,
-  Landmark,
-  PlusCircle,
+  CircleUser,
 } from "lucide-react";
 import { AuthLinks } from "@/components/auth/auth-links";
 import { useT } from "@/lib/i18n/client";
@@ -28,13 +26,11 @@ import { LocaleSwitcher } from "@/components/ui/locale-switcher";
 
 const LINKS = [
   { href: "/", key: "nav.home", icon: Home },
-  { href: "/annonces", key: "nav.marketplace", icon: Store },
-  { href: "/filieres", key: "nav.filieres", icon: Sprout },
   { href: "/pays", key: "nav.pays", icon: Globe },
-  { href: "/evenements", key: "nav.evenements", icon: CalendarDays },
+  { href: "/filieres", key: "nav.filieres", icon: Sprout },
+  { href: "/dashboard", key: "nav.account", icon: CircleUser },
+  { href: "/annonces", key: "nav.marketplace", icon: Store },
   { href: "/apropos", key: "nav.apropos", icon: Info },
-  { href: "/presentation", key: "nav.presentation", icon: Landmark },
-  { href: "/annonces/nouvelle", key: "nav.publish", icon: PlusCircle },
 ] as const;
 
 // Titre de la page courante (affiché sur mobile pour situer l'utilisateur).

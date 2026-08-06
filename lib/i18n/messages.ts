@@ -17,12 +17,13 @@ type Dict = Record<string, string>;
 const fr: Dict = {
   // Navigation
   "nav.home": "Accueil",
-  "nav.marketplace": "Marketplace",
-  "nav.filieres": "Filières",
+  "nav.marketplace": "Annonces",
+  "nav.filieres": "Catégories",
   "nav.pays": "Pays",
   "nav.evenements": "Événements",
   "nav.apropos": "À propos",
   "nav.presentation": "Présentation",
+  "nav.account": "Mon compte",
   "nav.publish": "Publier une annonce",
   // Header actions
   "action.search": "Rechercher un produit, une filière, un pays…",
@@ -464,6 +465,7 @@ const en: Dict = {
   "nav.evenements": "Events",
   "nav.apropos": "About",
   "nav.presentation": "Presentation",
+  "nav.account": "My account",
   "nav.publish": "Post a listing",
   "action.search": "Search a product, a sector, a country…",
   "action.publish": "Post",
@@ -902,6 +904,7 @@ const it: Dict = {
   "nav.evenements": "Eventi",
   "nav.apropos": "Chi siamo",
   "nav.presentation": "Presentazione",
+  "nav.account": "Il mio account",
   "nav.publish": "Pubblica un annuncio",
   "action.search": "Cerca un prodotto, una filiera, un paese…",
   "action.publish": "Pubblica",
